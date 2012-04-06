@@ -163,8 +163,8 @@ func getIO(inputFile, outputFile string) (io.Reader, io.Writer, error) {
 	return input, output, nil
 }
 
-func fatal(formt string, args ...interface{}) {
-	fmt.Fprintf(os.Stderr, formt, args...)
+func fatal(format string, args ...interface{}) {
+	fmt.Fprintf(os.Stderr, fmt.Sprintf("error: %s", format), args...)
 	fmt.Fprintln(os.Stderr)
 	os.Exit(1)
 }
@@ -172,29 +172,30 @@ func fatal(formt string, args ...interface{}) {
 func main() {
 	inputFile := flag.String("input", "", "input file (default to stdin)")
 	outputFile := flag.String("output", "", "output file (default to stdout)")
-	//run := flag.Bool("run", false, "run go test yourself")
+	fail := flag.Bool("fail", false, "fail (non zero exit) if any test failed")
 	flag.Parse()
 
 	if flag.NArg() > 0 {
-		fatal("error: %s does not take parameters (did you mean -input?)", os.Args[0])
+		fatal("%s does not take parameters (did you mean -input?)", os.Args[0])
 	}
 
-	/*
-	if len(*inputFile) > 0 && *run {
-		log.Fatalf("error: can't specify -run and -input at the same time\n")
-	}
-	*/
-
-	input, output, err := getIO(*inputFile, *outputFile)
+	input, output, err := getIO(*inputFile, *outputFile) //, *run)
 	if err != nil {
-		fatal("error: %s", err)
+		fatal("%s", err)
 	}
 
 
 	tests, err := parseOutput(input)
 	if err != nil {
-		fatal("error: %s", err)
+		fatal("%s", err)
+	}
+	if len(tests) == 0 {
+		fatal("no tests found")
+		os.Exit(1)
 	}
 
 	writeXML(tests, output)
+	if *fail && numFailures(tests) > 0 {
+		os.Exit(1)
+	}
 }
