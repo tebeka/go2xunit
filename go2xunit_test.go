@@ -21,7 +21,7 @@ func Test_numFailuers(t *testing.T) {
 	}
 }
 
-func loadTests(filename string, t *testing.T) []*Test{
+func loadTests(filename string, t *testing.T) []*Test {
 	file, err := os.Open(filename)
 	if err != nil {
 		t.Fatalf("can't open %s - %s", filename, err)
@@ -58,7 +58,6 @@ func Test_parseOutput(t *testing.T) {
 		t.Fatalf("bad message (should be empty): %s", test.Message)
 	}
 }
-
 
 func Test_parseOutputBad(t *testing.T) {
 	tests := loadTests("go2xunit.go", t)

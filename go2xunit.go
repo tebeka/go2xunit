@@ -13,8 +13,8 @@ import (
 
 const (
 	startPrefix = "=== RUN "
-	passPrefix = "--- PASS: "
-	failPrefix = "--- FAIL: "
+	passPrefix  = "--- PASS: "
+	failPrefix  = "--- FAIL: "
 
 	version = "0.1.0"
 )
@@ -26,7 +26,7 @@ var endRegexp *regexp.Regexp = regexp.MustCompile(`([^ ]+) \((\d+\.\d+)`)
 
 type Test struct {
 	Name, Time, Message string
-	Failed bool
+	Failed              bool
 }
 
 // parseEnd parses "end of test" line and returns (name, time, error)
@@ -57,7 +57,7 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 			}
 			return tests, nil
 		case nil:
-			;
+
 		default:
 			return nil, err
 		}
@@ -96,7 +96,7 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 			}
 			test.Time = time
 		default:
-			if test != nil {  // test != nil marks we're in the middle of a test
+			if test != nil { // test != nil marks we're in the middle of a test
 				test.Message += line + "\n"
 			}
 		}
@@ -110,7 +110,7 @@ func numFailures(tests []*Test) int {
 	count := 0
 	for _, test := range tests {
 		if test.Failed {
-			count ++
+			count++
 		}
 	}
 
@@ -124,17 +124,17 @@ func writeXML(tests []*Test, out io.Writer) {
 	fmt.Fprintf(out, `<?xml version="1.0" encoding="utf-8"?>`)
 	newline()
 	fmt.Fprintf(out, `<testsuite name="go2xunit" tests="%d" errors="0" failures="%d" skip="0">`,
-					 len(tests), numFailures(tests))
+		len(tests), numFailures(tests))
 	newline()
-	for _, test := range(tests) {
+	for _, test := range tests {
 		fmt.Fprintf(out, `  <testcase classname="go2xunit" name="%s" time="%s"`,
-		                 test.Name, test.Time)
+			test.Name, test.Time)
 		if !test.Failed {
 			fmt.Fprintf(out, " />\n")
 			continue
 		}
 		fmt.Fprintln(out, ">")
-		fmt.Fprintf(out,  `    <failure type="go.error" message="error">`)
+		fmt.Fprintf(out, `    <failure type="go.error" message="error">`)
 		newline()
 		fmt.Fprintf(out, "<![CDATA[%s]]>\n", test.Message)
 		fmt.Fprintln(out, "    </failure>")
@@ -152,7 +152,6 @@ func getInput(filename string) (io.Reader, error) {
 
 	return os.Open(filename)
 }
-
 
 // getInput return output io.Writer from file name, if file name is - it will
 // return os.Stdout
@@ -202,7 +201,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("error: %s", err)
 	}
-
 
 	tests, err := parseOutput(input)
 	if err != nil {
