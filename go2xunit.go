@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"regexp"
 	"strings"
@@ -163,34 +164,30 @@ func getIO(inputFile, outputFile string) (io.Reader, io.Writer, error) {
 	return input, output, nil
 }
 
-func fatal(format string, args ...interface{}) {
-	fmt.Fprintf(os.Stderr, fmt.Sprintf("error: %s", format), args...)
-	fmt.Fprintln(os.Stderr)
-	os.Exit(1)
-}
-
 func main() {
 	inputFile := flag.String("input", "", "input file (default to stdin)")
 	outputFile := flag.String("output", "", "output file (default to stdout)")
 	fail := flag.Bool("fail", false, "fail (non zero exit) if any test failed")
 	flag.Parse()
 
+	log.SetFlags(0)
+
 	if flag.NArg() > 0 {
-		fatal("%s does not take parameters (did you mean -input?)", os.Args[0])
+		log.Fatalf("error: %s does not take parameters (did you mean -input?)", os.Args[0])
 	}
 
-	input, output, err := getIO(*inputFile, *outputFile) //, *run)
+	input, output, err := getIO(*inputFile, *outputFile)
 	if err != nil {
-		fatal("%s", err)
+		log.Fatalf("error: %s", err)
 	}
 
 
 	tests, err := parseOutput(input)
 	if err != nil {
-		fatal("%s", err)
+		log.Fatalf("error: %s", err)
 	}
 	if len(tests) == 0 {
-		fatal("no tests found")
+		log.Fatalf("error: no tests found")
 		os.Exit(1)
 	}
 
