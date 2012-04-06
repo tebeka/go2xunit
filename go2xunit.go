@@ -15,6 +15,8 @@ const (
 	startPrefix = "=== RUN "
 	passPrefix = "--- PASS: "
 	failPrefix = "--- FAIL: "
+
+	version = "0.1.0"
 )
 
 var endRegexp *regexp.Regexp = regexp.MustCompile(`([^ ]+) \((\d+\.\d+)`)
@@ -168,7 +170,13 @@ func main() {
 	inputFile := flag.String("input", "", "input file (default to stdin)")
 	outputFile := flag.String("output", "", "output file (default to stdout)")
 	fail := flag.Bool("fail", false, "fail (non zero exit) if any test failed")
+	showVersion := flag.Bool("version", false, "print version and exit")
 	flag.Parse()
+
+	if *showVersion {
+		fmt.Println(version)
+		os.Exit(0)
+	}
 
 	log.SetFlags(0)
 
