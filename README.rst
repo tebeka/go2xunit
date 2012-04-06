@@ -1,6 +1,6 @@
-========
-go2xunit
-========
+==============
+go2xunit 0.1.0
+==============
 
 Converts `go test -v` output to xunit compatible XML output. 
 
