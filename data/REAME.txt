@@ -1,0 +1,4 @@
+Example output data.
+
+gotest.out is an output of a "go test -v" run.
+nosetests.xml is the output of running "nosetests --with-xunit" on test_xunit.py
