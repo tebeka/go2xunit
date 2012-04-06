@@ -1,5 +1,5 @@
 export GOPATH := $(shell dirname $(shell dirname $(PWD)))
-PACKAGE := xunit
+PACKAGE := go2xunit
 
 all:
 	go build $(PACKAGE)
