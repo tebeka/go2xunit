@@ -19,6 +19,9 @@ const (
 	version = "0.1.0"
 )
 
+// "end of test" regexp for name and time, examples:
+// --- PASS: TestSub (0.00 seconds)
+// --- FAIL: TestSubFail (0.00 seconds)
 var endRegexp *regexp.Regexp = regexp.MustCompile(`([^ ]+) \((\d+\.\d+)`)
 
 type Test struct {
@@ -26,6 +29,7 @@ type Test struct {
 	Failed bool
 }
 
+// parseEnd parses "end of test" line and returns (name, time, error)
 func parseEnd(prefix, line string) (string, string, error) {
 	matches := endRegexp.FindStringSubmatch(line[len(prefix):])
 
@@ -36,6 +40,7 @@ func parseEnd(prefix, line string) (string, string, error) {
 	return matches[1], matches[2], nil
 }
 
+// parseOutput parses output of "go test -v", returns a list of tests
 func parseOutput(rd io.Reader) ([]*Test, error) {
 	tests := []*Test{}
 
@@ -91,7 +96,7 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 			}
 			test.Time = time
 		default:
-			if test != nil {
+			if test != nil {  // test != nil marks we're in the middle of a test
 				test.Message += line + "\n"
 			}
 		}
@@ -100,14 +105,7 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 	return tests, nil
 }
 
-func getInput(filename string) (io.Reader, error) {
-	if filename == "-" || filename == "" {
-		return os.Stdin, nil
-	}
-
-	return os.Open(filename)
-}
-
+// numFailures count how man tests failed
 func numFailures(tests []*Test) int {
 	count := 0
 	for _, test := range tests {
@@ -119,6 +117,7 @@ func numFailures(tests []*Test) int {
 	return count
 }
 
+// writeXML exits xunit XML of tests to out
 func writeXML(tests []*Test, out io.Writer) {
 	newline := func() { fmt.Fprintln(out) }
 
@@ -144,6 +143,19 @@ func writeXML(tests []*Test, out io.Writer) {
 	fmt.Fprintln(out, "</testsuite>")
 }
 
+// getInput return input io.Reader from file name, if file name is - it will
+// return os.Stdin
+func getInput(filename string) (io.Reader, error) {
+	if filename == "-" || filename == "" {
+		return os.Stdin, nil
+	}
+
+	return os.Open(filename)
+}
+
+
+// getInput return output io.Writer from file name, if file name is - it will
+// return os.Stdout
 func getOutput(filename string) (io.Writer, error) {
 	if filename == "-" || filename == "" {
 		return os.Stdout, nil
@@ -152,6 +164,7 @@ func getOutput(filename string) (io.Writer, error) {
 	return os.Create(filename)
 }
 
+// getIO returns input and output streams from file names
 func getIO(inputFile, outputFile string) (io.Reader, io.Writer, error) {
 	input, err := getInput(inputFile)
 	if err != nil {
@@ -178,6 +191,7 @@ func main() {
 		os.Exit(0)
 	}
 
+	// No time ... prefix for error messages
 	log.SetFlags(0)
 
 	if flag.NArg() > 0 {
