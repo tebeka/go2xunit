@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"regexp"
 	"strings"
@@ -164,11 +163,21 @@ func getIO(inputFile, outputFile string) (io.Reader, io.Writer, error) {
 	return input, output, nil
 }
 
+func fatal(formt string, args ...interface{}) {
+	fmt.Fprintf(os.Stderr, formt, args...)
+	fmt.Fprintln(os.Stderr)
+	os.Exit(1)
+}
+
 func main() {
 	inputFile := flag.String("input", "", "input file (default to stdin)")
 	outputFile := flag.String("output", "", "output file (default to stdout)")
 	//run := flag.Bool("run", false, "run go test yourself")
 	flag.Parse()
+
+	if flag.NArg() > 0 {
+		fatal("error: %s does not take parameters (did you mean -input?)", os.Args[0])
+	}
 
 	/*
 	if len(*inputFile) > 0 && *run {
@@ -178,14 +187,13 @@ func main() {
 
 	input, output, err := getIO(*inputFile, *outputFile)
 	if err != nil {
-		log.Fatalf("error: %s\n", err)
+		fatal("error: %s", err)
 	}
 
 
 	tests, err := parseOutput(input)
 	if err != nil {
-		fmt.Printf("error: %s\n", err)
-		os.Exit(1)
+		fatal("error: %s", err)
 	}
 
 	writeXML(tests, output)
