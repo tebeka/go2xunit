@@ -119,7 +119,6 @@ func numFailures(tests []*Test) int {
 
 func writeXML(tests []*Test, out io.Writer) {
 	newline := func() { fmt.Fprintln(out) }
-	endtest := func() { fmt.Fprintln(out, "</testcase>") }
 
 	fmt.Fprintf(out, `<?xml version="1.0" encoding="utf-8"?>`)
 	newline()
@@ -127,18 +126,18 @@ func writeXML(tests []*Test, out io.Writer) {
 					 len(tests), numFailures(tests))
 	newline()
 	for _, test := range(tests) {
-		fmt.Fprintf(out, `<testcase classname="go2xunit" name="%s" time="%s"`,
+		fmt.Fprintf(out, `  <testcase classname="go2xunit" name="%s" time="%s"`,
 		                 test.Name, test.Time)
 		if !test.Failed {
 			fmt.Fprintf(out, " />\n")
-			endtest()
 			continue
 		}
-		fmt.Fprintf(out,  `<failure type="go.error" message="error">`)
+		fmt.Fprintln(out, ">")
+		fmt.Fprintf(out,  `    <failure type="go.error" message="error">`)
 		newline()
 		fmt.Fprintf(out, "<![CDATA[%s]]>\n", test.Message)
-		fmt.Fprintln(out, "</failure>")
-		endtest()
+		fmt.Fprintln(out, "    </failure>")
+		fmt.Fprintln(out, "  </testcase>")
 	}
 	fmt.Fprintln(out, "</testsuite>")
 }
