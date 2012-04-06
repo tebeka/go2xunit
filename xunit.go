@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -62,7 +63,7 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 		switch {
 		case strings.HasPrefix(line, startPrefix):
 			if test != nil {
-				return nil, fmt.Errorf("test inside test")
+				tests = append(tests, test)
 			}
 			test = &Test{Name: line[len(startPrefix):]}
 		case strings.HasPrefix(line, failPrefix):
@@ -102,12 +103,28 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 }
 
 func main() {
+	var input io.Reader
+	var err error
+
+	flag.Parse()
+	if len(flag.Args()) > 0 {
+		input, err = os.Open(flag.Args()[0])
+		if err != nil {
+			fmt.Printf("error: can't open %s: %s", flag.Args()[0], err)
+			os.Exit(1)
+		}
+	} else {
+		input = os.Stdin
+	}
+
 	endRegexp = regexp.MustCompile(`([^ ]+) \((\d+\.\d+)`)
-	tests, err := parseOutput(os.Stdin)
+	tests, err := parseOutput(input)
 	if err != nil {
-		fmt.Printf("error: %s", err)
+		fmt.Printf("error: %s\n", err)
 		os.Exit(1)
 	}
+	fmt.Printf("%v\n", tests)
+
 	for _, test := range tests {
 		fmt.Println(test.Name)
 	}
