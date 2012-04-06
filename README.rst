@@ -23,4 +23,8 @@ Contact
 =======
 Miki Tebeka <miki.tebeka@gmail.com>
 
+Bug reports go here_.
+
+.. _here: https://bitbucket.org/tebeka/go2xunit/issues?status=new&status=open
+
 
