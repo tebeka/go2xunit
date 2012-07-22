@@ -22,7 +22,7 @@ are failed tests.
 
     go test -v | go2xunit -output tests.xml
 
-Here's an example script (`run-tests.sh`) that can be used with Jenkins_.
+Here's an example script (`run-tests.sh`) that can be used with Jenkins_/Hudson_.
 
 ::
     
@@ -36,6 +36,7 @@ Here's an example script (`run-tests.sh`) that can be used with Jenkins_.
 
 
 .. _Jenkins: http://jenkins-ci.org/
+.. _Hudson: http://hudson-ci.org/
 
 Contact
 =======
