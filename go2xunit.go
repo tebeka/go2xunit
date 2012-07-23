@@ -43,11 +43,20 @@ func parseEnd(prefix, line string) (string, string, error) {
 // parseOutput parses output of "go test -v", returns a list of tests
 func parseOutput(rd io.Reader) ([]*Test, error) {
 	tests := []*Test{}
+	var test *Test = nil
+
+	var nextTest = func() {
+		// We are switching to the next test, store the current one.
+		if test == nil {
+			return
+		}
+
+		tests = append(tests, test)
+		test = nil
+	}
 
 	reader := bufio.NewReader(rd)
-	var test *Test = nil
 	for {
-		/* FIXME: Handle isPrefix */
 		buf, _, err := reader.ReadLine()
 
 		switch err {
@@ -57,44 +66,48 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 			}
 			return tests, nil
 		case nil:
+			// nil is OK
 
-		default:
+		default: // Error other than io.EOF
 			return nil, err
 		}
 
 		line := string(buf)
+
 		switch {
 		case strings.HasPrefix(line, startPrefix):
-			if test != nil {
-				tests = append(tests, test)
-			}
-			test = &Test{Name: line[len(startPrefix):]}
 		case strings.HasPrefix(line, failPrefix):
-			if test == nil {
-				return nil, fmt.Errorf("fail not inside test")
-			}
-			test.Failed = true
-			name, time, err := parseEnd(failPrefix, line)
-			if err != nil {
-				return nil, err
-			}
-			if name != test.Name {
-				return nil, fmt.Errorf("wrong test end (%s!=%s)", name, test.Name)
-			}
-			test.Time = time
-		case strings.HasPrefix(line, passPrefix):
-			if test == nil {
-				return nil, fmt.Errorf("pass not inside test")
-			}
-			test.Failed = false
+			nextTest()
+
+			// Extract the test name and the duration:
 			name, time, err := parseEnd(passPrefix, line)
 			if err != nil {
 				return nil, err
 			}
-			if name != test.Name {
-				return nil, fmt.Errorf("wrong test end (%s!=%s)", name, test.Name)
+
+			test = &Test{
+				Name:   name,
+				Time:   time,
+				Failed: true,
 			}
-			test.Time = time
+
+		case strings.HasPrefix(line, passPrefix):
+			nextTest()
+			// Extract the test name and the duration:
+			name, time, err := parseEnd(passPrefix, line)
+			if err != nil {
+				return nil, err
+			}
+
+			// Create the test structure and store it.
+			tests = append(tests, &Test{
+				Name:   name,
+				Time:   time,
+				Failed: false,
+			})
+			test = nil
+		case line == "FAIL":
+			nextTest()
 		default:
 			if test != nil { // test != nil marks we're in the middle of a test
 				test.Message += line + "\n"
@@ -102,7 +115,8 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 		}
 	}
 
-	return tests, nil
+	// If we're here, it's an error
+	return nil, fmt.Errorf("Error parsing")
 }
 
 // numFailures count how man tests failed
