@@ -61,9 +61,7 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 
 		switch err {
 		case io.EOF:
-			if test != nil {
-				tests = append(tests, test)
-			}
+			nextTest()
 			return tests, nil
 		case nil:
 			// nil is OK
