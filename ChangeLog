@@ -1,2 +1,5 @@
+2012-07-23 version 0.1.1
+    * Fix edge case with FAIL (thanks Thomas Pelletier)
+
 2012-04-06 version 0.1.0
     * Initial release
