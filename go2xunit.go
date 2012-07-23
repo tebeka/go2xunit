@@ -16,7 +16,7 @@ const (
 	passPrefix  = "--- PASS: "
 	failPrefix  = "--- FAIL: "
 
-	version = "0.1.0"
+	version = "0.1.1"
 )
 
 // "end of test" regexp for name and time, examples:
