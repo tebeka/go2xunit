@@ -36,7 +36,7 @@ func loadTests(filename string, t *testing.T) []*Test {
 }
 
 func Test_parseOutput(t *testing.T) {
-	tests := loadTests("data/gotest.out", t)
+	tests := loadTests("gotest.out", t)
 	if len(tests) != 4 {
 		t.Fatalf("got %d tests instead of 4", len(tests))
 	}
