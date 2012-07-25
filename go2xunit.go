@@ -45,7 +45,7 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 	tests := []*Test{}
 	var test *Test = nil
 
-	var nextTest = func() {
+	nextTest := func() {
 		// We are switching to the next test, store the current one.
 		if test == nil {
 			return
