@@ -8,7 +8,7 @@ Jenkins/Hudson).
 
 Install
 =======
-`go install bitbucket.org/tebeka/go2xunit`
+`go get bitbucket.org/tebeka/go2xunit`
 
 
 Usage
@@ -29,7 +29,6 @@ Here's an example script (`run-tests.sh`) that can be used with Jenkins_/Hudson_
     
     #!/bin/bash
 
-    export GOPATH=$(dirname $(dirname $PWD))
     outfile=gotest.out
 
     go test -v | tee $outfile
