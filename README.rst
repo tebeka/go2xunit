@@ -2,7 +2,8 @@
 go2xunit 0.1.1
 ==============
 
-Converts `go test -v` output to xunit compatible XML output. 
+Converts `go test -v` output to xunit compatible XML output (used in
+Jenkins/Hudson). 
 
 
 Install
