@@ -135,6 +135,7 @@ func writeXML(tests []*Test, out io.Writer) {
 
 	fmt.Fprintf(out, `<?xml version="1.0" encoding="utf-8"?>`)
 	newline()
+	fmt.Fprintf(out, "<testsuites>")
 	fmt.Fprintf(out, `<testsuite name="go2xunit" tests="%d" errors="0" failures="%d" skip="0">`,
 		len(tests), numFailures(tests))
 	newline()
@@ -153,6 +154,7 @@ func writeXML(tests []*Test, out io.Writer) {
 		fmt.Fprintln(out, "  </testcase>")
 	}
 	fmt.Fprintln(out, "</testsuite>")
+	fmt.Fprintf(out, "</testsuites>")
 }
 
 // getInput return input io.Reader from file name, if file name is - it will
