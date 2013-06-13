@@ -1,5 +1,5 @@
 2013-06-12 version 0.1.1
-    * testcases node added for bamboo compatibility
+    * testcases node added for bamboo compatibility.
 
 2012-07-23 version 0.1.1
     * Fix edge case with FAIL (thanks Thomas Pelletier)
