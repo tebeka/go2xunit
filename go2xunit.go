@@ -9,6 +9,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"text/template"
 )
 
 const (
@@ -27,6 +28,13 @@ var endRegexp *regexp.Regexp = regexp.MustCompile(`([^ ]+) \((\d+\.\d+)`)
 type Test struct {
 	Name, Time, Message string
 	Failed              bool
+}
+
+type TestResults struct {
+	Tests []*Test
+	Count int
+	Failed int
+	Bamboo bool
 }
 
 // parseEnd parses "end of test" line and returns (name, time, error)
@@ -129,32 +137,36 @@ func numFailures(tests []*Test) int {
 	return count
 }
 
-// writeXML exits xunit XML of tests to out
-func writeXML(tests []*Test, out io.Writer) {
-	newline := func() { fmt.Fprintln(out) }
 
-	fmt.Fprintf(out, `<?xml version="1.0" encoding="utf-8"?>`)
-	newline()
-	fmt.Fprintf(out, "<testsuites>")
-	fmt.Fprintf(out, `<testsuite name="go2xunit" tests="%d" errors="0" failures="%d" skip="0">`,
-		len(tests), numFailures(tests))
-	newline()
-	for _, test := range tests {
-		fmt.Fprintf(out, `  <testcase classname="go2xunit" name="%s" time="%s"`,
-			test.Name, test.Time)
-		if !test.Failed {
-			fmt.Fprintf(out, " />\n")
-			continue
-		}
-		fmt.Fprintln(out, ">")
-		fmt.Fprintf(out, `    <failure type="go.error" message="error">`)
-		newline()
-		fmt.Fprintf(out, "<![CDATA[%s]]>\n", test.Message)
-		fmt.Fprintln(out, "    </failure>")
-		fmt.Fprintln(out, "  </testcase>")
+var bambooTemplate string = `<?xml version="1.0" encoding="utf-8"?>
+{{if .Bamboo}}<testsuites>{{end}}
+  <testsuite name="go2xunit" tests="{{.Count}}" errors="0" failures="{{.Failed}}" skip="0">
+{{range $test := .Tests}}    <testcase classname="go2xunit" name="{{$test.Name}}" time="{{$test.Time}}">
+{{if $test.Failed }}      <failure type="go.error" message="error">
+        <![CDATA[{{$test.Message}}]]></failure>
+{{end}}    </testcase>
+{{end}}  </testsuite>
+{{if .Bamboo}}</testsuites>{{end}}
+	`
+// writeXML exits xunit XML of tests to out
+func writeXML(tests []*Test, out io.Writer, bamboo bool) {
+	
+	count := len(tests)
+	failed := numFailures(tests)
+
+	testsResult := TestResults{Tests:tests, Count:count, Failed:failed, Bamboo: bamboo};
+  
+  t := template.New("test template")
+	t, err := t.Parse(bambooTemplate)
+	if err != nil {
+		fmt.Println("Error en parse %v", err)
+		return;
 	}
-	fmt.Fprintln(out, "</testsuite>")
-	fmt.Fprintf(out, "</testsuites>")
+	err = t.Execute(out, testsResult)
+	if err != nil  {
+		fmt.Println("Error en execute %v", err)
+		return;
+	}
 }
 
 // getInput return input io.Reader from file name, if file name is - it will
@@ -197,6 +209,7 @@ func main() {
 	outputFile := flag.String("output", "", "output file (default to stdout)")
 	fail := flag.Bool("fail", false, "fail (non zero exit) if any test failed")
 	showVersion := flag.Bool("version", false, "print version and exit")
+	bamboo := flag.Bool("bamboo", false, "xml compatible with Atlassian's Bamboo")
 	flag.Parse()
 
 	if *showVersion {
@@ -225,7 +238,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	writeXML(tests, output)
+	writeXML(tests, output, *bamboo)
 	if *fail && numFailures(tests) > 0 {
 		os.Exit(1)
 	}
