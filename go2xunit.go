@@ -17,7 +17,7 @@ const (
 	passPrefix  = "--- PASS: "
 	failPrefix  = "--- FAIL: "
 
-	version = "0.1.1"
+	version = "0.1.2"
 )
 
 // "end of test" regexp for name and time, examples:
@@ -138,7 +138,7 @@ func numFailures(tests []*Test) int {
 }
 
 
-var bambooTemplate string = `<?xml version="1.0" encoding="utf-8"?>
+var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
 {{if .Bamboo}}<testsuites>{{end}}
   <testsuite name="go2xunit" tests="{{.Count}}" errors="0" failures="{{.Failed}}" skip="0">
 {{range $test := .Tests}}    <testcase classname="go2xunit" name="{{$test.Name}}" time="{{$test.Time}}">
@@ -157,7 +157,7 @@ func writeXML(tests []*Test, out io.Writer, bamboo bool) {
 	testsResult := TestResults{Tests:tests, Count:count, Failed:failed, Bamboo: bamboo};
   
   t := template.New("test template")
-	t, err := t.Parse(bambooTemplate)
+	t, err := t.Parse(xmlTemplate)
 	if err != nil {
 		fmt.Println("Error en parse %v", err)
 		return;
