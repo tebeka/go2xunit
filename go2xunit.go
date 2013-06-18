@@ -31,8 +31,8 @@ type Test struct {
 }
 
 type TestResults struct {
-	Tests []*Test
-	Count int
+	Tests  []*Test
+	Count  int
 	Failed int
 	Bamboo bool
 }
@@ -137,7 +137,6 @@ func numFailures(tests []*Test) int {
 	return count
 }
 
-
 var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
 {{if .Bamboo}}<testsuites>{{end}}
   <testsuite name="go2xunit" tests="{{.Count}}" errors="0" failures="{{.Failed}}" skip="0">
@@ -148,24 +147,23 @@ var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
 {{end}}  </testsuite>
 {{if .Bamboo}}</testsuites>{{end}}
 	`
+
 // writeXML exits xunit XML of tests to out
 func writeXML(tests []*Test, out io.Writer, bamboo bool) {
-	
 	count := len(tests)
 	failed := numFailures(tests)
 
-	testsResult := TestResults{Tests:tests, Count:count, Failed:failed, Bamboo: bamboo};
-  
-  t := template.New("test template")
+	testsResult := TestResults{Tests: tests, Count: count, Failed: failed, Bamboo: bamboo}
+	t := template.New("test template")
 	t, err := t.Parse(xmlTemplate)
 	if err != nil {
 		fmt.Println("Error en parse %v", err)
-		return;
+		return
 	}
 	err = t.Execute(out, testsResult)
-	if err != nil  {
+	if err != nil {
 		fmt.Println("Error en execute %v", err)
-		return;
+		return
 	}
 }
 
