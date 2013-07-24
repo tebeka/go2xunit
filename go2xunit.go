@@ -140,7 +140,7 @@ func numFailures(tests []*Test) int {
 var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
 {{if .Bamboo}}<testsuites>{{end}}
   <testsuite name="go2xunit" tests="{{.Count}}" errors="0" failures="{{.Failed}}" skip="0">
-{{range $test := .Tests}}    <testcase classname="go2xunit" name="{{$test.Name}}" time="{{$test.Time}}">
+{{range $index, $test := .Tests}}    <testcase classname="go2xunit-{{$index}}" name="{{$test.Name}}" time="{{$test.Time}}">
 {{if $test.Failed }}      <failure type="go.error" message="error">
         <![CDATA[{{$test.Message}}]]></failure>
 {{end}}    </testcase>
