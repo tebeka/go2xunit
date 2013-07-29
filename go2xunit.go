@@ -105,8 +105,6 @@ func parseOutput(rd io.Reader) ([]*Suite, error) {
 
 		switch err {
 		case io.EOF:
-			// nextTest()
-			// nextSuite()
 			if suite != nil || test != nil {
 				// if suite or test in progress EOF is an unexpected EOF
 				return nil, fmt.Errorf("Unexpected EOF")
