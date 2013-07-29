@@ -11,3 +11,6 @@
 FAIL
 exit status 1
 FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
+=== RUN TestAdd
+--- PASS: TestAdd (0.00 seconds)
+ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
