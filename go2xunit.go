@@ -17,25 +17,13 @@ const (
 	passPrefix  = "--- PASS: "
 	failPrefix  = "--- FAIL: "
 
-	version = "0.1.2"
+	version = "0.1.3"
 )
 
 // "end of test" regexp for name and time, examples:
 // --- PASS: TestSub (0.00 seconds)
 // --- FAIL: TestSubFail (0.00 seconds)
 var endRegexp *regexp.Regexp = regexp.MustCompile(`([^ ]+) \((\d+\.\d+)`)
-
-type Test struct {
-	Name, Time, Message string
-	Failed              bool
-}
-
-type TestResults struct {
-	Tests  []*Test
-	Count  int
-	Failed int
-	Bamboo bool
-}
 
 // parseEnd parses "end of test" line and returns (name, time, error)
 func parseEnd(prefix, line string) (string, string, error) {
@@ -48,19 +36,67 @@ func parseEnd(prefix, line string) (string, string, error) {
 	return matches[1], matches[2], nil
 }
 
+// "end of tested file" regexp for parsing package & file name
+// ok  	teky/cointreau/gs1/deliver	0.015s
+// FAIL	teky/cointreau/gs1/deliver	0.010s
+var endTestRegexp *regexp.Regexp = regexp.MustCompile(`^(ok  |FAIL)\t([^ ]+)\t(\d+\.\d+)s$`)
+
+// parseEndTest parses "end of test file" line and returns (status, name, time, error)
+func parseEndTest(line string) (string, string, string, error) {
+	matches := endTestRegexp.FindStringSubmatch(line)
+
+	if len(matches) == 0 {
+		return "", "", "", fmt.Errorf("can't parse %s", line)
+	}
+
+	return matches[1], matches[2], matches[3], nil
+}
+
+type Test struct {
+	Name, Time, Message string
+	Failed              bool
+}
+
+type Suite struct {
+	Name   string
+	Count  int
+	Failed int
+	Time   string
+	Status string
+	Tests  []*Test
+}
+
+type TestResults struct {
+	Suites []*Suite
+	Bamboo bool
+}
+
 // parseOutput parses output of "go test -v", returns a list of tests
-func parseOutput(rd io.Reader) ([]*Test, error) {
-	tests := []*Test{}
+func parseOutput(rd io.Reader) ([]*Suite, error) {
+	suites := []*Suite{}
 	var test *Test = nil
+	var suite *Suite = nil
 
 	nextTest := func() {
 		// We are switching to the next test, store the current one.
+		if suite == nil {
+			suite = &Suite{}
+			suite.Tests = make([]*Test, 0, 1)
+		}
 		if test == nil {
 			return
 		}
-
-		tests = append(tests, test)
+		suite.Tests = append(suite.Tests, test)
 		test = nil
+	}
+	nextSuite := func() {
+		// We are switching to the next test, store the current one.
+		if suite == nil {
+			return
+		}
+
+		suites = append(suites, suite)
+		suite = nil
 	}
 
 	reader := bufio.NewReader(rd)
@@ -69,8 +105,11 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 
 		switch err {
 		case io.EOF:
-			nextTest()
-			return tests, nil
+			if suite != nil || test != nil {
+				// if suite or test in progress EOF is an unexpected EOF
+				return nil, fmt.Errorf("Unexpected EOF")
+			}
+			return suites, nil
 		case nil:
 			// nil is OK
 
@@ -79,14 +118,13 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 		}
 
 		line := string(buf)
-
 		switch {
 		case strings.HasPrefix(line, startPrefix):
 		case strings.HasPrefix(line, failPrefix):
 			nextTest()
 
 			// Extract the test name and the duration:
-			name, time, err := parseEnd(passPrefix, line)
+			name, time, err := parseEnd(failPrefix, line)
 			if err != nil {
 				return nil, err
 			}
@@ -104,9 +142,8 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 			if err != nil {
 				return nil, err
 			}
-
 			// Create the test structure and store it.
-			tests = append(tests, &Test{
+			suite.Tests = append(suite.Tests, &Test{
 				Name:   name,
 				Time:   time,
 				Failed: false,
@@ -114,6 +151,19 @@ func parseOutput(rd io.Reader) ([]*Test, error) {
 			test = nil
 		case line == "FAIL":
 			nextTest()
+
+		case strings.HasPrefix(line, "ok  \t") || strings.HasPrefix(line, "FAIL\t"):
+			// End of suite, read data
+			status, name, time, err := parseEndTest(line)
+			if err != nil {
+				return nil, err
+			}
+			suite.Name = name
+			suite.Count = len(suite.Tests)
+			suite.Failed = numFailures(suite.Tests)
+			suite.Time = time
+			suite.Status = status
+			nextSuite()
 		default:
 			if test != nil { // test != nil marks we're in the middle of a test
 				test.Message += line + "\n"
@@ -137,23 +187,29 @@ func numFailures(tests []*Test) int {
 	return count
 }
 
+func hasFailures(suites []*Suite) bool {
+	for _, suite := range suites {
+		if numFailures(suite.Tests) > 0 {
+			return true
+		}
+	}
+	return false
+}
+
 var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
 {{if .Bamboo}}<testsuites>{{end}}
-  <testsuite name="go2xunit" tests="{{.Count}}" errors="0" failures="{{.Failed}}" skip="0">
-{{range $test := .Tests}}    <testcase classname="go2xunit" name="{{$test.Name}}" time="{{$test.Time}}">
+{{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Count}}" errors="0" failures="{{.Failed}}" skip="0">
+{{range  $test := $suite.Tests}}    <testcase classname="{{$suite.Name}}" name="{{$test.Name}}" time="{{$test.Time}}">
 {{if $test.Failed }}      <failure type="go.error" message="error">
-        <![CDATA[{{$test.Message}}]]></failure>
-{{end}}    </testcase>
+        <![CDATA[{{$test.Message}}]]>
+      </failure>{{end}}    </testcase>
 {{end}}  </testsuite>
-{{if .Bamboo}}</testsuites>{{end}}
-	`
+{{end}}{{if .Bamboo}}</testsuites>{{end}}
+`
 
 // writeXML exits xunit XML of tests to out
-func writeXML(tests []*Test, out io.Writer, bamboo bool) {
-	count := len(tests)
-	failed := numFailures(tests)
-
-	testsResult := TestResults{Tests: tests, Count: count, Failed: failed, Bamboo: bamboo}
+func writeXML(suites []*Suite, out io.Writer, bamboo bool) {
+	testsResult := TestResults{Suites: suites, Bamboo: bamboo}
 	t := template.New("test template")
 	t, err := t.Parse(xmlTemplate)
 	if err != nil {
@@ -227,17 +283,17 @@ func main() {
 		log.Fatalf("error: %s", err)
 	}
 
-	tests, err := parseOutput(input)
+	suites, err := parseOutput(input)
 	if err != nil {
 		log.Fatalf("error: %s", err)
 	}
-	if len(tests) == 0 {
+	if len(suites) == 0 {
 		log.Fatalf("error: no tests found")
 		os.Exit(1)
 	}
 
-	writeXML(tests, output, *bamboo)
-	if *fail && numFailures(tests) > 0 {
+	writeXML(suites, output, *bamboo)
+	if *fail && hasFailures(suites) {
 		os.Exit(1)
 	}
 }
