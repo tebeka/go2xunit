@@ -1,32 +1,25 @@
-==============
-go2xunit 0.1.3
-==============
+# go2xunit 0.1.3
 
 Converts `go test -v` output to xunit compatible XML output (used in
-Jenkins/Hudson). 
+[Jenkins][jenkins]/[Hudson][hudson]).
 
 
-Install
-=======
-`go get bitbucket.org/tebeka/go2xunit`
+# Install
+
+    go get bitbucket.org/tebeka/go2xunit
 
 
-Usage
-=====
+# Usage
 By default `go2xunit` reads data from standard input and emits XML to standard
 output. However you can use `-input` and `-output` flags to change this.
 
 The `-fail` switch will cause `go2xunit` to exit with non zero status if there
 are failed tests.
 
-::
-
     go test -v | go2xunit -output tests.xml
 
-Here's an example script (`run-tests.sh`) that can be used with Jenkins_/Hudson_.
+Here's an example script (`run-tests.sh`) that can be used with [Jenkins][jenkins]/[Hudson][hudson].
 
-::
-    
     #!/bin/bash
 
     outfile=gotest.out
@@ -35,15 +28,15 @@ Here's an example script (`run-tests.sh`) that can be used with Jenkins_/Hudson_
     go2xunit -fail -input $outfile -output tests.xml
 
 
-.. _Jenkins: http://jenkins-ci.org/
-.. _Hudson: http://hudson-ci.org/
+[jenkins]: http://jenkins-ci.org/
+[hudson]: http://hudson-ci.org/
 
 Contact
 =======
 Miki Tebeka <miki.tebeka@gmail.com>
 
-Bug reports go here_.
+Bug reports go [here][bugs].
 
-.. _here: https://bitbucket.org/tebeka/go2xunit/issues?status=new&status=open
+[bugs]: https://bitbucket.org/tebeka/go2xunit/issues
 
 
