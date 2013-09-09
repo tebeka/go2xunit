@@ -3,5 +3,5 @@
 
 outfile=gotest.out
 
-go test -v | tee $outfile
-go2xunit -fail -input $outfile -output tests.xml
+go test -gocheck.vv | tee $outfile
+go2xunit -gocheck -fail -input $outfile -output tests.xml
