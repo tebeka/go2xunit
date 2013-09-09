@@ -1,37 +1,39 @@
 package mmath
 
 import (
+	. "launchpad.net/gocheck"
 	"testing"
 )
 
-func TestAdd(t *testing.T) {
+type MySuite struct{}
+var _ = Suite(&MySuite{})
+
+// Hook up gocheck into the "go test" runner.
+func Test(t *testing.T) {
+	TestingT(t)
+}
+
+func (s *MySuite) TestAdd(c *C) {
 	x, y := 1, 2
 	z := Add(x, y)
-	if z != x+y {
-		t.Fatalf("%d + %d != %d\n", x, y, x+y)
-	}
+	c.Assert(z, Equals, x+y)
 }
 
-func TestSub(t *testing.T) {
+func (s *MySuite) TestSub(c *C) {
 	x, y := 1, 2
 	z := Sub(x, y)
-	if z != x-y {
-		t.Fatalf("%d-%d != %d\n", x, y, x-y)
-	}
+
+	c.Assert(z, Equals, x-y)
 }
 
-func TestMul(t *testing.T) {
+func (s *MySuite) TestMul(c *C) {
 	x, y := 2, 3
 	z := Mul(x, y)
-	if z != x*y {
-		t.Fatalf("%d*%d != %d\n", x, y, x*y)
-	}
+	c.Assert(z, Equals, x*y)
 }
 
-func TestDiv(t *testing.T) {
+func (s *MySuite) TestDiv(c *C) {
 	x, y := 2, 3
 	z := Div(x, y)
-	if float64(z) != float64(x)/float64(y) {
-		t.Fatalf("%d/%d != %f\n", x, y, float64(x)/float64(y))
-	}
+	c.Assert(z, Equals, float64(x)/float64(y))
 }
