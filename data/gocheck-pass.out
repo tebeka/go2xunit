@@ -1,0 +1,11 @@
+START: mmath_test.go:16: MySuite.TestAdd
+PASS: mmath_test.go:16: MySuite.TestAdd	0.000s
+
+START: mmath_test.go:29: MySuite.TestMul
+PASS: mmath_test.go:29: MySuite.TestMul	0.000s
+
+START: mmath_test.go:22: MySuite.TestSub
+PASS: mmath_test.go:22: MySuite.TestSub	0.000s
+
+PASS
+ok  	go2xunit/demo-gocheck	0.008s

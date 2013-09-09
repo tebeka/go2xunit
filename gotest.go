@@ -1,3 +1,4 @@
+// Parse "gotest -v" output
 package main
 
 import (
@@ -8,19 +9,13 @@ import (
 	"strings"
 )
 
-const (
-	startPrefix = "=== RUN "
-	passPrefix  = "--- PASS: "
-	failPrefix  = "--- FAIL: "
-)
-
-// "end of test" regexp for name and time, examples:
-// --- PASS: TestSub (0.00 seconds)
-// --- FAIL: TestSubFail (0.00 seconds)
-var endRegexp *regexp.Regexp = regexp.MustCompile(`([^ ]+) \((\d+\.\d+)`)
-
 // parseEnd parses "end of test" line and returns (name, time, error)
 func parseEnd(prefix, line string) (string, string, error) {
+	// "end of test" regexp for name and time, examples:
+	// --- PASS: TestSub (0.00 seconds)
+	// --- FAIL: TestSubFail (0.00 seconds)
+	var endRegexp *regexp.Regexp = regexp.MustCompile(`([^ ]+) \((\d+\.\d+)`)
+
 	matches := endRegexp.FindStringSubmatch(line[len(prefix):])
 
 	if len(matches) == 0 {
@@ -30,13 +25,14 @@ func parseEnd(prefix, line string) (string, string, error) {
 	return matches[1], matches[2], nil
 }
 
-// "end of tested file" regexp for parsing package & file name
-// ok  	teky/cointreau/gs1/deliver	0.015s
-// FAIL	teky/cointreau/gs1/deliver	0.010s
-var endTestRegexp *regexp.Regexp = regexp.MustCompile(`^(ok  |FAIL)\t([^ ]+)\t(\d+\.\d+)s$`)
 
 // parseEndTest parses "end of test file" line and returns (status, name, time, error)
 func parseEndTest(line string) (string, string, string, error) {
+	// "end of tested file" regexp for parsing package & file name
+	// ok  	teky/cointreau/gs1/deliver	0.015s
+	// FAIL	teky/cointreau/gs1/deliver	0.010s
+	var endTestRegexp *regexp.Regexp = regexp.MustCompile(`^(ok  |FAIL)\t([^ ]+)\t(\d+\.\d+)s$`)
+
 	matches := endTestRegexp.FindStringSubmatch(line)
 
 	if len(matches) == 0 {
@@ -47,7 +43,13 @@ func parseEndTest(line string) (string, string, string, error) {
 }
 
 // parseOutput parses output of "go test -v", returns a list of tests
+// See data/gotest.out for an example
 func parseGotestOutput(rd io.Reader) ([]*Suite, error) {
+
+	startPrefix := "=== RUN "
+	passPrefix := "--- PASS: "
+	failPrefix := "--- FAIL: "
+
 	suites := []*Suite{}
 	var test *Test = nil
 	var suite *Suite = nil
@@ -65,7 +67,7 @@ func parseGotestOutput(rd io.Reader) ([]*Suite, error) {
 		test = nil
 	}
 	nextSuite := func() {
-		// We are switching to the next test, store the current one.
+		// We are switching to the next suite, store the current one.
 		if suite == nil {
 			return
 		}

@@ -122,6 +122,7 @@ func main() {
 	fail := flag.Bool("fail", false, "fail (non zero exit) if any test failed")
 	showVersion := flag.Bool("version", false, "print version and exit")
 	bamboo := flag.Bool("bamboo", false, "xml compatible with Atlassian's Bamboo")
+	gocheck := flag.Bool("gocheck", false, "parse gocheck output")
 	flag.Parse()
 
 	if *showVersion {
@@ -143,7 +144,11 @@ func main() {
 
 	var parse func (rd io.Reader) ([]*Suite, error)
 
-	parse = parseGotestOutput
+	if *gocheck {
+		parse = parseGocheckOutput
+	} else {
+		parse = parseGotestOutput
+	}
 
 	suites, err := parse(input)
 	if err != nil {
