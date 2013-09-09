@@ -1,5 +1,4 @@
-Demo Project for Using go2xunit
-===============================
+# Demo Project for Using go2xunit
 
 Install `go2xunit` with `go get bitbucket.org/tebeka/go2xunit`
 
@@ -11,18 +10,15 @@ Then configure Jenkins like the configuration screen below, note the
 You after running, you should see test results like the below.
 
 
-Configuration Screen
---------------------
+## Configuration Screen
 
-.. image:: screenshots/config.png
+![Configuration Screen](screenshots/config.png)
 
-Test Results - Overview
------------------------
+## Test Results - Overview
 
-.. image:: screenshots/build-overrview.png
+![Tests Overview](screenshots/build-overrview.png)
 
-Test Results - Detailed
------------------------
+## Test Results - Detailed
 
-.. image:: screenshots/build-tests.png
+![Tests Detailed](screenshots/build-tests.png)
 
