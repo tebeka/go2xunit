@@ -27,7 +27,7 @@ func loadTests(filename string, t *testing.T) []*Suite {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	suites, err := parseGotestOutput(file)
+	suites, err := gotest_Parse(file)
 	if err != nil {
 		t.Fatalf("error parsing - %s", err)
 	}
