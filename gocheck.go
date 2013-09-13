@@ -9,8 +9,10 @@ import (
 	"strings"
 )
 
-// parseEnd parses "end of test" line and returns (name, time, error)
-func parseEnd(prefix, line string) (string, string, error) {
+// Since mucking with local package is a PITA, just prefix everything with gocheck_
+
+// gocheck_parseEnd parses "end of test" line and returns (name, time, error)
+func gocheck_parseEnd(prefix, line string) (string, string, error) {
 	// "end of test" regexp for name and time, examples:
 	// PASS: mmath_test.go:16: MySuite.TestAdd	0.000s
 	// FAIL: mmath_test.go:35: MySuite.TestDiv
@@ -26,9 +28,9 @@ func parseEnd(prefix, line string) (string, string, error) {
 	return matches[1], matches[2], nil
 }
 
-// parseOutput parses output of "go test -gocheck.vv", returns a list of tests
+// gocheck_Parse parses output of "go test -gocheck.vv", returns a list of tests
 // See data/gocheck.out for an example
-func parseGocheckOutput(rd io.Reader) ([]*Suite, error) {
+func gocheck_Parse(rd io.Reader) ([]*Suite, error) {
 	startPrefix := "START: "
 	passPrefix := "PASS: "
 	failPrefix := "FAIL: "
