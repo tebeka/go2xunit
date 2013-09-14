@@ -7,46 +7,24 @@ import (
 	"log"
 	"os"
 	"text/template"
+
+	"bitbucket.org/tebeka/go2xunit/types"
+	"bitbucket.org/tebeka/go2xunit/gocheck"
+	"bitbucket.org/tebeka/go2xunit/gotest"
 )
 
 const (
 	version = "0.2.1"
 )
 
-type Test struct {
-	Name, Time, Message string
-	Failed              bool
-}
-
-type Suite struct {
-	Name   string
-	Time   string
-	Status string
-	Tests  []*Test
-}
-
-func (suite *Suite) NumFailed() int {
-	count := 0
-	for _, test := range suite.Tests {
-		if test.Failed {
-			count++
-		}
-	}
-
-	return count
-}
-
-func (suite *Suite) Count() int {
-	return len(suite.Tests)
-}
 
 type TestResults struct {
-	Suites []*Suite
+	Suites []*types.Suite
 	Bamboo bool
 }
 
 
-func hasFailures(suites []*Suite) bool {
+func hasFailures(suites []*types.Suite) bool {
 	for _, suite := range suites {
 		if suite.NumFailed() > 0 {
 			return true
@@ -67,7 +45,7 @@ var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
 `
 
 // writeXML exits xunit XML of tests to out
-func writeXML(suites []*Suite, out io.Writer, bamboo bool) {
+func writeXML(suites []*types.Suite, out io.Writer, bamboo bool) {
 	testsResult := TestResults{Suites: suites, Bamboo: bamboo}
 	t := template.New("test template")
 	t, err := t.Parse(xmlTemplate)
@@ -123,7 +101,7 @@ func main() {
 	fail := flag.Bool("fail", false, "fail (non zero exit) if any test failed")
 	showVersion := flag.Bool("version", false, "print version and exit")
 	bamboo := flag.Bool("bamboo", false, "xml compatible with Atlassian's Bamboo")
-	gocheck := flag.Bool("gocheck", false, "parse gocheck output")
+	is_gocheck := flag.Bool("gocheck", false, "parse gocheck output")
 	flag.Parse()
 
 	if *showVersion {
@@ -143,12 +121,12 @@ func main() {
 		log.Fatalf("error: %s", err)
 	}
 
-	var parse func(rd io.Reader) ([]*Suite, error)
+	var parse func(rd io.Reader) ([]*types.Suite, error)
 
-	if *gocheck {
-		parse = gc_Parse
+	if *is_gocheck {
+		parse = gocheck.Parse
 	} else {
-		parse = gt_Parse
+		parse = gotest.Parse
 	}
 
 	suites, err := parse(input)

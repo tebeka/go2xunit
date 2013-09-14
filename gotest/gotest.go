@@ -1,5 +1,5 @@
 // Parse "gotest -v" output
-package main
+package gotest
 
 import (
 	"bufio"
@@ -7,30 +7,32 @@ import (
 	"io"
 	"regexp"
 	"strings"
+
+	"bitbucket.org/tebeka/go2xunit/types"
 )
 
 const (
 	// === RUN TestAdd
-	gt_startRE = "^=== RUN ([a-zA-Z_][[:word:]]*)"
+	startRE = "^=== RUN ([a-zA-Z_][[:word:]]*)"
 
 	// --- PASS: TestSub (0.00 seconds)
 	// --- FAIL: TestSubFail (0.00 seconds)
-	gt_endRE = "^--- (PASS|FAIL): ([a-zA-Z_][[:word:]]*) \\((\\d+.\\d+)"
+	endRE = "^--- (PASS|FAIL): ([a-zA-Z_][[:word:]]*) \\((\\d+.\\d+)"
 
 	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
 	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
-	gt_suiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
+	suiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
 )
 
-func gt_Parse(rd io.Reader) ([]*Suite, error) {
-	find_start := regexp.MustCompile(gt_startRE).FindStringSubmatch
-	find_end := regexp.MustCompile(gt_endRE).FindStringSubmatch
-	find_suite := regexp.MustCompile(gt_suiteRE).FindStringSubmatch
+func Parse(rd io.Reader) ([]*types.Suite, error) {
+	find_start := regexp.MustCompile(startRE).FindStringSubmatch
+	find_end := regexp.MustCompile(endRE).FindStringSubmatch
+	find_suite := regexp.MustCompile(suiteRE).FindStringSubmatch
 	is_exit := regexp.MustCompile("^exit status -?\\d+").MatchString
 
-	suites := []*Suite{}
-	var curTest *Test
-	var curSuite *Suite
+	suites := []*types.Suite{}
+	var curTest *types.Test
+	var curSuite *types.Suite
 	var out []string
 
 	scanner := bufio.NewScanner(rd)
@@ -42,7 +44,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			if curTest != nil {
 				return nil, fmt.Errorf("%d: test in middle of other", lnum)
 			}
-			curTest = &Test{
+			curTest = &types.Test{
 				Name: tokens[1],
 			}
 			if len(out) > 0 {
@@ -69,7 +71,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			curTest.Time = tokens[3]
 			curTest.Message = strings.Join(out, "\n")
 			if curSuite == nil {
-				curSuite = &Suite{}
+				curSuite = &types.Suite{}
 			}
 			curSuite.Tests = append(curSuite.Tests, curTest)
 			curTest = nil
