@@ -39,7 +39,7 @@ func loadTests(filename string, t *testing.T) []*Suite {
 }
 
 func Test_parseOutput(t *testing.T) {
-	suites := loadTests("gotest.out", t)
+	suites := loadTests("data/gotest.out", t)
 	if len(suites) != 2 {
 		t.Fatalf("got %d suites instead of 2", len(suites))
 	}
