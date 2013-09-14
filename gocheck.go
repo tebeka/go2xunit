@@ -54,35 +54,37 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 			suiteName = tokens[1]
 			test = &Test{Name: tokens[2]}
 			out = []string{}
-		} else {
-			tokens := find_end(line)
-			if len(tokens) > 0 {
-				if test == nil {
-					return nil, fmt.Errorf("%d: orphan end", lnum)
-				}
-				if (tokens[2] != suiteName) || (tokens[3] != test.Name) {
-					return nil, fmt.Errorf("%d: suite/name mismatch", lnum)
-				}
-				test.Message = strings.Join(out, "\n")
-				test.Time = tokens[4]
-				test.Failed = (tokens[1] == "FAIL")
+			continue
+		}
 
-				suite, ok := suites[suiteName]
-				if !ok {
-					suite = &Suite{Name:suiteName}
-				}
-				suite.Tests = append(suite.Tests, test)
-				suites[suiteName] = suite
-
-				test = nil
-				suiteName = ""
-				out = []string{}
-
-			} else { // No start or end
-				if test != nil {
-					out = append(out, line)
-				}
+		tokens = find_end(line)
+		if len(tokens) > 0 {
+			if test == nil {
+				return nil, fmt.Errorf("%d: orphan end", lnum)
 			}
+			if (tokens[2] != suiteName) || (tokens[3] != test.Name) {
+				return nil, fmt.Errorf("%d: suite/name mismatch", lnum)
+			}
+			test.Message = strings.Join(out, "\n")
+			test.Time = tokens[4]
+			test.Failed = (tokens[1] == "FAIL")
+
+			suite, ok := suites[suiteName]
+			if !ok {
+				suite = &Suite{Name:suiteName}
+			}
+			suite.Tests = append(suite.Tests, test)
+			suites[suiteName] = suite
+
+			test = nil
+			suiteName = ""
+			out = []string{}
+
+			continue
+		}
+
+		if test != nil {
+			out = append(out, line)
 		}
 	}
 
