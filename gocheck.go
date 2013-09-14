@@ -22,8 +22,6 @@ const (
 func gc_map2arr(m map[string]*Suite) []*Suite {
 	arr := make([]*Suite, 0, len(m))
 	for _, suite := range(m) {
-		suite.Count = len(suite.Tests)
-		suite.Failed = numFailures(suite.Tests)
 		/* FIXME:
 		suite.Status =
 		suite.Time =
