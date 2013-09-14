@@ -24,22 +24,22 @@ func Test_NumFailed(t *testing.T) {
 	}
 }
 
-func loadTests(filename string, t *testing.T) []*Suite {
+func loadTests(filename string, t *testing.T) ([]*Suite, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	suites, err := gt_Parse(file)
-	if err != nil {
-		t.Fatalf("error parsing - %s", err)
-	}
-
-	return suites
+	return gt_Parse(file)
 }
 
 func Test_parseOutput(t *testing.T) {
-	suites := loadTests("data/gotest.out", t)
+	filename := "data/gotest.out"
+	suites, err := loadTests(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+
 	if len(suites) != 2 {
 		t.Fatalf("got %d suites instead of 2", len(suites))
 	}
@@ -98,8 +98,8 @@ func Test_parseOutput(t *testing.T) {
 }
 
 func Test_parseOutputBad(t *testing.T) {
-	suites := loadTests("go2xunit.go", t)
-	if len(suites) != 0 {
+	_, err := loadTests("go2xunit.go", t)
+	if err == nil {
 		t.Fatalf("managed to find suites in junk")
 	}
 }
