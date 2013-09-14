@@ -1,4 +1,4 @@
-# go2xunit 0.1.3
+# go2xunit 0.2.0
 
 Converts `go test -v` output to xunit compatible XML output (used in
 [Jenkins][jenkins]/[Hudson][hudson]).
