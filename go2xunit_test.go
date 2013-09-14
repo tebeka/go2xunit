@@ -5,18 +5,21 @@ import (
 	"testing"
 )
 
-func Test_numFailuers(t *testing.T) {
-	tests := []*Test{}
-	if numFailures(tests) != 0 {
+func Test_NumFailed(t *testing.T) {
+	suite := &Suite{
+		Tests: []*Test{},
+	}
+	if suite.NumFailed() != 0 {
 		t.Fatal("found more than 1 failure in empty list")
 	}
 
-	tests = []*Test{
+	suite.Tests = []*Test{
 		&Test{Failed: false},
 		&Test{Failed: true},
 		&Test{Failed: false},
 	}
-	if numFailures(tests) != 1 {
+
+	if suite.NumFailed() != 1 {
 		t.Fatal("can't count")
 	}
 }
@@ -47,13 +50,14 @@ func Test_parseOutput(t *testing.T) {
 		t.Fatalf("bad Suite name %s, expected _/home/miki/Projects/goroot/src/anotherTest", suites[1].Name)
 	}
 
-	tests := suites[0].Tests
+	suite := suites[0]
+	tests := suite.Tests
 	if len(tests) != 4 {
 		t.Fatalf("got %d tests instead of 4", len(tests))
 	}
 
-	if numFailures(tests) != 1 {
-		t.Fatalf("wrong number of failed %d, should be 1", numFailures(tests))
+	if suite.NumFailed() != 1 {
+		t.Fatalf("wrong number of failed %d, should be 1", suite.NumFailed())
 	}
 
 	test := tests[0]
@@ -68,13 +72,15 @@ func Test_parseOutput(t *testing.T) {
 	if len(test.Message) != 0 {
 		t.Fatalf("bad message (should be empty): %s", test.Message)
 	}
-	tests = suites[1].Tests
+
+	suite = suites[1]
+	tests = suite.Tests
 	if len(tests) != 1 {
 		t.Fatalf("got %d tests instead of 1", len(tests))
 	}
 
-	if numFailures(tests) != 0 {
-		t.Fatalf("wrong number of failed %d, should be 0", numFailures(tests))
+	if suite.NumFailed() != 0 {
+		t.Fatalf("wrong number of failed %d, should be 0", suite.NumFailed())
 	}
 
 	test = tests[0]
@@ -127,7 +133,7 @@ func Test_parseGocheckPass(t *testing.T) {
 		t.Fatalf("bad suite name %s != %s", suite.Name, name)
 	}
 
-	if suite.Failed > 0 {
+	if suite.NumFailed() > 0 {
 		t.Fatalf("suite failed, should have passed")
 	}
 }
@@ -162,7 +168,7 @@ func Test_parseGocheckFail(t *testing.T) {
 	}
 
 	nfailed := 1
-	if suite.Failed != nfailed {
-		t.Fatalf("num failed differ %d != %d", suite.Failed, nfailed)
+	if suite.NumFailed() != nfailed {
+		t.Fatalf("num failed differ %d != %d", suite.NumFailed(), nfailed)
 	}
 }

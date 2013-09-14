@@ -138,8 +138,6 @@ func gt_Parse (rd io.Reader) ([]*Suite, error) {
 				return nil, err
 			}
 			suite.Name = name
-			suite.Count = len(suite.Tests)
-			suite.Failed = numFailures(suite.Tests)
 			suite.Time = time
 			suite.Status = status
 			nextSuite()

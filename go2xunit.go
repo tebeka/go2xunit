@@ -20,23 +20,14 @@ type Test struct {
 
 type Suite struct {
 	Name   string
-	Count  int
-	Failed int
 	Time   string
 	Status string
 	Tests  []*Test
 }
 
-type TestResults struct {
-	Suites []*Suite
-	Bamboo bool
-}
-
-
-// numFailures count how man tests failed
-func numFailures(tests []*Test) int {
+func (suite *Suite) NumFailed() int {
 	count := 0
-	for _, test := range tests {
+	for _, test := range suite.Tests {
 		if test.Failed {
 			count++
 		}
@@ -45,9 +36,19 @@ func numFailures(tests []*Test) int {
 	return count
 }
 
+func (suite *Suite) Count() int {
+	return len(suite.Tests)
+}
+
+type TestResults struct {
+	Suites []*Suite
+	Bamboo bool
+}
+
+
 func hasFailures(suites []*Suite) bool {
 	for _, suite := range suites {
-		if numFailures(suite.Tests) > 0 {
+		if suite.NumFailed() > 0 {
 			return true
 		}
 	}
@@ -56,7 +57,7 @@ func hasFailures(suites []*Suite) bool {
 
 var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
 {{if .Bamboo}}<testsuites>{{end}}
-{{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Count}}" errors="0" failures="{{.Failed}}" skip="0">
+{{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Count}}" errors="0" failures="{{.NumFailed}}" skip="0">
 {{range  $test := $suite.Tests}}    <testcase classname="{{$suite.Name}}" name="{{$test.Name}}" time="{{$test.Time}}">
 {{if $test.Failed }}      <failure type="go.error" message="error">
         <![CDATA[{{$test.Message}}]]>
@@ -142,7 +143,7 @@ func main() {
 		log.Fatalf("error: %s", err)
 	}
 
-	var parse func (rd io.Reader) ([]*Suite, error)
+	var parse func(rd io.Reader) ([]*Suite, error)
 
 	if *gocheck {
 		parse = gc_Parse
