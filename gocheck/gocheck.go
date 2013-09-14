@@ -1,5 +1,5 @@
 // Parse "gocheck -vv" output
-package main
+package gocheck
 
 import (
 	"bufio"
@@ -7,21 +7,21 @@ import (
 	"io"
 	"regexp"
 	"strings"
-)
 
-// Since mucking with local package is a PITA, just prefix everything with gc_
+	"bitbucket.org/tebeka/go2xunit/types"
+)
 
 const (
 	// START: mmath_test.go:16: MySuite.TestAdd
-	gc_startRE = "START: [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)"
+	startRE = "START: [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)"
 	// PASS: mmath_test.go:16: MySuite.TestAdd	0.000s
 	// FAIL: mmath_test.go:35: MySuite.TestDiv
-	gc_endRE = "(PASS|FAIL): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)([[:space:]]+([0-9]+.[0-9]+))?"
+	endRE = "(PASS|FAIL): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)([[:space:]]+([0-9]+.[0-9]+))?"
 )
 
-func gc_map2arr(m map[string]*Suite) []*Suite {
-	arr := make([]*Suite, 0, len(m))
-	for _, suite := range(m) {
+func map2arr(m map[string]*types.Suite) []*types.Suite {
+	arr := make([]*types.Suite, 0, len(m))
+	for _, suite := range m {
 		/* FIXME:
 		suite.Status =
 		suite.Time =
@@ -32,15 +32,15 @@ func gc_map2arr(m map[string]*Suite) []*Suite {
 	return arr
 }
 
-// gc_Parse parses output of "go test -gocheck.vv", returns a list of tests
+// Parse parses output of "go test -gocheck.vv", returns a list of tests
 // See data/gocheck.out for an example
-func gc_Parse(rd io.Reader) ([]*Suite, error) {
-	find_start := regexp.MustCompile(gc_startRE).FindStringSubmatch
-	find_end := regexp.MustCompile(gc_endRE).FindStringSubmatch
+func Parse(rd io.Reader) ([]*types.Suite, error) {
+	find_start := regexp.MustCompile(startRE).FindStringSubmatch
+	find_end := regexp.MustCompile(endRE).FindStringSubmatch
 
 	scanner := bufio.NewScanner(rd)
-	var test *Test
-	var suites = make(map[string]*Suite)
+	var test *types.Test
+	var suites = make(map[string]*types.Suite)
 	var suiteName string
 	var out []string
 
@@ -52,7 +52,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 				return nil, fmt.Errorf("%d: start in middle\n", lnum)
 			}
 			suiteName = tokens[1]
-			test = &Test{Name: tokens[2]}
+			test = &types.Test{Name: tokens[2]}
 			out = []string{}
 			continue
 		}
@@ -71,7 +71,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 
 			suite, ok := suites[suiteName]
 			if !ok {
-				suite = &Suite{Name:suiteName}
+				suite = &types.Suite{Name: suiteName}
 			}
 			suite.Tests = append(suite.Tests, test)
 			suites[suiteName] = suite
@@ -92,5 +92,5 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 		return nil, err
 	}
 
-	return gc_map2arr(suites), nil
+	return map2arr(suites), nil
 }
