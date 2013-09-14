@@ -27,7 +27,7 @@ func loadTests(filename string, t *testing.T) []*Suite {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	suites, err := parseOutput(file)
+	suites, err := gt_Parse(file)
 	if err != nil {
 		t.Fatalf("error parsing - %s", err)
 	}
@@ -95,5 +95,74 @@ func Test_parseOutputBad(t *testing.T) {
 	suites := loadTests("go2xunit.go", t)
 	if len(suites) != 0 {
 		t.Fatalf("managed to find suites in junk")
+	}
+}
+
+func Test_parseGocheckPass(t *testing.T) {
+	filename := "data/gocheck-pass.out"
+	file, err := os.Open(filename)
+	if err != nil {
+		t.Fatalf("can't open %s - %s", filename, err)
+	}
+
+	suites, err := gc_Parse(file)
+
+	if err != nil {
+		t.Fatalf("can't parse %s - %s", filename, err)
+	}
+
+	nsuites := 1
+	if len(suites) != nsuites {
+		t.Fatalf("bad number of suites %d != %d", len(suites), nsuites)
+	}
+
+	suite := suites[0]
+	ntests := 3
+	if len(suite.Tests) != ntests {
+		t.Fatalf("bad number of tests %d != %d", len(suite.Tests), ntests)
+	}
+
+	name := "MySuite"
+	if suite.Name != name {
+		t.Fatalf("bad suite name %s != %s", suite.Name, name)
+	}
+
+	if suite.Failed > 0 {
+		t.Fatalf("suite failed, should have passed")
+	}
+}
+
+func Test_parseGocheckFail(t *testing.T) {
+	filename := "data/gocheck-fail.out"
+	file, err := os.Open(filename)
+	if err != nil {
+		t.Fatalf("can't open %s - %s", filename, err)
+	}
+
+	suites, err := gc_Parse(file)
+
+	if err != nil {
+		t.Fatalf("can't parse %s - %s", filename, err)
+	}
+
+	nsuites := 2
+	if len(suites) != nsuites {
+		t.Fatalf("bad number of suites %d != %d", len(suites), nsuites)
+	}
+
+	suite := suites[1]
+	ntests := 3
+	if len(suite.Tests) != ntests {
+		t.Fatalf("bad number of tests %d != %d", len(suite.Tests), ntests)
+	}
+
+	name := "MySuite"
+	if suite.Name != name {
+		t.Fatalf("bad suite name %s != %s", suite.Name, name)
+	}
+
+	nfailed := 1
+	if suite.Failed != nfailed {
+		t.Fatalf("num failed differ %d != %d", suite.Failed, nfailed)
 	}
 }

@@ -1,0 +1,8 @@
+=== RUN TestAdd
+--- PASS: TestAdd (0.00 seconds)
+=== RUN TestSub
+--- PASS: TestSub (0.00 seconds)
+=== RUN TestMul
+--- PASS: TestMul (0.00 seconds)
+PASS
+ok  	go2xunit/demo	0.006s
