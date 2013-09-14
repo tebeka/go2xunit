@@ -3,20 +3,24 @@ package main
 import (
 	"os"
 	"testing"
+
+	"bitbucket.org/tebeka/go2xunit/types"
+	"bitbucket.org/tebeka/go2xunit/gocheck"
+	"bitbucket.org/tebeka/go2xunit/gotest"
 )
 
 func Test_NumFailed(t *testing.T) {
-	suite := &Suite{
-		Tests: []*Test{},
+	suite := &types.Suite{
+		Tests: []*types.Test{},
 	}
 	if suite.NumFailed() != 0 {
 		t.Fatal("found more than 1 failure in empty list")
 	}
 
-	suite.Tests = []*Test{
-		&Test{Failed: false},
-		&Test{Failed: true},
-		&Test{Failed: false},
+	suite.Tests = []*types.Test{
+		&types.Test{Failed: false},
+		&types.Test{Failed: true},
+		&types.Test{Failed: false},
 	}
 
 	if suite.NumFailed() != 1 {
@@ -24,13 +28,13 @@ func Test_NumFailed(t *testing.T) {
 	}
 }
 
-func loadTests(filename string, t *testing.T) ([]*Suite, error) {
+func loadTests(filename string, t *testing.T) ([]*types.Suite, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	return gt_Parse(file)
+	return gotest.Parse(file)
 }
 
 func Test_parseOutput(t *testing.T) {
@@ -111,7 +115,7 @@ func Test_parseGocheckPass(t *testing.T) {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	suites, err := gc_Parse(file)
+	suites, err := gocheck.Parse(file)
 
 	if err != nil {
 		t.Fatalf("can't parse %s - %s", filename, err)
@@ -145,7 +149,7 @@ func Test_parseGocheckFail(t *testing.T) {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	suites, err := gc_Parse(file)
+	suites, err := gocheck.Parse(file)
 
 	if err != nil {
 		t.Fatalf("can't parse %s - %s", filename, err)
