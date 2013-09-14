@@ -9,10 +9,10 @@ import (
 	"strings"
 )
 
-// Since mucking with local package is a PITA, just prefix everything with gotest_
+// Since mucking with local package is a PITA, just prefix everything with gt_
 
 // parseEnd parses "end of test" line and returns (name, time, error)
-func gotest_parseEnd(prefix, line string) (string, string, error) {
+func gt_parseEnd(prefix, line string) (string, string, error) {
 	// "end of test" regexp for name and time, examples:
 	// --- PASS: TestSub (0.00 seconds)
 	// --- FAIL: TestSubFail (0.00 seconds)
@@ -28,8 +28,8 @@ func gotest_parseEnd(prefix, line string) (string, string, error) {
 }
 
 
-// gotest_parseEndTest parses "end of test file" line and returns (status, name, time, error)
-func gotest_parseEndTest(line string) (string, string, string, error) {
+// gt_parseEndTest parses "end of test file" line and returns (status, name, time, error)
+func gt_parseEndTest(line string) (string, string, string, error) {
 	// "end of tested file" regexp for parsing package & file name
 	// ok  	teky/cointreau/gs1/deliver	0.015s
 	// FAIL	teky/cointreau/gs1/deliver	0.010s
@@ -44,9 +44,9 @@ func gotest_parseEndTest(line string) (string, string, string, error) {
 	return matches[1], matches[2], matches[3], nil
 }
 
-// gotest_Parse parses output of "go test -v", returns a list of tests
+// gt_Parse parses output of "go test -v", returns a list of tests
 // See data/gotest.out for an example
-func gotest_Parse (rd io.Reader) ([]*Suite, error) {
+func gt_Parse (rd io.Reader) ([]*Suite, error) {
 
 	startPrefix := "=== RUN "
 	passPrefix := "--- PASS: "
@@ -103,7 +103,7 @@ func gotest_Parse (rd io.Reader) ([]*Suite, error) {
 			nextTest()
 
 			// Extract the test name and the duration:
-			name, time, err := gotest_parseEnd(failPrefix, line)
+			name, time, err := gt_parseEnd(failPrefix, line)
 			if err != nil {
 				return nil, err
 			}
@@ -117,7 +117,7 @@ func gotest_Parse (rd io.Reader) ([]*Suite, error) {
 		case strings.HasPrefix(line, passPrefix):
 			nextTest()
 			// Extract the test name and the duration:
-			name, time, err := gotest_parseEnd(passPrefix, line)
+			name, time, err := gt_parseEnd(passPrefix, line)
 			if err != nil {
 				return nil, err
 			}
@@ -133,7 +133,7 @@ func gotest_Parse (rd io.Reader) ([]*Suite, error) {
 
 		case strings.HasPrefix(line, "ok  \t") || strings.HasPrefix(line, "FAIL\t"):
 			// End of suite, read data
-			status, name, time, err := gotest_parseEndTest(line)
+			status, name, time, err := gt_parseEndTest(line)
 			if err != nil {
 				return nil, err
 			}
