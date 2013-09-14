@@ -145,9 +145,9 @@ func main() {
 	var parse func (rd io.Reader) ([]*Suite, error)
 
 	if *gocheck {
-		parse = gocheck_Parse
+		parse = gc_Parse
 	} else {
-		parse = gotest_Parse
+		parse = gt_Parse
 	}
 
 	suites, err := parse(input)
