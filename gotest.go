@@ -9,145 +9,100 @@ import (
 	"strings"
 )
 
-// Since mucking with local package is a PITA, just prefix everything with gt_
+const (
+	// === RUN TestAdd
+	gt_startRE = "^=== RUN ([a-zA-Z_][[:word:]]*)"
 
-// parseEnd parses "end of test" line and returns (name, time, error)
-func gt_parseEnd(prefix, line string) (string, string, error) {
-	// "end of test" regexp for name and time, examples:
 	// --- PASS: TestSub (0.00 seconds)
 	// --- FAIL: TestSubFail (0.00 seconds)
-	var endRegexp *regexp.Regexp = regexp.MustCompile(`([^ ]+) \((\d+\.\d+)`)
+	gt_endRE = "^--- (PASS|FAIL): ([a-zA-Z_][[:word:]]*) \\((\\d+.\\d+)"
 
-	matches := endRegexp.FindStringSubmatch(line[len(prefix):])
+	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
+	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
+	gt_suiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
+)
 
-	if len(matches) == 0 {
-		return "", "", fmt.Errorf("can't parse %s", line)
-	}
-
-	return matches[1], matches[2], nil
-}
-
-
-// gt_parseEndTest parses "end of test file" line and returns (status, name, time, error)
-func gt_parseEndTest(line string) (string, string, string, error) {
-	// "end of tested file" regexp for parsing package & file name
-	// ok  	teky/cointreau/gs1/deliver	0.015s
-	// FAIL	teky/cointreau/gs1/deliver	0.010s
-	var endTestRegexp *regexp.Regexp = regexp.MustCompile(`^(ok  |FAIL)\t([^ ]+)\t(\d+\.\d+)s$`)
-
-	matches := endTestRegexp.FindStringSubmatch(line)
-
-	if len(matches) == 0 {
-		return "", "", "", fmt.Errorf("can't parse %s", line)
-	}
-
-	return matches[1], matches[2], matches[3], nil
-}
-
-// gt_Parse parses output of "go test -v", returns a list of tests
-// See data/gotest.out for an example
-func gt_Parse (rd io.Reader) ([]*Suite, error) {
-
-	startPrefix := "=== RUN "
-	passPrefix := "--- PASS: "
-	failPrefix := "--- FAIL: "
+func gt_Parse(rd io.Reader) ([]*Suite, error) {
+	find_start := regexp.MustCompile(gt_startRE).FindStringSubmatch
+	find_end := regexp.MustCompile(gt_endRE).FindStringSubmatch
+	find_suite := regexp.MustCompile(gt_suiteRE).FindStringSubmatch
+	is_exit := regexp.MustCompile("^exit status -?\\d+").MatchString
 
 	suites := []*Suite{}
-	var test *Test = nil
-	var suite *Suite = nil
+	var curTest *Test
+	var curSuite *Suite
+	var out []string
 
-	nextTest := func() {
-		// We are switching to the next test, store the current one.
-		if suite == nil {
-			suite = &Suite{}
-			suite.Tests = make([]*Test, 0, 1)
-		}
-		if test == nil {
-			return
-		}
-		suite.Tests = append(suite.Tests, test)
-		test = nil
-	}
-	nextSuite := func() {
-		// We are switching to the next suite, store the current one.
-		if suite == nil {
-			return
-		}
+	scanner := bufio.NewScanner(rd)
+	for lnum := 1; scanner.Scan(); lnum++ {
+		line := scanner.Text()
 
-		suites = append(suites, suite)
-		suite = nil
-	}
-
-	reader := bufio.NewReader(rd)
-	for {
-		buf, _, err := reader.ReadLine()
-
-		switch err {
-		case io.EOF:
-			if suite != nil || test != nil {
-				// if suite or test in progress EOF is an unexpected EOF
-				return nil, fmt.Errorf("Unexpected EOF")
+		tokens := find_start(line)
+		if tokens != nil {
+			if curTest != nil {
+				return nil, fmt.Errorf("%d: test in middle of other", lnum)
 			}
-			return suites, nil
-		case nil:
-			// nil is OK
-
-		default: // Error other than io.EOF
-			return nil, err
+			curTest = &Test{
+				Name: tokens[1],
+			}
+			if len(out) > 0 {
+				message := strings.Join(out, "\n")
+				if (curSuite == nil) {
+					return nil, fmt.Errorf("orphan output: %s", message)
+				}
+				curSuite.Tests[len(curSuite.Tests)-1].Message = message
+			}
+			out = []string{}
+			continue
 		}
 
-		line := string(buf)
-		switch {
-		case strings.HasPrefix(line, startPrefix):
-		case strings.HasPrefix(line, failPrefix):
-			nextTest()
-
-			// Extract the test name and the duration:
-			name, time, err := gt_parseEnd(failPrefix, line)
-			if err != nil {
-				return nil, err
+		tokens = find_end(line)
+		if tokens != nil {
+			if curTest == nil {
+				return nil, fmt.Errorf("%d: orphan end test", lnum)
+			}
+			if tokens[2] != curTest.Name {
+				return nil, fmt.Errorf("%d: name mismatch", lnum)
 			}
 
-			test = &Test{
-				Name:   name,
-				Time:   time,
-				Failed: true,
+			curTest.Failed = (tokens[1] == "FAIL")
+			curTest.Time = tokens[3]
+			curTest.Message = strings.Join(out, "\n")
+			if curSuite == nil {
+				curSuite = &Suite{}
 			}
-
-		case strings.HasPrefix(line, passPrefix):
-			nextTest()
-			// Extract the test name and the duration:
-			name, time, err := gt_parseEnd(passPrefix, line)
-			if err != nil {
-				return nil, err
-			}
-			// Create the test structure and store it.
-			suite.Tests = append(suite.Tests, &Test{
-				Name:   name,
-				Time:   time,
-				Failed: false,
-			})
-			test = nil
-		case line == "FAIL":
-			nextTest()
-
-		case strings.HasPrefix(line, "ok  \t") || strings.HasPrefix(line, "FAIL\t"):
-			// End of suite, read data
-			status, name, time, err := gt_parseEndTest(line)
-			if err != nil {
-				return nil, err
-			}
-			suite.Name = name
-			suite.Time = time
-			suite.Status = status
-			nextSuite()
-		default:
-			if test != nil { // test != nil marks we're in the middle of a test
-				test.Message += line + "\n"
-			}
+			curSuite.Tests = append(curSuite.Tests, curTest)
+			curTest = nil
+			continue
 		}
+
+		tokens = find_suite(line)
+		if tokens != nil {
+			if curSuite == nil {
+				return nil, fmt.Errorf("%d: orphan end suite", lnum)
+			}
+			curSuite.Name = tokens[2]
+			curSuite.Time = tokens[3]
+			suites = append(suites, curSuite)
+			curSuite = nil
+
+			continue
+		}
+
+		if is_exit(line) || (line == "FAIL") {
+			continue
+		}
+
+		if curSuite == nil {
+			return nil, fmt.Errorf("%d: orphan line", lnum)
+		}
+
+		out = append(out, line)
 	}
 
-	// If we're here, it's an error
-	return nil, fmt.Errorf("Error parsing")
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return suites, nil
 }
