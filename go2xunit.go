@@ -51,7 +51,7 @@ type Suite struct {
 
 type TestResults struct {
 	Suites []*Suite
-	Bamboo bool
+	Multi bool
 }
 
 func (suite *Suite) NumFailed() int {
@@ -240,19 +240,22 @@ func hasFailures(suites []*Suite) bool {
 }
 
 var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
-{{if .Bamboo}}<testsuites>{{end}}
+{{if .Multi}}<testsuites>{{end}}
 {{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Count}}" errors="0" failures="{{.NumFailed}}" skip="0">
 {{range  $test := $suite.Tests}}    <testcase classname="{{$suite.Name}}" name="{{$test.Name}}" time="{{$test.Time}}">
 {{if $test.Failed }}      <failure type="go.error" message="error">
         <![CDATA[{{$test.Message}}]]>
       </failure>{{end}}    </testcase>
 {{end}}  </testsuite>
-{{end}}{{if .Bamboo}}</testsuites>{{end}}
+{{end}}{{if .Multi}}</testsuites>{{end}}
 `
 
 // writeXML exits xunit XML of tests to out
 func writeXML(suites []*Suite, out io.Writer, bamboo bool) {
-	testsResult := TestResults{Suites: suites, Bamboo: bamboo}
+	testsResult := TestResults{
+		Suites: suites,
+		Multi: bamboo || (len(suites) > 1),
+	}
 	t := template.New("test template")
 	t, err := t.Parse(xmlTemplate)
 	if err != nil {
