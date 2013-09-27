@@ -1,13 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"io"
 	"log"
 	"os"
 	"regexp"
-	"bufio"
 	"strings"
 	"text/template"
 )
@@ -27,6 +27,9 @@ const (
 	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
 	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
 	gt_suiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
+
+	// ?       alipay  [no test files]
+	gt_noFiles = "^\\?.*\\[no test files\\]$"
 
 	// gocheck regular expressions
 
@@ -73,6 +76,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	find_start := regexp.MustCompile(gt_startRE).FindStringSubmatch
 	find_end := regexp.MustCompile(gt_endRE).FindStringSubmatch
 	find_suite := regexp.MustCompile(gt_suiteRE).FindStringSubmatch
+	is_nofiles := regexp.MustCompile(gt_noFiles).MatchString
 	is_exit := regexp.MustCompile("^exit status -?\\d+").MatchString
 
 	suites := []*Suite{}
@@ -83,6 +87,11 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	scanner := bufio.NewScanner(rd)
 	for lnum := 1; scanner.Scan(); lnum++ {
 		line := scanner.Text()
+
+		// TODO: Only ouside a suite/test, report as empty suite?
+		if is_nofiles(line) {
+			continue
+		}
 
 		tokens := find_start(line)
 		if tokens != nil {

@@ -24,7 +24,7 @@ func Test_NumFailed(t *testing.T) {
 	}
 }
 
-func loadTests(filename string, t *testing.T) ([]*Suite, error) {
+func loadGotest(filename string, t *testing.T) ([]*Suite, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		t.Fatalf("can't open %s - %s", filename, err)
@@ -35,7 +35,7 @@ func loadTests(filename string, t *testing.T) ([]*Suite, error) {
 
 func Test_parseOutput(t *testing.T) {
 	filename := "data/gotest.out"
-	suites, err := loadTests(filename, t)
+	suites, err := loadGotest(filename, t)
 	if err != nil {
 		t.Fatalf("error loading %s - %s", filename, err)
 	}
@@ -98,7 +98,7 @@ func Test_parseOutput(t *testing.T) {
 }
 
 func Test_parseOutputBad(t *testing.T) {
-	_, err := loadTests("go2xunit.go", t)
+	_, err := loadGotest("go2xunit.go", t)
 	if err == nil {
 		t.Fatalf("managed to find suites in junk")
 	}
@@ -170,5 +170,19 @@ func Test_parseGocheckFail(t *testing.T) {
 	nfailed := 1
 	if suite.NumFailed() != nfailed {
 		t.Fatalf("num failed differ %d != %d", suite.NumFailed(), nfailed)
+	}
+}
+
+func Test_NoFiles(t *testing.T) {
+	filename := "data/gotest-nofiles.out"
+	suites, err := loadGotest(filename, t)
+
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+
+	count := 1
+	if len(suites) != count {
+		t.Fatalf("bad number of suites. expected %d got %d", count, len(suites))
 	}
 }
