@@ -1,5 +1,8 @@
-2013-09-27 version 0.2.2
+2013-09-27 version 0.2.3
     * Handle [no test files] (issue #4)
+
+2013-09-17 version 0.2.2
+    * Add "testsuites" when multiple (issue #3)
 
 2013-09-14 version 0.2.1
     * More code cleanup
