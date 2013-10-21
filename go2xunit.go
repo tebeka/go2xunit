@@ -145,7 +145,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			continue
 		}
 
-		if is_exit(line) || (line == "FAIL") {
+		if is_exit(line) || line == "FAIL" || line == "PASS" {
 			continue
 		}
 
