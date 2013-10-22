@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	version = "0.2.3"
+	version = "0.2.4"
 
 	// gotest regular expressions
 
@@ -54,7 +54,7 @@ type Suite struct {
 
 type TestResults struct {
 	Suites []*Suite
-	Multi bool
+	Multi  bool
 }
 
 func (suite *Suite) NumFailed() int {
@@ -145,7 +145,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			continue
 		}
 
-		if is_exit(line) || (line == "FAIL") {
+		if is_exit(line) || (line == "FAIL") || (line == "PASS") {
 			continue
 		}
 
@@ -263,7 +263,7 @@ var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
 func writeXML(suites []*Suite, out io.Writer, bamboo bool) {
 	testsResult := TestResults{
 		Suites: suites,
-		Multi: bamboo || (len(suites) > 1),
+		Multi:  bamboo || (len(suites) > 1),
 	}
 	t := template.New("test template")
 	t, err := t.Parse(xmlTemplate)
