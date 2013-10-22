@@ -186,3 +186,16 @@ func Test_NoFiles(t *testing.T) {
 		t.Fatalf("bad number of suites. expected %d got %d", count, len(suites))
 	}
 }
+
+func Test_Multi(t *testing.T) {
+	filename := "data/gotest-multi.out"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+
+	count := 1
+	if len(suites) != count {
+		t.Fatalf("bad number of suites. expected %d got %d", count, len(suites))
+	}
+}
