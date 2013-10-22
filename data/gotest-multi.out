@@ -1,0 +1,20 @@
+?       alipay  [no test files]
+?       config  [no test files]
+=== RUN TestApp_AssetPath
+--- PASS: TestApp_AssetPath (0.00 seconds)
+=== RUN TestTrimTransferCeil
+--- PASS: TestTrimTransferCeil (0.00 seconds)
+=== RUN TestStatusDescription
+--- PASS: TestStatusDescription (0.00 seconds)
+=== RUN TestCode
+--- PASS: TestCode (0.00 seconds)
+PASS
+ok      controllers 0.024s
+?       controllers/api [no test files]
+?       controllers/bucket  [no test files]
+?       mail    [no test files]
+?       models  [no test files]
+?       plugins [no test files]
+?       templatefunc    [no test files]
+?       utils   [no test files]
+?       website [no test files]
