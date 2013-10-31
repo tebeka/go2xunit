@@ -52,7 +52,7 @@ func Test_parseOutput(t *testing.T) {
 
 	suite := suites[0]
 	tests := suite.Tests
-	if len(tests) != 4 {
+	if len(tests) != 5 {
 		t.Fatalf("got %d tests instead of 4", len(tests))
 	}
 

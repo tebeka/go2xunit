@@ -22,7 +22,8 @@ const (
 
 	// --- PASS: TestSub (0.00 seconds)
 	// --- FAIL: TestSubFail (0.00 seconds)
-	gt_endRE = "^--- (PASS|FAIL): ([a-zA-Z_][[:word:]]*) \\((\\d+.\\d+)"
+	// --- SKIP: TestSubSkip (0.00 seconds)
+	gt_endRE = "^--- (PASS|FAIL|SKIP): ([a-zA-Z_][[:word:]]*) \\((\\d+.\\d+)"
 
 	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
 	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
@@ -43,6 +44,7 @@ const (
 type Test struct {
 	Name, Time, Message string
 	Failed              bool
+	Skipped              bool
 }
 
 type Suite struct {
@@ -122,6 +124,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			}
 
 			curTest.Failed = (tokens[1] == "FAIL")
+			curTest.Skipped = (tokens[1] == "SKIP")
 			curTest.Time = tokens[3]
 			curTest.Message = strings.Join(out, "\n")
 			if curSuite == nil {

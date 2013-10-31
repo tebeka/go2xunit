@@ -8,6 +8,8 @@
 		Some newline goes here
 === RUN TestSubOK
 --- PASS: TestSubOK (0.00 seconds)
+=== RUN TestSubSkip
+--- SKIP: TestSubSkip (0.00 seconds)
 FAIL
 exit status 1
 FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
