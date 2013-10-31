@@ -60,6 +60,10 @@ func Test_parseOutput(t *testing.T) {
 		t.Fatalf("wrong number of failed %d, should be 1", suite.NumFailed())
 	}
 
+	if suite.NumSkipped() != 1 {
+		t.Fatalf("wrong number of skipped %d, should be 1", suite.NumSkipped())
+	}
+
 	test := tests[0]
 	if test.Name != "TestAdd" {
 		t.Fatalf("bad test name %s, expected TestAdd", test.Name)

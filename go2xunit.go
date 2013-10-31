@@ -44,7 +44,7 @@ const (
 type Test struct {
 	Name, Time, Message string
 	Failed              bool
-	Skipped              bool
+	Skipped             bool
 }
 
 type Suite struct {
@@ -63,6 +63,17 @@ func (suite *Suite) NumFailed() int {
 	count := 0
 	for _, test := range suite.Tests {
 		if test.Failed {
+			count++
+		}
+	}
+
+	return count
+}
+
+func (suite *Suite) NumSkipped() int {
+	count := 0
+	for _, test := range suite.Tests {
+		if test.Skipped {
 			count++
 		}
 	}
@@ -253,7 +264,7 @@ func hasFailures(suites []*Suite) bool {
 
 var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
 {{if .Multi}}<testsuites>{{end}}
-{{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Count}}" errors="0" failures="{{.NumFailed}}" skip="0">
+{{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Count}}" errors="0" failures="{{.NumFailed}}" skip="{{.NumSkipped}}">
 {{range  $test := $suite.Tests}}    <testcase classname="{{$suite.Name}}" name="{{$test.Name}}" time="{{$test.Time}}">
 {{if $test.Failed }}      <failure type="go.error" message="error">
         <![CDATA[{{$test.Message}}]]>
