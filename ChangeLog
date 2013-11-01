@@ -1,3 +1,6 @@
+2013-10-21 version 0.2.5
+    * Handle SKIP (Yukinari Toyota)
+
 2013-10-21 version 0.2.4
     * Handle passing suites (cee-dub in github pull #3)
 
