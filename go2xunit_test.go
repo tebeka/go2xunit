@@ -203,3 +203,37 @@ func Test_Multi(t *testing.T) {
 		t.Fatalf("bad number of suites. expected %d got %d", count, len(suites))
 	}
 }
+
+func Test_ThatMessageIsParsedCorrectly_WhenThereIsAnErrorWithinTheLastTestInSuite(t *testing.T) {
+	filename := "data/gotest-multierror.out"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+
+	count := 1
+	if len(suites) != count {
+		t.Fatalf("bad number of suites. expected %d got %d", count, len(suites))
+	}
+
+	suite := suites[0]
+
+	if len(suite.Tests) != 2 {
+		t.Fatalf("bad number of tests. expected %d got %d", 2, len(suite.Tests))
+	}
+
+	expectedMessages := []string{
+		"\tmain_test.go:10: something went wrong",
+		"\tmain_test.go:14: something new went wrong",
+	}
+
+	for i, test := range suite.Tests {
+		if test.Message != expectedMessages[i] {
+			t.Errorf(
+				"test %v message does not match expected result:\n\tGot: \"%v\"\n\tExpected: \"%v\"\n",
+				i,
+				test.Message,
+				expectedMessages[i])
+		}
+	}
+}

@@ -97,6 +97,18 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	var curSuite *Suite
 	var out []string
 
+	AddRemainingOutputToLastTest := func() error {
+		if len(out) > 0 {
+			message := strings.Join(out, "\n")
+			if curSuite == nil {
+				return fmt.Errorf("orphan output: %s", message)
+			}
+			curSuite.Tests[len(curSuite.Tests)-1].Message = message
+		}
+		out = []string{}
+		return nil
+	}
+
 	scanner := bufio.NewScanner(rd)
 	for lnum := 1; scanner.Scan(); lnum++ {
 		line := scanner.Text()
@@ -114,14 +126,10 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			curTest = &Test{
 				Name: tokens[1],
 			}
-			if len(out) > 0 {
-				message := strings.Join(out, "\n")
-				if curSuite == nil {
-					return nil, fmt.Errorf("orphan output: %s", message)
-				}
-				curSuite.Tests[len(curSuite.Tests)-1].Message = message
+
+			if e := AddRemainingOutputToLastTest(); e != nil {
+				return nil, e
 			}
-			out = []string{}
 			continue
 		}
 
@@ -153,6 +161,9 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			}
 			curSuite.Name = tokens[2]
 			curSuite.Time = tokens[3]
+			if e := AddRemainingOutputToLastTest(); e != nil {
+				return nil, e
+			}
 			suites = append(suites, curSuite)
 			curSuite = nil
 
