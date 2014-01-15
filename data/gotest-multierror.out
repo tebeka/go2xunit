@@ -1,0 +1,9 @@
+=== RUN TestError1
+--- FAIL: TestError1 (0.00 seconds)
+	main_test.go:10: something went wrong
+=== RUN TestError2
+--- FAIL: TestError2 (0.00 seconds)
+	main_test.go:14: something new went wrong
+FAIL
+exit status 1
+FAIL	skeleton	0.047s
