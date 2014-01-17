@@ -1,3 +1,6 @@
+2014-01-17 version 0.2.6
+    * Handle error in last test (Daniel Speed, github pull #4)
+
 2013-10-21 version 0.2.5
     * Handle SKIP (Yukinari Toyota)
 
