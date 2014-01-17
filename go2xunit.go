@@ -97,7 +97,8 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	var curSuite *Suite
 	var out []string
 
-	AddRemainingOutputToLastTest := func() error {
+	// Append last test output (in case of error) to last suite
+	appendLast := func() error {
 		if len(out) > 0 {
 			message := strings.Join(out, "\n")
 			if curSuite == nil {
@@ -127,7 +128,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 				Name: tokens[1],
 			}
 
-			if e := AddRemainingOutputToLastTest(); e != nil {
+			if e := appendLast(); e != nil {
 				return nil, e
 			}
 			continue
@@ -161,7 +162,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			}
 			curSuite.Name = tokens[2]
 			curSuite.Time = tokens[3]
-			if e := AddRemainingOutputToLastTest(); e != nil {
+			if e := appendLast(); e != nil {
 				return nil, e
 			}
 			suites = append(suites, curSuite)
