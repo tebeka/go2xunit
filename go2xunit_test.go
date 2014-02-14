@@ -237,3 +237,39 @@ func Test_ThatMessageIsParsedCorrectly_WhenThereIsAnErrorWithinTheLastTestInSuit
 		}
 	}
 }
+
+func Test_Parallel(t *testing.T) {
+	filename := "data/gotest-parallel.out"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+
+	count := 1
+	if len(suites) != count {
+		t.Fatalf("bad number of suites. expected %d got %d", count, len(suites))
+	}
+	if suites[0].Count() != 5 {
+		t.Errorf(
+			"Wrong number of tests in suite, expected %v, for %v",
+			5,
+			suites[0].Count())
+	}
+}
+
+func Test_NoTests(t *testing.T) {
+	filename := "data/gotest-notests.out"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+
+	count := 1
+	if len(suites) != count {
+		t.Fatalf(
+			"bad number of suites. expected %d got %d",
+			count,
+			len(suites),
+		)
+	}
+}

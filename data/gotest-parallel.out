@@ -1,0 +1,12 @@
+=== RUN A
+=== RUN B
+=== RUN C
+=== RUN D
+=== RUN E
+--- PASS: A (0.00 seconds)
+--- PASS: B (0.00 seconds)
+--- PASS: C (0.00 seconds)
+--- PASS: D (0.00 seconds)
+--- PASS: E (0.00 seconds)
+PASS
+ok  	example	0.004s
