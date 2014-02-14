@@ -32,6 +32,9 @@ const (
 	// ?       alipay  [no test files]
 	gt_noFiles = "^\\?.*\\[no test files\\]$"
 
+	// testing: warning: no tests to run
+	gt_noTests = "^testing: warning: no tests to run$"
+
 	// gocheck regular expressions
 
 	// START: mmath_test.go:16: MySuite.TestAdd
@@ -90,10 +93,11 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	find_end := regexp.MustCompile(gt_endRE).FindStringSubmatch
 	find_suite := regexp.MustCompile(gt_suiteRE).FindStringSubmatch
 	is_nofiles := regexp.MustCompile(gt_noFiles).MatchString
+	is_notests := regexp.MustCompile(gt_noTests).MatchString
 	is_exit := regexp.MustCompile("^exit status -?\\d+").MatchString
 
 	suites := []*Suite{}
-	var curTest *Test
+	testsInSuite := map[string]*Test{}
 	var curSuite *Suite
 	var out []string
 
@@ -117,14 +121,16 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 		// TODO: Only ouside a suite/test, report as empty suite?
 		if is_nofiles(line) {
 			continue
+		} else if is_notests(line) {
+			if curSuite == nil {
+				curSuite = &Suite{}
+			}
+			continue
 		}
 
 		tokens := find_start(line)
 		if tokens != nil {
-			if curTest != nil {
-				return nil, fmt.Errorf("%d: test in middle of other", lnum)
-			}
-			curTest = &Test{
+			testsInSuite[tokens[1]] = &Test{
 				Name: tokens[1],
 			}
 
@@ -136,11 +142,15 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 
 		tokens = find_end(line)
 		if tokens != nil {
-			if curTest == nil {
-				return nil, fmt.Errorf("%d: orphan end test", lnum)
-			}
-			if tokens[2] != curTest.Name {
-				return nil, fmt.Errorf("%d: name mismatch", lnum)
+			name := tokens[2]
+			curTest, exists := testsInSuite[name]
+
+			if !exists {
+				return nil, fmt.Errorf(
+					"Found test result for test that didn't start running (line %v): %s",
+					lnum,
+					line,
+				)
 			}
 
 			curTest.Failed = (tokens[1] == "FAIL")
@@ -167,6 +177,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			}
 			suites = append(suites, curSuite)
 			curSuite = nil
+			testsInSuite = map[string]*Test{}
 
 			continue
 		}
