@@ -237,3 +237,10 @@ func Test_ThatMessageIsParsedCorrectly_WhenThereIsAnErrorWithinTheLastTestInSuit
 		}
 	}
 }
+
+func Test_parseBuildFailed(t *testing.T) {
+	_, err := loadGotest("data/gotest-buildfailed.out", t)
+	if err == nil {
+		t.Fatalf("expected error when at least one package failed to build")
+	}
+}
