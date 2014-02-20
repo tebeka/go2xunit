@@ -1,0 +1,5 @@
+=== RUN TestUrlJoin
+--- PASS: TestUrlJoin (0.00 seconds)
+PASS
+ok      common  0.002s
+FAIL    node/config [build failed]
