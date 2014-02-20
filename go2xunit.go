@@ -31,6 +31,8 @@ const (
 
 	// ?       alipay  [no test files]
 	gt_noFiles = "^\\?.*\\[no test files\\]$"
+	// FAIL    node/config [build failed]
+	gt_buildFailed = `^FAIL.*\[(build|setup) failed\]$`
 
 	// gocheck regular expressions
 
@@ -90,6 +92,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	find_end := regexp.MustCompile(gt_endRE).FindStringSubmatch
 	find_suite := regexp.MustCompile(gt_suiteRE).FindStringSubmatch
 	is_nofiles := regexp.MustCompile(gt_noFiles).MatchString
+	is_buildFailed := regexp.MustCompile(gt_buildFailed).MatchString
 	is_exit := regexp.MustCompile("^exit status -?\\d+").MatchString
 
 	suites := []*Suite{}
@@ -117,6 +120,10 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 		// TODO: Only ouside a suite/test, report as empty suite?
 		if is_nofiles(line) {
 			continue
+		}
+
+		if is_buildFailed(line) {
+			return nil, fmt.Errorf("%d: package build failed: %s", lnum, line)
 		}
 
 		tokens := find_start(line)
