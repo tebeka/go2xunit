@@ -18,7 +18,7 @@ const (
 	// gotest regular expressions
 
 	// === RUN TestAdd
-	gt_startRE = "^=== RUN ([a-zA-Z_][[:word:]]*)"
+	gt_startRE = "^=== RUN:? ([a-zA-Z_][[:word:]]*)"
 
 	// --- PASS: TestSub (0.00 seconds)
 	// --- FAIL: TestSubFail (0.00 seconds)
