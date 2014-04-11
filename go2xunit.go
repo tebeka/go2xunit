@@ -13,17 +13,17 @@ import (
 )
 
 const (
-	version = "0.2.8"
+	version = "0.2.9"
 
 	// gotest regular expressions
 
 	// === RUN TestAdd
-	gt_startRE = "^=== RUN:? ([a-zA-Z_][[:word:]]*)"
+	gt_startRE = "^=== RUN:? ([a-zA-Z_][^[:space:]]*)"
 
 	// --- PASS: TestSub (0.00 seconds)
 	// --- FAIL: TestSubFail (0.00 seconds)
 	// --- SKIP: TestSubSkip (0.00 seconds)
-	gt_endRE = "^--- (PASS|FAIL|SKIP): ([a-zA-Z_][[:word:]]*) \\((\\d+.\\d+)"
+	gt_endRE = "^--- (PASS|FAIL|SKIP): ([a-zA-Z_][^[:space:]]*) \\((\\d+.\\d+)"
 
 	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
 	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
