@@ -244,3 +244,10 @@ func Test_parseBuildFailed(t *testing.T) {
 		t.Fatalf("expected error when at least one package failed to build")
 	}
 }
+
+func Test_nameWithNum(t *testing.T) {
+	_, err := loadGotest("data/gotest-num.out", t)
+	if err != nil {
+		t.Fatalf("didn't parse name with number")
+	}
+}
