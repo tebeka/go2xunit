@@ -87,10 +87,6 @@ func (suite *Suite) Count() int {
 	return len(suite.Tests)
 }
 
-func handle_panic(test *test, suite *Suite, suites []*Suite) {
-
-}
-
 func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	find_start := regexp.MustCompile(gt_startRE).FindStringSubmatch
 	find_end := regexp.MustCompile(gt_endRE).FindStringSubmatch
