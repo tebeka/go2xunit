@@ -87,37 +87,37 @@ func (suite *Suite) Count() int {
 	return len(suite.Tests)
 }
 
+func handle_panic(test *test, suite *Suite, suites []*Suite) {
+
+}
+
 func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	find_start := regexp.MustCompile(gt_startRE).FindStringSubmatch
 	find_end := regexp.MustCompile(gt_endRE).FindStringSubmatch
 	find_suite := regexp.MustCompile(gt_suiteRE).FindStringSubmatch
 	is_nofiles := regexp.MustCompile(gt_noFiles).MatchString
 	is_buildFailed := regexp.MustCompile(gt_buildFailed).MatchString
-	is_exit := regexp.MustCompile("^exit status -?\\d+").MatchString
 
 	suites := []*Suite{}
 	var curTest *Test
 	var curSuite *Suite
 	var out []string
 
-	// Append last test output (in case of error) to last suite
-	appendLast := func() error {
-		if len(out) > 0 {
-			message := strings.Join(out, "\n")
-			if curSuite == nil {
-				return fmt.Errorf("orphan output: %s", message)
-			}
-			curSuite.Tests[len(curSuite.Tests)-1].Message = message
-		}
-		out = []string{}
-		return nil
+	// Handles a test that ended with a panic.
+	handlePanic := func() {
+		curTest.Failed = true
+		curTest.Skipped = false
+		curTest.Time = "N/A"
+		curTest.Message = strings.Join(out, "\n")
+		curSuite.Tests = append(curSuite.Tests, curTest)
+		curTest = nil
 	}
 
 	scanner := bufio.NewScanner(rd)
 	for lnum := 1; scanner.Scan(); lnum++ {
 		line := scanner.Text()
 
-		// TODO: Only ouside a suite/test, report as empty suite?
+		// TODO: Only outside a suite/test, report as empty suite?
 		if is_nofiles(line) {
 			continue
 		}
@@ -126,17 +126,18 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			return nil, fmt.Errorf("%d: package build failed: %s", lnum, line)
 		}
 
+		if curSuite == nil {
+			curSuite = &Suite{}
+		}
+
 		tokens := find_start(line)
 		if tokens != nil {
 			if curTest != nil {
-				return nil, fmt.Errorf("%d: test in middle of other", lnum)
+				// This occurs when the last test ended with a panic.
+				handlePanic()
 			}
 			curTest = &Test{
 				Name: tokens[1],
-			}
-
-			if e := appendLast(); e != nil {
-				return nil, e
 			}
 			continue
 		}
@@ -149,14 +150,10 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			if tokens[2] != curTest.Name {
 				return nil, fmt.Errorf("%d: name mismatch", lnum)
 			}
-
 			curTest.Failed = (tokens[1] == "FAIL")
 			curTest.Skipped = (tokens[1] == "SKIP")
 			curTest.Time = tokens[3]
 			curTest.Message = strings.Join(out, "\n")
-			if curSuite == nil {
-				curSuite = &Suite{}
-			}
 			curSuite.Tests = append(curSuite.Tests, curTest)
 			curTest = nil
 			continue
@@ -164,26 +161,20 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 
 		tokens = find_suite(line)
 		if tokens != nil {
-			if curSuite == nil {
-				return nil, fmt.Errorf("%d: orphan end suite", lnum)
+			if curTest != nil {
+				// This occurs when the last test ended with a panic.
+				handlePanic()
 			}
 			curSuite.Name = tokens[2]
 			curSuite.Time = tokens[3]
-			if e := appendLast(); e != nil {
-				return nil, e
-			}
 			suites = append(suites, curSuite)
 			curSuite = nil
-
+			out = []string{}
 			continue
 		}
 
-		if is_exit(line) || (line == "FAIL") || (line == "PASS") {
+		if (line == "FAIL") || (line == "PASS") {
 			continue
-		}
-
-		if curSuite == nil {
-			return nil, fmt.Errorf("%d: orphan line", lnum)
 		}
 
 		out = append(out, line)
