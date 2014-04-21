@@ -93,6 +93,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	find_suite := regexp.MustCompile(gt_suiteRE).FindStringSubmatch
 	is_nofiles := regexp.MustCompile(gt_noFiles).MatchString
 	is_buildFailed := regexp.MustCompile(gt_buildFailed).MatchString
+	is_exit := regexp.MustCompile("^exit status -?\\d+").MatchString
 
 	suites := []*Suite{}
 	var curTest *Test
@@ -104,16 +105,19 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 		curTest.Failed = true
 		curTest.Skipped = false
 		curTest.Time = "N/A"
-		curTest.Message = strings.Join(out, "\n")
 		curSuite.Tests = append(curSuite.Tests, curTest)
 		curTest = nil
 	}
 
-	// Appends error output to the last test.
+	// Appends output to the last test.
 	appendError := func() error {
 		if (len(out) > 0 && curSuite != nil && len(curSuite.Tests) > 0) {
 			message := strings.Join(out, "\n")
-			curSuite.Tests[len(curSuite.Tests)-1].Message = message
+			if (curSuite.Tests[len(curSuite.Tests)-1].Message == "") {
+				curSuite.Tests[len(curSuite.Tests)-1].Message = message
+			} else {
+				curSuite.Tests[len(curSuite.Tests)-1].Message += "\n" + message
+			}
 		}
 		out = []string{}
 		return nil
@@ -142,11 +146,11 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 				// This occurs when the last test ended with a panic.
 				handlePanic()
 			}
+			if e := appendError(); e != nil {				
+				return nil, e
+			}
 			curTest = &Test{
 				Name: tokens[1],
-			}
-			if e := appendError(); e != nil {
-				return nil, e
 			}
 			continue
 		}
@@ -161,10 +165,11 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			}
 			curTest.Failed = (tokens[1] == "FAIL")
 			curTest.Skipped = (tokens[1] == "SKIP")
-			curTest.Time = tokens[3]
+			curTest.Time = tokens[3]			
 			curTest.Message = strings.Join(out, "\n")
 			curSuite.Tests = append(curSuite.Tests, curTest)
 			curTest = nil
+			out = []string{}
 			continue
 		}
 
@@ -174,18 +179,17 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 				// This occurs when the last test ended with a panic.
 				handlePanic()
 			}
-			curSuite.Name = tokens[2]
-			curSuite.Time = tokens[3]
-			if e := appendError(); e != nil {
+			if e := appendError(); e != nil {				
 				return nil, e
 			}
+			curSuite.Name = tokens[2]
+			curSuite.Time = tokens[3]
 			suites = append(suites, curSuite)
 			curSuite = nil
-			out = []string{}
 			continue
 		}
 
-		if (line == "FAIL") || (line == "PASS") {
+		if is_exit(line) || (line == "FAIL") || (line == "PASS") {
 			continue
 		}
 
