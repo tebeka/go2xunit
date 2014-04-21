@@ -165,7 +165,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			}
 			curTest.Failed = (tokens[1] == "FAIL")
 			curTest.Skipped = (tokens[1] == "SKIP")
-			curTest.Time = tokens[3]			
+			curTest.Time = tokens[3]
 			curTest.Message = strings.Join(out, "\n")
 			curSuite.Tests = append(curSuite.Tests, curTest)
 			curTest = nil
