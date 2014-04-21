@@ -107,6 +107,17 @@ func Test_parseOutput(t *testing.T) {
 	}
 }
 
+func Test_parseOutputBad(t *testing.T) {
+	filename := "go2xunit.go"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+	if len(suites) > 0 {
+		t.Fatalf("managed to find suites in junk")
+	}
+}
+
 func Test_parseLogOutput(t *testing.T) {
 	filename := "data/gotest-log.out"
 	suites, err := loadGotest(filename, t)
