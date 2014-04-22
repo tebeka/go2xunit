@@ -1,0 +1,5 @@
+=== RUN TestLogOutput
+Log output.
+--- PASS: TestLogOutput (0.00 seconds)
+PASS
+ok  	go2xunit/demo	0.006s
