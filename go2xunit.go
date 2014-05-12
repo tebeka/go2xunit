@@ -285,6 +285,7 @@ var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
 {{if .Multi}}<testsuites>{{end}}
 {{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Count}}" errors="0" failures="{{.NumFailed}}" skip="{{.NumSkipped}}">
 {{range  $test := $suite.Tests}}    <testcase classname="{{$suite.Name}}" name="{{$test.Name}}" time="{{$test.Time}}">
+{{if $test.Skipped }}      <skipped/> {{end}}
 {{if $test.Failed }}      <failure type="go.error" message="error">
         <![CDATA[{{$test.Message}}]]>
       </failure>{{end}}    </testcase>
