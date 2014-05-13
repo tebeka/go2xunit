@@ -1,3 +1,6 @@
+2014-02-19 version 0.2.10
+    * Add skipped to XML output (John Khvatov, github pull #15)
+
 2014-02-19 version 0.2.9
     * More permissive test names (github #13)
 
