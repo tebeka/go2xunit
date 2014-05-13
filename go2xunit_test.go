@@ -40,8 +40,9 @@ func Test_parseOutput(t *testing.T) {
 		t.Fatalf("error loading %s - %s", filename, err)
 	}
 
-	if len(suites) != 2 {
-		t.Fatalf("got %d suites instead of 2", len(suites))
+	numSuites := 2
+	if len(suites) != numSuites {
+		t.Fatalf("got %d suites instead of %d", len(suites), numSuites)
 	}
 	if suites[0].Name != "_/home/miki/Projects/goroot/src/xunit" {
 		t.Fatalf("bad Suite name %s, expected _/home/miki/Projects/goroot/src/xunit", suites[0].Name)
@@ -52,16 +53,19 @@ func Test_parseOutput(t *testing.T) {
 
 	suite := suites[0]
 	tests := suite.Tests
-	if len(tests) != 5 {
-		t.Fatalf("got %d tests instead of 4", len(tests))
+	numTests := 5
+	if len(tests) != numTests {
+		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
 	}
 
-	if suite.NumFailed() != 1 {
-		t.Fatalf("wrong number of failed %d, should be 1", suite.NumFailed())
+	numFailed := 1
+	if suite.NumFailed() != numFailed {
+		t.Fatalf("wrong number of failed %d, should be %d", suite.NumFailed(), numFailed)
 	}
 
-	if suite.NumSkipped() != 1 {
-		t.Fatalf("wrong number of skipped %d, should be 1", suite.NumSkipped())
+	numSkipped := 1
+	if suite.NumSkipped() != numSkipped {
+		t.Fatalf("wrong number of skipped %d, should be %d", suite.NumSkipped(), numSkipped)
 	}
 
 	test := tests[0]
@@ -79,12 +83,14 @@ func Test_parseOutput(t *testing.T) {
 
 	suite = suites[1]
 	tests = suite.Tests
-	if len(tests) != 1 {
-		t.Fatalf("got %d tests instead of 1", len(tests))
+	numTests = 1
+	if len(tests) != numTests {
+		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
 	}
 
-	if suite.NumFailed() != 0 {
-		t.Fatalf("wrong number of failed %d, should be 0", suite.NumFailed())
+	numFailed = 0
+	if suite.NumFailed() != numFailed {
+		t.Fatalf("wrong number of failed %d, should be %d", suite.NumFailed(), numFailed)
 	}
 
 	test = tests[0]
@@ -102,9 +108,78 @@ func Test_parseOutput(t *testing.T) {
 }
 
 func Test_parseOutputBad(t *testing.T) {
-	_, err := loadGotest("go2xunit.go", t)
-	if err == nil {
+	filename := "go2xunit.go"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+	if len(suites) > 0 {
 		t.Fatalf("managed to find suites in junk")
+	}
+}
+
+func Test_parseLogOutput(t *testing.T) {
+	filename := "data/gotest-log.out"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+	
+	suite := suites[0]
+	tests := suite.Tests
+	numTests := 1
+	if len(tests) != numTests {
+		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
+	}
+
+	expectedMessage := "Log output."
+	for i, test := range suite.Tests {
+		if test.Message != expectedMessage {
+			t.Errorf(
+				"test %v message does not match expected result:\n\tGot: \"%v\"\n\tExpected: \"%v\"\n",
+				i,
+				test.Message,
+				expectedMessage)
+		}
+	}
+}
+
+func Test_parsePanicOutput(t *testing.T) {
+	filename := "data/gotest-panic.out"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+	
+	suite := suites[0]
+	tests := suite.Tests
+	numTests := 1
+	if len(tests) != numTests {
+		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
+	}
+
+	expectedMessage := "fatal error: all goroutines are asleep - deadlock!\n..."
+	test := tests[0]
+	if test.Message != expectedMessage {
+		t.Errorf(
+			"test message does not match expected result:\n\tGot: \"%v\"\n\tExpected: \"%v\"\n",
+			test.Message,
+			expectedMessage)
+	}
+}
+
+func Test_parseEmptySuite(t *testing.T) {
+	filename := "data/gotest-empty.out"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+	
+	suite := suites[0]
+	tests := suite.Tests
+	numTests := 0
+	if len(tests) != numTests {
+		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
 	}
 }
 
