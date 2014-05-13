@@ -1,5 +1,8 @@
-2014-02-19 version 0.2.10
+2014-05-13 version 0.2.11
     * Add skipped to XML output (John Khvatov, github pull #15)
+
+2014-04-22 version 0.2.10
+    * Handle empty directories and panic in tests (Jiri Sima PR #4)
 
 2014-02-19 version 0.2.9
     * More permissive test names (github #13)
