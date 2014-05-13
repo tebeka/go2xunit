@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	version = "0.2.10"
+	version = "0.2.11"
 
 	// gotest regular expressions
 
@@ -111,9 +111,9 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 
 	// Appends output to the last test.
 	appendError := func() error {
-		if (len(out) > 0 && curSuite != nil && len(curSuite.Tests) > 0) {
+		if len(out) > 0 && curSuite != nil && len(curSuite.Tests) > 0 {
 			message := strings.Join(out, "\n")
-			if (curSuite.Tests[len(curSuite.Tests)-1].Message == "") {
+			if curSuite.Tests[len(curSuite.Tests)-1].Message == "" {
 				curSuite.Tests[len(curSuite.Tests)-1].Message = message
 			} else {
 				curSuite.Tests[len(curSuite.Tests)-1].Message += "\n" + message
@@ -146,7 +146,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 				// This occurs when the last test ended with a panic.
 				handlePanic()
 			}
-			if e := appendError(); e != nil {				
+			if e := appendError(); e != nil {
 				return nil, e
 			}
 			curTest = &Test{
@@ -179,7 +179,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 				// This occurs when the last test ended with a panic.
 				handlePanic()
 			}
-			if e := appendError(); e != nil {				
+			if e := appendError(); e != nil {
 				return nil, e
 			}
 			curSuite.Name = tokens[2]
