@@ -18,12 +18,12 @@ const (
 	// gotest regular expressions
 
 	// === RUN TestAdd
-	gt_startRE = "^=== RUN:? ([a-zA-Z_][^[:space:]]*)"
+	gt_startRE = "^=== RUN:? ([a-zA-Z_][[:word:]]*)(?:-\\d+)?"
 
 	// --- PASS: TestSub (0.00 seconds)
 	// --- FAIL: TestSubFail (0.00 seconds)
 	// --- SKIP: TestSubSkip (0.00 seconds)
-	gt_endRE = "^--- (PASS|FAIL|SKIP): ([a-zA-Z_][^[:space:]]*) \\((\\d+.\\d+)"
+	gt_endRE = "^--- (PASS|FAIL|SKIP): ([a-zA-Z_][[:word:]]*)(?:-\\d+)? \\((\\d+.\\d+)"
 
 	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
 	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
