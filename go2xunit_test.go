@@ -321,8 +321,24 @@ func Test_parseBuildFailed(t *testing.T) {
 }
 
 func Test_nameWithNum(t *testing.T) {
-	_, err := loadGotest("data/gotest-num.out", t)
+	suites, err := loadGotest("data/gotest-num.out", t)
 	if err != nil {
 		t.Fatalf("didn't parse name with number")
+	}
+
+	count := 1
+	if len(suites) != count {
+		t.Fatalf("bad number of suites. expected %d got %d", count, len(suites))
+	}
+
+	suite := suites[0]
+	if len(suite.Tests) != 1 {
+		t.Fatalf("bad number of tests. expected %d got %d", 1, len(suite.Tests))
+	}
+
+	test := suite.Tests[0]
+	name := "TestBasic"
+	if test.Name != name {
+		t.Fatalf("bad test name %s != %s", test.Name, name)
 	}
 }
