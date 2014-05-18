@@ -124,7 +124,7 @@ func Test_parseLogOutput(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error loading %s - %s", filename, err)
 	}
-	
+
 	suite := suites[0]
 	tests := suite.Tests
 	numTests := 1
@@ -150,7 +150,7 @@ func Test_parsePanicOutput(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error loading %s - %s", filename, err)
 	}
-	
+
 	suite := suites[0]
 	tests := suite.Tests
 	numTests := 1
@@ -174,7 +174,7 @@ func Test_parseEmptySuite(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error loading %s - %s", filename, err)
 	}
-	
+
 	suite := suites[0]
 	tests := suite.Tests
 	numTests := 0
