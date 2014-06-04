@@ -326,3 +326,22 @@ func Test_nameWithNum(t *testing.T) {
 		t.Fatalf("didn't parse name with number")
 	}
 }
+
+func Test_0Time(t *testing.T) {
+	suites, err := loadGotest("data/gotest-0.out", t)
+	if err != nil {
+		t.Fatalf("didn't parse name with number")
+	}
+
+	if len(suites) != 1 {
+		t.Fatalf("bad number of suites - %d", len(suites))
+	}
+
+	suite := suites[0]
+	if suite.Count() != 2 {
+		t.Fatalf("bad number of tests. expected %d got %d", 2, len(suite.Tests))
+	}
+	if suite.NumFailed() != 0 {
+		t.Fatalf("unexpected failure")
+	}
+}
