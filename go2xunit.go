@@ -87,6 +87,16 @@ func (suite *Suite) Count() int {
 	return len(suite.Tests)
 }
 
+func hasDatarace(lines []string) bool {
+	has_datarace := regexp.MustCompile("^WARNING: DATA RACE$").MatchString
+	for _, line := range lines {
+		if has_datarace(line) {
+			return true
+		}
+	}
+	return false
+}
+
 func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	find_start := regexp.MustCompile(gt_startRE).FindStringSubmatch
 	find_end := regexp.MustCompile(gt_endRE).FindStringSubmatch
@@ -163,7 +173,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			if tokens[2] != curTest.Name {
 				return nil, fmt.Errorf("%d: name mismatch", lnum)
 			}
-			curTest.Failed = (tokens[1] == "FAIL")
+			curTest.Failed = (tokens[1] == "FAIL") || hasDatarace(out)
 			curTest.Skipped = (tokens[1] == "SKIP")
 			curTest.Time = tokens[3]
 			curTest.Message = strings.Join(out, "\n")

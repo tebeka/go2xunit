@@ -118,6 +118,36 @@ func Test_parseOutputBad(t *testing.T) {
 	}
 }
 
+func Test_parseDatarace(t *testing.T) {
+	filename := "data/gotest-datarace.out"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+
+	suite := suites[0]
+	tests := suite.Tests
+	numTests := 1
+	if len(tests) != numTests {
+		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
+	}
+
+	expectedMessage := "WARNING: DATA RACE"
+	for i, test := range suite.Tests {
+		if test.Message != expectedMessage {
+			t.Errorf(
+				"test %v message does not match expected result:\n\tGot: \"%v\"\n\tExpected: \"%v\"\n",
+				i,
+				test.Message,
+				expectedMessage)
+		}
+	}
+	numFailed := 1
+	if suite.NumFailed() != numFailed {
+		t.Fatalf("wrong number of failed %d, should be %d", suite.NumFailed(), numFailed)
+	}
+}
+
 func Test_parseLogOutput(t *testing.T) {
 	filename := "data/gotest-log.out"
 	suites, err := loadGotest(filename, t)
