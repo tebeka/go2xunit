@@ -43,6 +43,10 @@ const (
 	gc_endRE = "(PASS|FAIL): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)([[:space:]]+([0-9]+.[0-9]+))?"
 )
 
+var (
+	failOnRace = false
+)
+
 type Test struct {
 	Name, Time, Message string
 	Failed              bool
@@ -173,7 +177,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			if tokens[2] != curTest.Name {
 				return nil, fmt.Errorf("%d: name mismatch", lnum)
 			}
-			curTest.Failed = (tokens[1] == "FAIL") || hasDatarace(out)
+			curTest.Failed = (tokens[1] == "FAIL") || (failOnRace && hasDatarace(out))
 			curTest.Skipped = (tokens[1] == "SKIP")
 			curTest.Time = tokens[3]
 			curTest.Message = strings.Join(out, "\n")
@@ -371,6 +375,7 @@ func main() {
 	showVersion := flag.Bool("version", false, "print version and exit")
 	bamboo := flag.Bool("bamboo", false, "xml compatible with Atlassian's Bamboo")
 	is_gocheck := flag.Bool("gocheck", false, "parse gocheck output")
+	flag.BoolVar(&failOnRace, "fail-on-race", false, "mark test as failing if it exposes a data race")
 	flag.Parse()
 
 	if *showVersion {
