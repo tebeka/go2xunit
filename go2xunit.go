@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	version = "0.2.12"
+	version = "0.3.0"
 
 	// gotest regular expressions
 
