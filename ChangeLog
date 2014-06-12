@@ -1,3 +1,6 @@
+2014-06-04 version 0.3.0
+    * Option to fail on data races (Jiri Sima in bitbucket PR #5)
+
 2014-06-04 version 0.2.12
     * Handle 0 time tests (github issue #16)
 
