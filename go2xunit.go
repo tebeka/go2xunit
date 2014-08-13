@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	version = "0.3.0"
+	version = "0.3.1"
 
 	// gotest regular expressions
 
@@ -323,12 +323,12 @@ func writeXML(suites []*Suite, out io.Writer, bamboo bool) {
 	t := template.New("test template")
 	t, err := t.Parse(xmlTemplate)
 	if err != nil {
-		fmt.Println("Error en parse %v", err)
+		fmt.Printf("Error in parse %v\n", err)
 		return
 	}
 	err = t.Execute(out, testsResult)
 	if err != nil {
-		fmt.Println("Error en execute %v", err)
+		fmt.Printf("Error in execute %v\n", err)
 		return
 	}
 }
