@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	version = "0.3.1"
+	version = "1.0.0"
 
 	// gotest regular expressions
 
@@ -379,7 +379,7 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Println(version)
+		fmt.Printf("go2xunit %s\n", version)
 		os.Exit(0)
 	}
 
