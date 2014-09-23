@@ -60,6 +60,26 @@ type Suite struct {
 	Tests  []*Test
 }
 
+type SuiteStack struct {
+	nodes []*Suite
+	count int
+}
+
+// Push adds a node to the stack.
+func (s *SuiteStack) Push(n *Suite) {
+	s.nodes = append(s.nodes[:s.count], n)
+	s.count++
+}
+
+// Pop removes and returns a node from the stack in last to first order.
+func (s *SuiteStack) Pop() *Suite {
+	if s.count == 0 {
+		return nil
+	}
+	s.count--
+	return s.nodes[s.count]
+}
+
 type TestResults struct {
 	Suites []*Suite
 	Multi  bool
@@ -113,7 +133,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	var curTest *Test
 	var curSuite *Suite
 	var out []string
-
+	suiteStack := SuiteStack{}
 	// Handles a test that ended with a panic.
 	handlePanic := func() {
 		curTest.Failed = true
@@ -158,7 +178,12 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 		if tokens != nil {
 			if curTest != nil {
 				// This occurs when the last test ended with a panic.
-				handlePanic()
+				if suiteStack.count == 0 {
+					suiteStack.Push(curSuite)
+					curSuite = &Suite{Name: curTest.Name}
+				} else {
+					handlePanic()
+				}
 			}
 			if e := appendError(); e != nil {
 				return nil, e
@@ -172,7 +197,14 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 		tokens = find_end(line)
 		if tokens != nil {
 			if curTest == nil {
-				return nil, fmt.Errorf("%d: orphan end test", lnum)
+				if suiteStack.count > 0 {
+					prevSuite := suiteStack.Pop()
+					suites = append(suites, curSuite)
+					curSuite = prevSuite
+					continue
+				} else {
+					return nil, fmt.Errorf("%d: orphan end test", lnum)
+				}
 			}
 			if tokens[2] != curTest.Name {
 				return nil, fmt.Errorf("%d: name mismatch", lnum)
