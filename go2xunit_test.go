@@ -407,3 +407,13 @@ func Test_0Time(t *testing.T) {
 		t.Fatalf("unexpected failure")
 	}
 }
+
+func Test_TestifySuite(t *testing.T) {
+	suites, err := loadGotest("data/gotest-testify-suite.out", t)
+	if err != nil {
+		t.Fatalf("Failed to parse")
+	}
+	if len(suites) != 2 {
+		t.Fatalf("Wrong number of suites", len(suites))
+	}
+}
