@@ -207,7 +207,8 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 				}
 			}
 			if tokens[2] != curTest.Name {
-				return nil, fmt.Errorf("%d: name mismatch", lnum)
+				err := fmt.Errorf("%d: name mismatch (try disabling parallel mode)", lnum)
+				return nil, err
 			}
 			curTest.Failed = (tokens[1] == "FAIL") || (failOnRace && hasDatarace(out))
 			curTest.Skipped = (tokens[1] == "SKIP")
