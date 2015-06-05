@@ -297,6 +297,7 @@ func Test_parseGocheckFail(t *testing.T) {
 		t.Fatalf("bad number of suites %d != %d", len(suites), nsuites)
 	}
 
+	// FIXME: This randomly fails with len(suite.Tests) = 1
 	suite := suites[1]
 	ntests := 3
 	if len(suite.Tests) != ntests {
