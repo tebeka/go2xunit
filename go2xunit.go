@@ -51,6 +51,7 @@ type Test struct {
 	Name, Time, Message string
 	Failed              bool
 	Skipped             bool
+	Passed              bool
 }
 
 type Suite struct {
@@ -92,7 +93,6 @@ func (suite *Suite) NumFailed() int {
 			count++
 		}
 	}
-
 	return count
 }
 
@@ -103,7 +103,16 @@ func (suite *Suite) NumSkipped() int {
 			count++
 		}
 	}
+	return count
+}
 
+func (suite *Suite) NumPassed() int {
+	count := 0
+	for _, test := range suite.Tests {
+		if test.Passed {
+			count++
+		}
+	}
 	return count
 }
 
@@ -138,6 +147,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	handlePanic := func() {
 		curTest.Failed = true
 		curTest.Skipped = false
+		curTest.Passed = false
 		curTest.Time = "N/A"
 		curSuite.Tests = append(curSuite.Tests, curTest)
 		curTest = nil
@@ -212,6 +222,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			}
 			curTest.Failed = (tokens[1] == "FAIL") || (failOnRace && hasDatarace(out))
 			curTest.Skipped = (tokens[1] == "SKIP")
+			curTest.Passed = (tokens[1] == "PASS")
 			curTest.Time = tokens[3]
 			curTest.Message = strings.Join(out, "\n")
 			curSuite.Tests = append(curSuite.Tests, curTest)
@@ -299,6 +310,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 			test.Message = strings.Join(out, "\n")
 			test.Time = tokens[4]
 			test.Failed = (tokens[1] == "FAIL")
+			test.Passed = (tokens[1] == "PASS")
 
 			suite, ok := suites[suiteName]
 			if !ok {
@@ -335,8 +347,9 @@ func hasFailures(suites []*Suite) bool {
 	return false
 }
 
-var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
-{{if .Multi}}<testsuites>{{end}}
+const xmlDeclaration = `<?xml version="1.0" encoding="utf-8"?>`
+
+const xunitTemplate string = `
 {{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Count}}" errors="0" failures="{{.NumFailed}}" skip="{{.NumSkipped}}">
 {{range  $test := $suite.Tests}}    <testcase classname="{{$suite.Name}}" name="{{$test.Name}}" time="{{$test.Time}}">
 {{if $test.Skipped }}      <skipped/> {{end}}
@@ -344,17 +357,53 @@ var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
         <![CDATA[{{$test.Message}}]]>
       </failure>{{end}}    </testcase>
 {{end}}  </testsuite>
-{{end}}{{if .Multi}}</testsuites>{{end}}
+{{end}}`
+
+const bambooTemplate string = `
+<testsuites>` + xunitTemplate + `</testsuites>
+`
+
+// https://xunit.codeplex.com/wikipage?title=XmlFormat
+const xunitNetTemplate string = `
+<assembly name="go test"
+          run-date="2014-09-22" run-time="0"
+          configFile=""
+          time="0"
+          total="0"
+          passed="0"
+          failed="0"
+          skipped="0"
+          environment="n/a"
+          test-framework="golang">
+{{range $suite := .Suites}}
+    <class time="{{.Time}}" name="{{.Name}}"
+  	     total="{{.Count}}"
+  	     passed="{{.NumPassed}}"
+  	     failed="{{.NumFailed}}"
+  	     skipped="{{.NumSkipped}}">
+{{range  $test := $suite.Tests}}
+        <test name="{{$test.Name}}"
+          type="test"
+          method="{{$test.Name}}"
+          result={{if $test.Skipped }}"Skip"{{else if $test.Failed }}"Fail"{{else if $test.Passed }}"Pass"{{end}}
+          time="{{$test.Time}}">
+        {{if $test.Failed }}  <failure exception-type="go.error">
+             <message><![CDATA[{{$test.Message}}]]></message>
+      	  </failure>
+      	{{end}}</test>
+{{end}}
+    </class>
+{{end}}
+</assembly>
 `
 
 // writeXML exits xunit XML of tests to out
-func writeXML(suites []*Suite, out io.Writer, bamboo bool) {
+func writeXML(suites []*Suite, out io.Writer, xmlTemplate string) {
 	testsResult := TestResults{
 		Suites: suites,
-		Multi:  bamboo || (len(suites) > 1),
 	}
 	t := template.New("test template")
-	t, err := t.Parse(xmlTemplate)
+	t, err := t.Parse(xmlDeclaration + xmlTemplate)
 	if err != nil {
 		fmt.Printf("Error in parse %v\n", err)
 		return
@@ -407,6 +456,7 @@ func main() {
 	fail := flag.Bool("fail", false, "fail (non zero exit) if any test failed")
 	showVersion := flag.Bool("version", false, "print version and exit")
 	bamboo := flag.Bool("bamboo", false, "xml compatible with Atlassian's Bamboo")
+	xunitnet := flag.Bool("xunitnet", false, "xml compatible with xunit.net")
 	is_gocheck := flag.Bool("gocheck", false, "parse gocheck output")
 	flag.BoolVar(&failOnRace, "fail-on-race", false, "mark test as failing if it exposes a data race")
 	flag.Parse()
@@ -442,10 +492,22 @@ func main() {
 	}
 	if len(suites) == 0 {
 		log.Fatalf("error: no tests found")
-		os.Exit(1)
 	}
 
-	writeXML(suites, output, *bamboo)
+	if *bamboo && *xunitnet {
+		log.Fatalf("error: -bamboo and -xunitnet are mutually exclusive")
+	}
+
+	var xmlTemplate string
+	if *xunitnet {
+		xmlTemplate = xunitNetTemplate
+	} else if *bamboo || (len(suites) > 1) {
+		xmlTemplate = bambooTemplate
+	} else {
+		xmlTemplate = xunitTemplate
+	}
+
+	writeXML(suites, output, xmlTemplate)
 	if *fail && hasFailures(suites) {
 		os.Exit(1)
 	}
