@@ -8,8 +8,10 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"text/template"
+	"time"
 )
 
 const (
@@ -45,6 +47,7 @@ const (
 
 var (
 	failOnRace = false
+	runTime    time.Time
 )
 
 type Test struct {
@@ -82,8 +85,14 @@ func (s *SuiteStack) Pop() *Suite {
 }
 
 type TestResults struct {
-	Suites []*Suite
-	Multi  bool
+	Suites  []*Suite
+	RunDate string
+	RunTime string
+	Time    string
+	Total   int
+	Passed  int
+	Failed  int
+	Skipped int
 }
 
 func (suite *Suite) NumFailed() int {
@@ -366,13 +375,13 @@ const bambooTemplate string = `
 // https://xunit.codeplex.com/wikipage?title=XmlFormat
 const xunitNetTemplate string = `
 <assembly name="go test"
-          run-date="2014-09-22" run-time="0"
-          configFile=""
-          time="0"
-          total="0"
-          passed="0"
-          failed="0"
-          skipped="0"
+          run-date="{{.RunDate}}" run-time="{{.RunTime}}"
+          configFile="none"
+          time="{{.Time}}"
+          total="{{.Total}}"
+          passed="{{.Passed}}"
+          failed="{{.Failed}}"
+          skipped="{{.Skipped}}"
           environment="n/a"
           test-framework="golang">
 {{range $suite := .Suites}}
@@ -400,8 +409,14 @@ const xunitNetTemplate string = `
 // writeXML exits xunit XML of tests to out
 func writeXML(suites []*Suite, out io.Writer, xmlTemplate string) {
 	testsResult := TestResults{
-		Suites: suites,
+		Suites:  suites,
+		RunDate: runTime.Format("2006-01-02"),
+		RunTime: fmt.Sprintf("%02d:%02d:%02d",
+			runTime.Hour(),
+			runTime.Minute(),
+			runTime.Second()),
 	}
+	calcTotals(&testsResult)
 	t := template.New("test template")
 	t, err := t.Parse(xmlDeclaration + xmlTemplate)
 	if err != nil {
@@ -415,23 +430,36 @@ func writeXML(suites []*Suite, out io.Writer, xmlTemplate string) {
 	}
 }
 
+// calculates the totals for xunit.net assembly attributes
+func calcTotals(r *TestResults) {
+	for _, suite := range r.Suites {
+		r.Passed += suite.NumPassed()
+		r.Failed += suite.NumFailed()
+		r.Skipped += suite.NumSkipped()
+
+		totalTime, _ := strconv.ParseFloat(r.Time, 64)
+		suiteTime, _ := strconv.ParseFloat(suite.Time, 64)
+		totalTime += suiteTime
+		r.Time = fmt.Sprintf("%.3f", totalTime)
+	}
+	r.Total = r.Passed + r.Skipped + r.Failed
+}
+
 // getInput return input io.Reader from file name, if file name is - it will
 // return os.Stdin
-func getInput(filename string) (io.Reader, error) {
+func getInput(filename string) (*os.File, error) {
 	if filename == "-" || filename == "" {
 		return os.Stdin, nil
 	}
-
 	return os.Open(filename)
 }
 
 // getInput return output io.Writer from file name, if file name is - it will
 // return os.Stdout
-func getOutput(filename string) (io.Writer, error) {
+func getOutput(filename string) (*os.File, error) {
 	if filename == "-" || filename == "" {
 		return os.Stdout, nil
 	}
-
 	return os.Create(filename)
 }
 
@@ -441,6 +469,10 @@ func getIO(inputFile, outputFile string) (io.Reader, io.Writer, error) {
 	if err != nil {
 		return nil, nil, fmt.Errorf("can't open %s for reading: %s", inputFile, err)
 	}
+
+	// let's assume test report modification time is also the time when test was run
+	statinfo, err := input.Stat()
+	runTime = statinfo.ModTime()
 
 	output, err := getOutput(outputFile)
 	if err != nil {
