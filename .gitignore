@@ -1,0 +1,13 @@
+# ----------- temporary files
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+*humbs.db
+
+# ----------- workspaces
+
+go2xunit.iml
+.idea
