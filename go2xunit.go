@@ -85,14 +85,15 @@ func (s *SuiteStack) Pop() *Suite {
 }
 
 type TestResults struct {
-	Suites  []*Suite
-	RunDate string
-	RunTime string
-	Time    string
-	Total   int
-	Passed  int
-	Failed  int
-	Skipped int
+	Suites   []*Suite
+	Assembly string
+	RunDate  string
+	RunTime  string
+	Time     string
+	Total    int
+	Passed   int
+	Failed   int
+	Skipped  int
 }
 
 func (suite *Suite) NumFailed() int {
@@ -374,7 +375,7 @@ const bambooTemplate string = `
 
 // https://xunit.codeplex.com/wikipage?title=XmlFormat
 const xunitNetTemplate string = `
-<assembly name="go test"
+<assembly name="{{.Assembly}}"
           run-date="{{.RunDate}}" run-time="{{.RunTime}}"
           configFile="none"
           time="{{.Time}}"
@@ -430,7 +431,7 @@ func writeXML(suites []*Suite, out io.Writer, xmlTemplate string) {
 	}
 }
 
-// calculates the totals for xunit.net assembly attributes
+// calculates the totals to populate xunit.net assembly attributes
 func calcTotals(r *TestResults) {
 	for _, suite := range r.Suites {
 		r.Passed += suite.NumPassed()
@@ -441,6 +442,9 @@ func calcTotals(r *TestResults) {
 		suiteTime, _ := strconv.ParseFloat(suite.Time, 64)
 		totalTime += suiteTime
 		r.Time = fmt.Sprintf("%.3f", totalTime)
+
+		// last suite is the go package name
+		r.Assembly = suite.Name
 	}
 	r.Total = r.Passed + r.Skipped + r.Failed
 }
