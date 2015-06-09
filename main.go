@@ -62,7 +62,7 @@ func main() {
 	if *xunitnet {
 		xmlTemplate = xunitNetTemplate
 	} else if *bamboo || (len(suites) > 1) {
-		xmlTemplate = bambooTemplate
+		xmlTemplate = multiTemplate
 	} else {
 		xmlTemplate = xunitTemplate
 	}

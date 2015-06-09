@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <testsuite name="go2xunit/demo" tests="3" errors="0" failures="0" skip="0">
+    <testcase classname="go2xunit/demo" name="TestAdd" time="0.00">
+
+    </testcase>
+    <testcase classname="go2xunit/demo" name="TestSub" time="0.00">
+
+    </testcase>
+    <testcase classname="go2xunit/demo" name="TestMul" time="0.00">
+
+    </testcase>
+  </testsuite>

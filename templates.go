@@ -13,7 +13,7 @@ const (
 {{end}}  </testsuite>
 {{end}}`
 
-	bambooTemplate string = `
+	multiTemplate string = `
 <testsuites>` + xunitTemplate + `</testsuites>
 `
 
