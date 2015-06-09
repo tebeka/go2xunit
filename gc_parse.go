@@ -28,6 +28,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 			test.Time = tokens[4]
 			test.Failed = (tokens[1] == "FAIL")
 			test.Passed = (tokens[1] == "PASS")
+			test.Skipped = (tokens[1] == "SKIP")
 
 			suite, ok := suites[suiteName]
 			if !ok {
