@@ -6,4 +6,3 @@ script:
     - go build
     - ./go2xunit -version
     - ./go2xunit -input data/gotest-pass.out -xunitnet
-    
