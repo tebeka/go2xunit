@@ -1,10 +1,8 @@
 package main
 
+// gotest regular expressions
+
 const (
-	version = "1.1.1"
-
-	// gotest regular expressions
-
 	// === RUN TestAdd
 	gt_startRE = "^=== RUN:? ([a-zA-Z_][^[:space:]]*)"
 
@@ -21,9 +19,11 @@ const (
 	gt_noFiles = "^\\?.*\\[no test files\\]$"
 	// FAIL    node/config [build failed]
 	gt_buildFailed = `^FAIL.*\[(build|setup) failed\]$`
+)
 
-	// gocheck regular expressions
+// gocheck regular expressions
 
+const (
 	// START: mmath_test.go:16: MySuite.TestAdd
 	gc_startRE = "START: [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)"
 	// PASS: mmath_test.go:16: MySuite.TestAdd	0.000s

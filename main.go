@@ -8,6 +8,8 @@ import (
 	"os"
 )
 
+const version = "1.2.0"
+
 var failOnRace = false
 
 func main() {
@@ -22,7 +24,7 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Printf("go2xunit %s\n", version)
+		fmt.Println("tischda/go2xunit", version)
 		os.Exit(0)
 	}
 
