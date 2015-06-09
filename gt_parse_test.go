@@ -1,44 +1,31 @@
 package main
 
 import (
+	"io"
 	"os"
 	"testing"
 )
 
-func Test_NumFailed(t *testing.T) {
-	suite := &Suite{
-		Tests: []*Test{},
+func loadAndParseGoTest(filename string, t *testing.T) []*Suite {
+	file := loadGoTestFile(t, filename)
+	suites, err := gt_Parse(file)
+	if err != nil {
+		t.Fatalf("error parsing %s - %s", filename, err)
 	}
-	if suite.NumFailed() != 0 {
-		t.Fatal("found more than 1 failure in empty list")
-	}
-
-	suite.Tests = []*Test{
-		&Test{Failed: false},
-		&Test{Failed: true},
-		&Test{Failed: false},
-	}
-
-	if suite.NumFailed() != 1 {
-		t.Fatal("can't count")
-	}
+	return suites
 }
 
-func loadGotest(filename string, t *testing.T) ([]*Suite, error) {
+func loadGoTestFile(t *testing.T, filename string) io.Reader {
 	file, err := os.Open(filename)
 	if err != nil {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
-
-	return gt_Parse(file)
+	return file
 }
 
 func Test_parseOutput(t *testing.T) {
 	filename := "data/gotest.out"
-	suites, err := loadGotest(filename, t)
-	if err != nil {
-		t.Fatalf("error loading %s - %s", filename, err)
-	}
+	suites := loadAndParseGoTest(filename, t)
 
 	numSuites := 2
 	if len(suites) != numSuites {
@@ -108,11 +95,8 @@ func Test_parseOutput(t *testing.T) {
 }
 
 func Test_parseOutputBad(t *testing.T) {
-	filename := "go2xunit.go"
-	suites, err := loadGotest(filename, t)
-	if err != nil {
-		t.Fatalf("error loading %s - %s", filename, err)
-	}
+	filename := "main.go"
+	suites := loadAndParseGoTest(filename, t)
 	if len(suites) > 0 {
 		t.Fatalf("managed to find suites in junk")
 	}
@@ -121,10 +105,7 @@ func Test_parseOutputBad(t *testing.T) {
 func Test_parseDatarace(t *testing.T) {
 	failOnRace = true
 	filename := "data/gotest-datarace.out"
-	suites, err := loadGotest(filename, t)
-	if err != nil {
-		t.Fatalf("error loading %s - %s", filename, err)
-	}
+	suites := loadAndParseGoTest(filename, t)
 
 	suite := suites[0]
 	tests := suite.Tests
@@ -152,10 +133,7 @@ func Test_parseDatarace(t *testing.T) {
 
 func Test_ignoreDatarace(t *testing.T) {
 	filename := "data/gotest-datarace.out"
-	suites, err := loadGotest(filename, t)
-	if err != nil {
-		t.Fatalf("error loading %s - %s", filename, err)
-	}
+	suites := loadAndParseGoTest(filename, t)
 
 	suite := suites[0]
 	tests := suite.Tests
@@ -182,10 +160,7 @@ func Test_ignoreDatarace(t *testing.T) {
 
 func Test_parseLogOutput(t *testing.T) {
 	filename := "data/gotest-log.out"
-	suites, err := loadGotest(filename, t)
-	if err != nil {
-		t.Fatalf("error loading %s - %s", filename, err)
-	}
+	suites := loadAndParseGoTest(filename, t)
 
 	suite := suites[0]
 	tests := suite.Tests
@@ -208,10 +183,7 @@ func Test_parseLogOutput(t *testing.T) {
 
 func Test_parsePanicOutput(t *testing.T) {
 	filename := "data/gotest-panic.out"
-	suites, err := loadGotest(filename, t)
-	if err != nil {
-		t.Fatalf("error loading %s - %s", filename, err)
-	}
+	suites := loadAndParseGoTest(filename, t)
 
 	suite := suites[0]
 	tests := suite.Tests
@@ -232,10 +204,7 @@ func Test_parsePanicOutput(t *testing.T) {
 
 func Test_parseEmptySuite(t *testing.T) {
 	filename := "data/gotest-empty.out"
-	suites, err := loadGotest(filename, t)
-	if err != nil {
-		t.Fatalf("error loading %s - %s", filename, err)
-	}
+	suites := loadAndParseGoTest(filename, t)
 
 	suite := suites[0]
 	tests := suite.Tests
@@ -245,83 +214,9 @@ func Test_parseEmptySuite(t *testing.T) {
 	}
 }
 
-func Test_parseGocheckPass(t *testing.T) {
-	filename := "data/gocheck-pass.out"
-	file, err := os.Open(filename)
-	if err != nil {
-		t.Fatalf("can't open %s - %s", filename, err)
-	}
-
-	suites, err := gc_Parse(file)
-
-	if err != nil {
-		t.Fatalf("can't parse %s - %s", filename, err)
-	}
-
-	nsuites := 1
-	if len(suites) != nsuites {
-		t.Fatalf("bad number of suites %d != %d", len(suites), nsuites)
-	}
-
-	suite := suites[0]
-	ntests := 3
-	if len(suite.Tests) != ntests {
-		t.Fatalf("bad number of tests %d != %d", len(suite.Tests), ntests)
-	}
-
-	name := "MySuite"
-	if suite.Name != name {
-		t.Fatalf("bad suite name %s != %s", suite.Name, name)
-	}
-
-	if suite.NumFailed() > 0 {
-		t.Fatalf("suite failed, should have passed")
-	}
-}
-
-func Test_parseGocheckFail(t *testing.T) {
-	filename := "data/gocheck-fail.out"
-	file, err := os.Open(filename)
-	if err != nil {
-		t.Fatalf("can't open %s - %s", filename, err)
-	}
-
-	suites, err := gc_Parse(file)
-
-	if err != nil {
-		t.Fatalf("can't parse %s - %s", filename, err)
-	}
-
-	nsuites := 2
-	if len(suites) != nsuites {
-		t.Fatalf("bad number of suites %d != %d", len(suites), nsuites)
-	}
-
-	// FIXME: This randomly fails with len(suite.Tests) = 1
-	suite := suites[1]
-	ntests := 3
-	if len(suite.Tests) != ntests {
-		t.Fatalf("bad number of tests %d != %d", len(suite.Tests), ntests)
-	}
-
-	name := "MySuite"
-	if suite.Name != name {
-		t.Fatalf("bad suite name %s != %s", suite.Name, name)
-	}
-
-	nfailed := 1
-	if suite.NumFailed() != nfailed {
-		t.Fatalf("num failed differ %d != %d", suite.NumFailed(), nfailed)
-	}
-}
-
 func Test_NoFiles(t *testing.T) {
 	filename := "data/gotest-nofiles.out"
-	suites, err := loadGotest(filename, t)
-
-	if err != nil {
-		t.Fatalf("error loading %s - %s", filename, err)
-	}
+	suites := loadAndParseGoTest(filename, t)
 
 	count := 1
 	if len(suites) != count {
@@ -331,10 +226,7 @@ func Test_NoFiles(t *testing.T) {
 
 func Test_Multi(t *testing.T) {
 	filename := "data/gotest-multi.out"
-	suites, err := loadGotest(filename, t)
-	if err != nil {
-		t.Fatalf("error loading %s - %s", filename, err)
-	}
+	suites := loadAndParseGoTest(filename, t)
 
 	count := 1
 	if len(suites) != count {
@@ -344,10 +236,7 @@ func Test_Multi(t *testing.T) {
 
 func Test_ThatMessageIsParsedCorrectly_WhenThereIsAnErrorWithinTheLastTestInSuite(t *testing.T) {
 	filename := "data/gotest-multierror.out"
-	suites, err := loadGotest(filename, t)
-	if err != nil {
-		t.Fatalf("error loading %s - %s", filename, err)
-	}
+	suites := loadAndParseGoTest(filename, t)
 
 	count := 1
 	if len(suites) != count {
@@ -377,21 +266,24 @@ func Test_ThatMessageIsParsedCorrectly_WhenThereIsAnErrorWithinTheLastTestInSuit
 }
 
 func Test_parseBuildFailed(t *testing.T) {
-	_, err := loadGotest("data/gotest-buildfailed.out", t)
+	file := loadGoTestFile(t, "data/gotest-buildfailed.out")
+	_, err := gt_Parse(file)
 	if err == nil {
 		t.Fatalf("expected error when at least one package failed to build")
 	}
 }
 
 func Test_nameWithNum(t *testing.T) {
-	_, err := loadGotest("data/gotest-num.out", t)
+	file := loadGoTestFile(t, "data/gotest-num.out")
+	_, err := gt_Parse(file)
 	if err != nil {
 		t.Fatalf("didn't parse name with number")
 	}
 }
 
 func Test_0Time(t *testing.T) {
-	suites, err := loadGotest("data/gotest-0.out", t)
+	file := loadGoTestFile(t, "data/gotest-0.out")
+	suites, err := gt_Parse(file)
 	if err != nil {
 		t.Fatalf("didn't parse name with number")
 	}
@@ -410,10 +302,7 @@ func Test_0Time(t *testing.T) {
 }
 
 func Test_TestifySuite(t *testing.T) {
-	suites, err := loadGotest("data/gotest-testify-suite.out", t)
-	if err != nil {
-		t.Fatalf("Failed to parse")
-	}
+	suites := loadAndParseGoTest("data/gotest-testify-suite.out", t)
 	if len(suites) != 2 {
 		t.Fatalf("Wrong number of suites", len(suites))
 	}

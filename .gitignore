@@ -11,3 +11,8 @@
 
 go2xunit.iml
 .idea
+
+# ----------- compilation output
+
+go2xunit
+go2xunit.exe
