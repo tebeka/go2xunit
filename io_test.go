@@ -12,6 +12,7 @@ import (
 
 var goCheckFiles []string = []string{
 	"gocheck-pass.out",
+	"gocheck-fail.out",
 }
 
 var goTestFiles []string = []string{
