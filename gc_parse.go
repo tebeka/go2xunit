@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"regexp"
 	"strings"
@@ -10,6 +11,7 @@ import (
 // gc_Parse parses output of "go test -gocheck.vv", returns a list of tests
 // See data/gocheck.out for an example
 func gc_Parse(rd io.Reader) ([]*Suite, error) {
+	find_start := regexp.MustCompile(gc_startRE).FindStringSubmatch
 	find_end := regexp.MustCompile(gc_endRE).FindStringSubmatch
 
 	scanner := bufio.NewScanner(rd)
@@ -20,10 +22,25 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 
 	for lnum := 1; scanner.Scan(); lnum++ {
 		line := scanner.Text()
-		tokens := find_end(line)
+		tokens := find_start(line)
 		if len(tokens) > 0 {
-			suiteName = tokens[2]
-			test = &Test{Name: tokens[3]}
+			if test != nil {
+				return nil, fmt.Errorf("%d: start in middle\n", lnum)
+			}
+			suiteName = tokens[1]
+			test = &Test{Name: tokens[2]}
+			out = []string{}
+			continue
+		}
+
+		tokens = find_end(line)
+		if len(tokens) > 0 {
+			if test == nil {
+				return nil, fmt.Errorf("%d: orphan end", lnum)
+			}
+			if (tokens[2] != suiteName) || (tokens[3] != test.Name) {
+				return nil, fmt.Errorf("%d: suite/name mismatch", lnum)
+			}
 			test.Message = strings.Join(out, "\n")
 			test.Time = tokens[4]
 			test.Failed = (tokens[1] == "FAIL")
