@@ -8,12 +8,11 @@ import (
 )
 
 func Test_MainXunitNet(t *testing.T) {
-	// make sure file date is run-date="2015-06-05" run-time="18:34:41"
 	filename := "gocheck-pass.out"
-	args := []string{"-gocheck", "-xunitnet", "-input", "data/" + filename}
+	args := []string{"-gocheck", "-input", "data/" + filename}
 	os.Args = append(os.Args, args...)
 
-	expected, err := ioutil.ReadAll(getOutputData("xunit.net", filename))
+	expected, err := ioutil.ReadAll(getOutputData("xunit", filename))
 	checkError(err)
 
 	// this can be done only once or test framework will panic
