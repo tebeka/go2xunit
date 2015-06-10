@@ -14,35 +14,38 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 	find_start := regexp.MustCompile(gc_startRE).FindStringSubmatch
 	find_end := regexp.MustCompile(gc_endRE).FindStringSubmatch
 
-	scanner := bufio.NewScanner(rd)
-	var test *Test
 	var suites = make([]*Suite, 0)
 	var suiteName string
 	var currentSuite *Suite
-	var out []string
 
+	var testName string
+	var message []string
+
+	scanner := bufio.NewScanner(rd)
 	for lnum := 1; scanner.Scan(); lnum++ {
 		line := scanner.Text()
+
 		tokens := find_start(line)
 		if len(tokens) > 0 {
-			if test != nil {
+			if testName != "" {
 				return nil, fmt.Errorf("%d: start in middle\n", lnum)
 			}
 			suiteName = tokens[1]
-			test = &Test{Name: tokens[2]}
-			out = []string{}
+			testName = tokens[2]
+			message = []string{}
 			continue
 		}
 
 		tokens = find_end(line)
 		if len(tokens) > 0 {
-			if test == nil {
+			if testName == "" {
 				return nil, fmt.Errorf("%d: orphan end", lnum)
 			}
-			if (tokens[2] != suiteName) || (tokens[3] != test.Name) {
+			if (tokens[2] != suiteName) || (tokens[3] != testName) {
 				return nil, fmt.Errorf("%d: suite/name mismatch", lnum)
 			}
-			test.Message = strings.Join(out, "\n")
+			test := &Test{Name: testName}
+			test.Message = strings.Join(message, "\n")
 			test.Time = tokens[4]
 			test.Failed = (tokens[1] == "FAIL")
 			test.Passed = (tokens[1] == "PASS")
@@ -54,15 +57,15 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 			}
 			currentSuite.Tests = append(currentSuite.Tests, test)
 
-			test = nil
+			testName = ""
 			suiteName = ""
-			out = []string{}
+			message = []string{}
 
 			continue
 		}
 
-		if test != nil {
-			out = append(out, line)
+		if testName != "" {
+			message = append(message, line)
 		}
 	}
 
