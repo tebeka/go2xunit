@@ -1,3 +1,9 @@
+2015-06-10 version 1.2.1
+    * Fix SKIP and PANIC for gocheck and add more tests
+
+2015-06-09 version 1.2.0
+    * Support for xUnit.net (eg. appveyor.com)
+
 2014-12-16 version 1.1.1
     * Better error message (github issue #19)
 

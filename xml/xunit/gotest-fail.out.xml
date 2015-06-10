@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <testsuite name="_/home/miki/Projects/goroot/src/xunit" tests="4" errors="0" failures="1" skip="0">
+    <testcase classname="_/home/miki/Projects/goroot/src/xunit" name="TestAdd" time="0.00">
+
+    </testcase>
+    <testcase classname="_/home/miki/Projects/goroot/src/xunit" name="TestSub" time="0.00">
+
+    </testcase>
+    <testcase classname="_/home/miki/Projects/goroot/src/xunit" name="TestSubFail" time="0.00">
+
+      <failure type="go.error" message="error">
+        <![CDATA[	xunit_test.go:22: 3-1 != 3
+		Some newline goes here]]>
+      </failure>    </testcase>
+    <testcase classname="_/home/miki/Projects/goroot/src/xunit" name="TestSubOK" time="0.00">
+
+    </testcase>
+  </testsuite>

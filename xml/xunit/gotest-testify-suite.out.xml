@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="TestSuite" tests="2" errors="0" failures="0" skip="0">
+    <testcase classname="TestSuite" name="TestA" time="0.01">
+
+    </testcase>
+    <testcase classname="TestSuite" name="TestB" time="0.02">
+
+    </testcase>
+  </testsuite>
+  <testsuite name="testify-suite" tests="1" errors="0" failures="0" skip="0">
+    <testcase classname="testify-suite" name="TestC" time="0.04">
+
+    </testcase>
+  </testsuite>
+</testsuites>

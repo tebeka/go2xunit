@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly name="_/home/miki/Projects/goroot/src/anotherTest"
+          run-date="2015-06-05" run-time="18:34:41"
+          configFile="none"
+          time="0.004"
+          total="6"
+          passed="4"
+          failed="1"
+          skipped="1"
+          environment="n/a"
+          test-framework="golang">
+
+    <class time="0.004" name="_/home/miki/Projects/goroot/src/xunit"
+  	     total="5"
+  	     passed="3"
+  	     failed="1"
+  	     skipped="1">
+
+        <test name="TestAdd"
+          type="test"
+          method="TestAdd"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestSub"
+          type="test"
+          method="TestSub"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestSubFail"
+          type="test"
+          method="TestSubFail"
+          result="Fail"
+          time="0.00">
+          <failure exception-type="go.error">
+             <message><![CDATA[	xunit_test.go:22: 3-1 != 3
+		Some newline goes here]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestSubOK"
+          type="test"
+          method="TestSubOK"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestSubSkip"
+          type="test"
+          method="TestSubSkip"
+          result="Skip"
+          time="0.00">
+        </test>
+
+    </class>
+
+    <class time="0.000" name="_/home/miki/Projects/goroot/src/anotherTest"
+  	     total="1"
+  	     passed="1"
+  	     failed="0"
+  	     skipped="0">
+
+        <test name="TestAdd"
+          type="test"
+          method="TestAdd"
+          result="Pass"
+          time="0.00">
+        </test>
+
+    </class>
+
+</assembly>

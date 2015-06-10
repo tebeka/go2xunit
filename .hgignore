@@ -1,8 +1,0 @@
-syntax: glob
-
-go2xunit
-README.html
-demo/gotest.out
-demo/jenkins.war
-demo/tests.xml
-demo/jenkins.log

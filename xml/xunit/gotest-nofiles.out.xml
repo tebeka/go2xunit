@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <testsuite name="controllers" tests="4" errors="0" failures="0" skip="0">
+    <testcase classname="controllers" name="TestApp_AssetPath" time="0.00">
+
+    </testcase>
+    <testcase classname="controllers" name="TestTrimTransferCeil" time="0.00">
+
+    </testcase>
+    <testcase classname="controllers" name="TestStatusDescription" time="0.00">
+
+    </testcase>
+    <testcase classname="controllers" name="TestCode" time="0.00">
+
+    </testcase>
+  </testsuite>

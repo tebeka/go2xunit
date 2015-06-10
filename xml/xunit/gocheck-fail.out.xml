@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="MySuite1" tests="1" errors="0" failures="0" skip="0">
+    <testcase classname="MySuite1" name="TestAdd" time="0.000">
+
+    </testcase>
+  </testsuite>
+  <testsuite name="MySuite" tests="3" errors="0" failures="1" skip="0">
+    <testcase classname="MySuite" name="TestDiv" time="">
+
+      <failure type="go.error" message="error">
+        <![CDATA[mmath_test.go:38:
+    c.Assert(z, Equals, float64(x)/float64(y))
+... obtained int = 0
+... expected float64 = 0.6666666666666666
+]]>
+      </failure>    </testcase>
+    <testcase classname="MySuite" name="TestMul" time="0.000">
+
+    </testcase>
+    <testcase classname="MySuite" name="TestSub" time="0.000">
+
+    </testcase>
+  </testsuite>
+</testsuites>
