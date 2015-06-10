@@ -13,6 +13,9 @@ import (
 var goCheckFiles []string = []string{
 	"gocheck-pass.out",
 	"gocheck-fail.out",
+	"gocheck-panic.out",
+	"gocheck-nofiles.out",
+	"gocheck-empty.out",
 }
 
 var goTestFiles []string = []string{
@@ -76,6 +79,9 @@ func getOutputData(outType string, filename string) io.Reader {
 }
 
 func generateXML(suites []*Suite, filename string, xmlTemplate string) []byte {
+	if len(suites) == 0 {
+		return []byte("error: no tests found")
+	}
 	r, w, _ := os.Pipe()
 	writeXML(suites, w, xmlTemplate)
 	w.Close()

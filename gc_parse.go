@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"log"
 	"regexp"
 	"strings"
 )
@@ -49,7 +48,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 			test := &Test{Name: testName}
 			test.Message = strings.Join(message, "\n")
 			test.Time = tokens[4]
-			test.Failed = (tokens[1] == "FAIL")
+			test.Failed = (tokens[1] == "FAIL") || (tokens[1] == "PANIC")
 			test.Passed = (tokens[1] == "PASS")
 			test.Skipped = (tokens[1] == "SKIP")
 
@@ -69,15 +68,13 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 		// last "suite" is test summary
 		tokens = find_suite(line)
 		if tokens != nil {
-			if testName != "" {
-				// This occurs when the last test ended with a panic.
-				log.Fatalln("Not implemented: handlePanic()")
-			}
 			if currentSuite == nil {
-				log.Fatalln("Not implemented: currentSuite == nil")
+				currentSuite = &Suite{Name: tokens[2], Status: tokens[1], Time: tokens[3]}
+				suites = append(suites, currentSuite)
+			} else {
+				currentSuite.Status = tokens[1]
+				currentSuite.Time = tokens[3]
 			}
-			currentSuite.Status = tokens[1]
-			currentSuite.Time = tokens[3]
 
 			testName = ""
 			suiteName = ""

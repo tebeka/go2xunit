@@ -35,6 +35,10 @@ func main() {
 		log.Fatalf("error: %s does not take parameters (did you mean -input?)", os.Args[0])
 	}
 
+	if *bamboo && *xunitnet {
+		log.Fatalf("error: -bamboo and -xunitnet are mutually exclusive")
+	}
+
 	input, output := getIO(*inputFile, *outputFile)
 
 	var parse func(rd io.Reader) ([]*Suite, error)
@@ -51,10 +55,6 @@ func main() {
 	}
 	if len(suites) == 0 {
 		log.Fatalf("error: no tests found")
-	}
-
-	if *bamboo && *xunitnet {
-		log.Fatalf("error: -bamboo and -xunitnet are mutually exclusive")
 	}
 
 	var xmlTemplate string

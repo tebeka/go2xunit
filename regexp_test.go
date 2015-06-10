@@ -9,42 +9,27 @@ func Test_GcSuiteRePass(t *testing.T) {
 	find_suite := regexp.MustCompile(gc_endRE).FindStringSubmatch
 	tokens := find_suite("PASS: mmath_test.go:16: MySuite.TestAdd	0.000s")
 
-	expected := "PASS"
-	actual := tokens[1]
-	checkExpected(t, expected, actual)
-
-	expected = "MySuite"
-	actual = tokens[2]
-	checkExpected(t, expected, actual)
-
-	expected = "TestAdd"
-	actual = tokens[3]
-	checkExpected(t, expected, actual)
-
-	expected = "0.000"
-	actual = tokens[4]
-	checkExpected(t, expected, actual)
+	for i, expected := range []string{"PASS", "MySuite", "TestAdd", "0.000"} {
+		checkExpected(t, expected, tokens[i+1])
+	}
 }
 
 func Test_GcSuiteReFail(t *testing.T) {
 	find_suite := regexp.MustCompile(gc_endRE).FindStringSubmatch
 	tokens := find_suite("FAIL: mmath_test.go:35: MySuite.TestDiv")
 
-	expected := "FAIL"
-	actual := tokens[1]
-	checkExpected(t, expected, actual)
+	for i, expected := range []string{"FAIL", "MySuite", "TestDiv", ""} {
+		checkExpected(t, expected, tokens[i+1])
+	}
+}
 
-	expected = "MySuite"
-	actual = tokens[2]
-	checkExpected(t, expected, actual)
+func Test_GcSuiteReSkip(t *testing.T) {
+	find_suite := regexp.MustCompile(gc_endRE).FindStringSubmatch
+	tokens := find_suite("SKIP: mmath_test.go:35: MySuite.TestMul (not implemented)")
 
-	expected = "TestDiv"
-	actual = tokens[3]
-	checkExpected(t, expected, actual)
-
-	expected = ""
-	actual = tokens[4]
-	checkExpected(t, expected, actual)
+	for i, expected := range []string{"SKIP", "MySuite", "TestMul", ""} {
+		checkExpected(t, expected, tokens[i+1])
+	}
 }
 
 func checkExpected(t *testing.T, expected string, actual string) {
