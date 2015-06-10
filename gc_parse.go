@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"log"
 	"regexp"
 	"strings"
 )
@@ -13,6 +14,7 @@ import (
 func gc_Parse(rd io.Reader) ([]*Suite, error) {
 	find_start := regexp.MustCompile(gc_startRE).FindStringSubmatch
 	find_end := regexp.MustCompile(gc_endRE).FindStringSubmatch
+	find_suite := regexp.MustCompile(gc_suiteRE).FindStringSubmatch
 
 	var suites = make([]*Suite, 0)
 	var suiteName string
@@ -64,6 +66,26 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 			continue
 		}
 
+		// last "suite" is test summary
+		tokens = find_suite(line)
+		if tokens != nil {
+			if testName != "" {
+				// This occurs when the last test ended with a panic.
+				log.Fatalln("Not implemented: handlePanic()")
+			}
+			if currentSuite == nil {
+				log.Fatalln("Not implemented: currentSuite == nil")
+			}
+			currentSuite.Status = tokens[1]
+			currentSuite.Time = tokens[3]
+
+			testName = ""
+			suiteName = ""
+			message = []string{}
+
+			continue
+		}
+
 		if testName != "" {
 			message = append(message, line)
 		}
@@ -75,8 +97,3 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 
 	return suites, nil
 }
-
-/* FIXME:
-suite.Status =
-suite.Time =
-*/

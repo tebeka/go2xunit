@@ -21,6 +21,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	var curSuite *Suite
 	var out []string
 	suiteStack := SuiteStack{}
+
 	// Handles a test that ended with a panic.
 	handlePanic := func() {
 		curTest.Failed = true

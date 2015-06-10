@@ -20,18 +20,18 @@ func Test_parseGocheckPass(t *testing.T) {
 
 	nsuites := 1
 	if len(suites) != nsuites {
-		t.Fatalf("bad number of suites %d != %d", len(suites), nsuites)
+		t.Fatalf("bad number of suites, expected %d but was %d", nsuites, len(suites))
 	}
 
 	suite := suites[0]
 	ntests := 3
 	if len(suite.Tests) != ntests {
-		t.Fatalf("bad number of tests %d != %d", len(suite.Tests), ntests)
+		t.Fatalf("bad number of tests, expected %d but was %d", ntests, len(suite.Tests))
 	}
 
 	name := "MySuite"
 	if suite.Name != name {
-		t.Fatalf("bad suite name %s != %s", suite.Name, name)
+		t.Fatalf("bad suite name, expected %s but was %s", name, suite.Name)
 	}
 
 	if suite.NumFailed() > 0 {
@@ -54,23 +54,22 @@ func Test_parseGocheckFail(t *testing.T) {
 
 	nsuites := 2
 	if len(suites) != nsuites {
-		t.Fatalf("bad number of suites %d != %d", len(suites), nsuites)
+		t.Fatalf("bad number of suites, expected %d but was %d", nsuites, len(suites))
 	}
 
-	// FIXME: This randomly fails with len(suite.Tests) = 1
 	suite := suites[1]
 	ntests := 3
 	if len(suite.Tests) != ntests {
-		t.Fatalf("bad number of tests %d != %d", len(suite.Tests), ntests)
+		t.Fatalf("bad number of tests, expected %d but was %d", ntests, len(suite.Tests))
 	}
 
 	name := "MySuite"
 	if suite.Name != name {
-		t.Fatalf("bad suite name %s != %s", suite.Name, name)
+		t.Fatalf("bad suite name, expected %s but was %s", name, suite.Name)
 	}
 
 	nfailed := 1
 	if suite.NumFailed() != nfailed {
-		t.Fatalf("num failed differ %d != %d", suite.NumFailed(), nfailed)
+		t.Fatalf("num failed differ, expected %d but was %d", nfailed, suite.NumFailed())
 	}
 }
