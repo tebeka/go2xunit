@@ -25,7 +25,7 @@ func main() {
 
 	if *showVersion {
 		fmt.Println("tischda/go2xunit", version)
-		os.Exit(0)
+		return
 	}
 
 	// No time ... prefix for error messages
@@ -57,13 +57,11 @@ func main() {
 		log.Fatalf("error: no tests found")
 	}
 
-	var xmlTemplate string
+	xmlTemplate := xunitTemplate
 	if *xunitnet {
 		xmlTemplate = xunitNetTemplate
 	} else if *bamboo || (len(suites) > 1) {
 		xmlTemplate = multiTemplate
-	} else {
-		xmlTemplate = xunitTemplate
 	}
 
 	writeXML(suites, output, xmlTemplate)
