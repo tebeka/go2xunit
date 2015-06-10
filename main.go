@@ -35,10 +35,7 @@ func main() {
 		log.Fatalf("error: %s does not take parameters (did you mean -input?)", os.Args[0])
 	}
 
-	input, output, err := getIO(*inputFile, *outputFile)
-	if err != nil {
-		log.Fatalf("error: %s", err)
-	}
+	input, output := getIO(*inputFile, *outputFile)
 
 	var parse func(rd io.Reader) ([]*Suite, error)
 

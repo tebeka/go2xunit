@@ -16,8 +16,9 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 
 	scanner := bufio.NewScanner(rd)
 	var test *Test
-	var suites = make(map[string]*Suite)
+	var suites = make([]*Suite, 0)
 	var suiteName string
+	var currentSuite *Suite
 	var out []string
 
 	for lnum := 1; scanner.Scan(); lnum++ {
@@ -47,12 +48,11 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 			test.Passed = (tokens[1] == "PASS")
 			test.Skipped = (tokens[1] == "SKIP")
 
-			suite, ok := suites[suiteName]
-			if !ok {
-				suite = &Suite{Name: suiteName}
+			if currentSuite == nil || currentSuite.Name != suiteName {
+				currentSuite = &Suite{Name: suiteName}
+				suites = append(suites, currentSuite)
 			}
-			suite.Tests = append(suite.Tests, test)
-			suites[suiteName] = suite
+			currentSuite.Tests = append(currentSuite.Tests, test)
 
 			test = nil
 			suiteName = ""
@@ -70,18 +70,10 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 		return nil, err
 	}
 
-	return map2arr(suites), nil
+	return suites, nil
 }
 
-func map2arr(m map[string]*Suite) []*Suite {
-	arr := make([]*Suite, 0, len(m))
-	for _, suite := range m {
-		/* FIXME:
-		suite.Status =
-		suite.Time =
-		*/
-		arr = append(arr, suite)
-	}
-
-	return arr
-}
+/* FIXME:
+suite.Status =
+suite.Time =
+*/
