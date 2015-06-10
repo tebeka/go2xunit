@@ -19,7 +19,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	suites := []*Suite{}
 	var curTest *Test
 	var curSuite *Suite
-	var out []string
+	var message []string
 	suiteStack := SuiteStack{}
 
 	// Handles a test that ended with a panic.
@@ -34,15 +34,15 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 
 	// Appends output to the last test.
 	appendError := func() error {
-		if len(out) > 0 && curSuite != nil && len(curSuite.Tests) > 0 {
-			message := strings.Join(out, "\n")
+		if len(message) > 0 && curSuite != nil && len(curSuite.Tests) > 0 {
+			message := strings.Join(message, "\n")
 			if curSuite.Tests[len(curSuite.Tests)-1].Message == "" {
 				curSuite.Tests[len(curSuite.Tests)-1].Message = message
 			} else {
 				curSuite.Tests[len(curSuite.Tests)-1].Message += "\n" + message
 			}
 		}
-		out = []string{}
+		message = []string{}
 		return nil
 	}
 
@@ -99,14 +99,14 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 				err := fmt.Errorf("%d: name mismatch (try disabling parallel mode)", lnum)
 				return nil, err
 			}
-			curTest.Failed = (tokens[1] == "FAIL") || (failOnRace && hasDatarace(out))
+			curTest.Failed = (tokens[1] == "FAIL") || (failOnRace && hasDatarace(message))
 			curTest.Skipped = (tokens[1] == "SKIP")
 			curTest.Passed = (tokens[1] == "PASS")
 			curTest.Time = tokens[3]
-			curTest.Message = strings.Join(out, "\n")
+			curTest.Message = strings.Join(message, "\n")
 			curSuite.Tests = append(curSuite.Tests, curTest)
 			curTest = nil
-			out = []string{}
+			message = []string{}
 			continue
 		}
 
@@ -130,7 +130,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			continue
 		}
 
-		out = append(out, line)
+		message = append(message, line)
 	}
 
 	if err := scanner.Err(); err != nil {
