@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"text/template"
 	"time"
@@ -60,6 +61,7 @@ type Test struct {
 	Name, Time, Message string
 	Failed              bool
 	Skipped             bool
+	Passed              bool
 }
 
 type Suite struct {
@@ -90,8 +92,30 @@ func (s *SuiteStack) Pop() *Suite {
 }
 
 type TestResults struct {
-	Suites []*Suite
-	Multi  bool
+	Suites   []*Suite
+	Assembly string
+	RunDate  string
+	RunTime  string
+	Time     string
+	Total    int
+	Passed   int
+	Failed   int
+	Skipped  int
+}
+
+// calculate grand total for all suites
+func (r *TestResults) calcTotals() {
+	totalTime, _ := strconv.ParseFloat(r.Time, 64)
+	for _, suite := range r.Suites {
+		r.Passed += suite.NumPassed()
+		r.Failed += suite.NumFailed()
+		r.Skipped += suite.NumSkipped()
+
+		suiteTime, _ := strconv.ParseFloat(suite.Time, 64)
+		totalTime += suiteTime
+		r.Time = fmt.Sprintf("%.3f", totalTime)
+	}
+	r.Total = r.Passed + r.Skipped + r.Failed
 }
 
 func (suite *Suite) NumFailed() int {
@@ -116,6 +140,19 @@ func (suite *Suite) NumSkipped() int {
 	return count
 }
 
+// Number of passed tests in the suite
+func (suite *Suite) NumPassed() int {
+	count := 0
+	for _, test := range suite.Tests {
+		if test.Passed {
+			count++
+		}
+	}
+
+	return count
+}
+
+// Number of tests in the suite
 func (suite *Suite) Count() int {
 	return len(suite.Tests)
 }
@@ -221,6 +258,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			}
 			curTest.Failed = (tokens[1] == "FAIL") || (failOnRace && hasDatarace(out))
 			curTest.Skipped = (tokens[1] == "SKIP")
+			curTest.Passed = (tokens[1] == "PASS")
 			curTest.Time = tokens[3]
 			curTest.Message = strings.Join(out, "\n")
 			curSuite.Tests = append(curSuite.Tests, curTest)
@@ -300,6 +338,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 			test.Message = strings.Join(out, "\n")
 			test.Time = tokens[4]
 			test.Failed = (tokens[1] == "FAIL") || (tokens[1] == "PANIC")
+			test.Passed = (tokens[1] == "PASS")
 			test.Skipped = (tokens[1] == "SKIP")
 
 			if suite == nil || suite.Name != suiteName {
@@ -409,9 +448,14 @@ const (
 // writeXML exits xunit XML of tests to out
 func writeXML(suites []*Suite, out io.Writer, xmlTemplate string) {
 	testsResult := TestResults{
-		Suites: suites,
+		Suites:   suites,
+		Assembly: suites[len(suites)-1].Name,
+		RunDate:  runTime.Format("2006-01-02"),
+		RunTime:  fmt.Sprintf("%02d:%02d:%02d", runTime.Hour(), runTime.Minute(), runTime.Second()),
 	}
+	testsResult.calcTotals()
 	t := template.New("test template")
+
 	t, err := t.Parse(xmlDeclaration + xmlTemplate)
 	if err != nil {
 		fmt.Printf("Error in parse %v\n", err)
@@ -424,9 +468,9 @@ func writeXML(suites []*Suite, out io.Writer, xmlTemplate string) {
 	}
 }
 
-// getInput return input io.Reader from file name, if file name is - it will
+// getInput return input io.File from file name, if file name is - it will
 // return os.Stdin
-func getInput(filename string) (io.Reader, error) {
+func getInput(filename string) (*os.File, error) {
 	if filename == "-" || filename == "" {
 		return os.Stdin, nil
 	}
@@ -434,9 +478,9 @@ func getInput(filename string) (io.Reader, error) {
 	return os.Open(filename)
 }
 
-// getInput return output io.Writer from file name, if file name is - it will
+// getInput return output io.File from file name, if file name is - it will
 // return os.Stdout
-func getOutput(filename string) (io.Writer, error) {
+func getOutput(filename string) (*os.File, error) {
 	if filename == "-" || filename == "" {
 		return os.Stdout, nil
 	}
@@ -456,7 +500,22 @@ func getIO(inputFile, outputFile string) (io.Reader, io.Writer, error) {
 		return nil, nil, fmt.Errorf("can't open %s for writing: %s", outputFile, err)
 	}
 
+	setRunTimeFrom(input)
+
 	return input, output, nil
+}
+
+// set test execution time from file date
+func setRunTimeFrom(file *os.File) {
+	statinfo, err := file.Stat()
+	checkFatal(err)
+	runTime = statinfo.ModTime()
+}
+
+func checkFatal(err error) {
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
 
 func main() {

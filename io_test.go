@@ -43,7 +43,6 @@ func Test_XMLOuptutGoCheckXUnit(t *testing.T) {
 }
 
 func Test_XMLOuptutGoCheckXUnitNet(t *testing.T) {
-	t.Skip("not implemented")
 	for _, filename := range goCheckFiles {
 		suites, err := gc_Parse(getInputData(filename))
 		checkError(err)
@@ -60,7 +59,6 @@ func Test_XMLOuptutGoTestXUnit(t *testing.T) {
 }
 
 func Test_XMLOuptutGoTestXunitNet(t *testing.T) {
-	t.Skip("not implemented")
 	for _, filename := range goTestFiles {
 		suites, err := gt_Parse(getInputData(filename))
 		checkError(err)
