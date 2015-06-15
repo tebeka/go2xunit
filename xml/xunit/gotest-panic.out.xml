@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <testsuite name="go2xunit/demo" tests="1" errors="0" failures="1" skip="0">
+    <testcase classname="go2xunit/demo" name="TestPanic" time="N/A">
+
+      <failure type="go.error" message="error">
+        <![CDATA[fatal error: all goroutines are asleep - deadlock!
+...]]>
+      </failure>    </testcase>
+  </testsuite>

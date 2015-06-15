@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <testsuite name="qbox.us/largefile" tests="1" errors="0" failures="0" skip="0">
+    <testcase classname="qbox.us/largefile" name="TestBasic-8" time="0.00">
+
+    </testcase>
+  </testsuite>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly name="MySuite"
+          run-date="2015-06-05" run-time="18:34:41"
+          configFile="none"
+          time="0.040"
+          total="5"
+          passed="2"
+          failed="2"
+          skipped="1"
+          environment="n/a"
+          test-framework="golang">
+
+    <class time="0.040" name="MySuite"
+  	     total="5"
+  	     passed="2"
+  	     failed="2"
+  	     skipped="1">
+
+        <test name="TestAdd"
+          type="test"
+          method="TestAdd"
+          result="Pass"
+          time="0.001">
+        </test>
+
+        <test name="TestDiv"
+          type="test"
+          method="TestDiv"
+          result="Fail"
+          time="">
+          <failure exception-type="go.error">
+             <message><![CDATA[mmath_test.go:45:
+    c.Assert(z, Equals, float64(x)/float64(y))
+... obtained int = 0
+... expected float64 = 0.6666666666666666
+]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestMul"
+          type="test"
+          method="TestMul"
+          result="Skip"
+          time="">
+        </test>
+
+        <test name="TestPanic"
+          type="test"
+          method="TestPanic"
+          result="Fail"
+          time="">
+          <failure exception-type="go.error">
+             <message><![CDATA[... Panic:  (PC=0x42546C)
+
+c:/go/src/runtime/asm_amd64.s:401
+  in call16
+c:/go/src/runtime/panic.go:387
+  in gopanic
+c:/go/src/log/log.go:307
+  in Panic
+mmath.go:22
+  in Panic
+mmath_test.go:18
+  in MySuite.TestPanic
+c:/go/src/runtime/asm_amd64.s:401
+  in call16
+c:/go/src/reflect/value.go:419
+  in Value.call
+c:/go/src/reflect/value.go:296
+  in Value.Call
+c:/go/src/runtime/asm_amd64.s:2232
+  in goexit]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestSub"
+          type="test"
+          method="TestSub"
+          result="Pass"
+          time="0.000">
+        </test>
+
+    </class>
+
+</assembly>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly name="qbox.us/largefile"
+          run-date="2015-06-05" run-time="18:34:41"
+          configFile="none"
+          time="0.012"
+          total="1"
+          passed="1"
+          failed="0"
+          skipped="0"
+          environment="n/a"
+          test-framework="golang">
+
+    <class time="0.012" name="qbox.us/largefile"
+  	     total="1"
+  	     passed="1"
+  	     failed="0"
+  	     skipped="0">
+
+        <test name="TestBasic-8"
+          type="test"
+          method="TestBasic-8"
+          result="Pass"
+          time="0.00">
+        </test>
+
+    </class>
+
+</assembly>

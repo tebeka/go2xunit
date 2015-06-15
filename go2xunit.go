@@ -10,7 +10,11 @@ import (
 	"regexp"
 	"strings"
 	"text/template"
+	"time"
 )
+
+// Time when the test was run
+var runTime time.Time
 
 const (
 	version = "1.1.1"
@@ -335,8 +339,10 @@ func hasFailures(suites []*Suite) bool {
 	return false
 }
 
-var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
-{{if .Multi}}<testsuites>{{end}}
+const (
+	xmlDeclaration = `<?xml version="1.0" encoding="utf-8"?>`
+
+	xunitTemplate string = `
 {{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Count}}" errors="0" failures="{{.NumFailed}}" skip="{{.NumSkipped}}">
 {{range  $test := $suite.Tests}}    <testcase classname="{{$suite.Name}}" name="{{$test.Name}}" time="{{$test.Time}}">
 {{if $test.Skipped }}      <skipped/> {{end}}
@@ -344,17 +350,54 @@ var xmlTemplate string = `<?xml version="1.0" encoding="utf-8"?>
         <![CDATA[{{$test.Message}}]]>
       </failure>{{end}}    </testcase>
 {{end}}  </testsuite>
-{{end}}{{if .Multi}}</testsuites>{{end}}
+{{end}}`
+
+	multiTemplate string = `
+<testsuites>` + xunitTemplate + `</testsuites>
 `
 
+	// https://xunit.codeplex.com/wikipage?title=XmlFormat
+	xunitNetTemplate string = `
+<assembly name="{{.Assembly}}"
+          run-date="{{.RunDate}}" run-time="{{.RunTime}}"
+          configFile="none"
+          time="{{.Time}}"
+          total="{{.Total}}"
+          passed="{{.Passed}}"
+          failed="{{.Failed}}"
+          skipped="{{.Skipped}}"
+          environment="n/a"
+          test-framework="golang">
+{{range $suite := .Suites}}
+    <class time="{{.Time}}" name="{{.Name}}"
+  	     total="{{.Count}}"
+  	     passed="{{.NumPassed}}"
+  	     failed="{{.NumFailed}}"
+  	     skipped="{{.NumSkipped}}">
+{{range  $test := $suite.Tests}}
+        <test name="{{$test.Name}}"
+          type="test"
+          method="{{$test.Name}}"
+          result={{if $test.Skipped }}"Skip"{{else if $test.Failed }}"Fail"{{else if $test.Passed }}"Pass"{{end}}
+          time="{{$test.Time}}">
+        {{if $test.Failed }}  <failure exception-type="go.error">
+             <message><![CDATA[{{$test.Message}}]]></message>
+      	  </failure>
+      	{{end}}</test>
+{{end}}
+    </class>
+{{end}}
+</assembly>
+`
+)
+
 // writeXML exits xunit XML of tests to out
-func writeXML(suites []*Suite, out io.Writer, bamboo bool) {
+func writeXML(suites []*Suite, out io.Writer, xmlTemplate string) {
 	testsResult := TestResults{
 		Suites: suites,
-		Multi:  bamboo || (len(suites) > 1),
 	}
 	t := template.New("test template")
-	t, err := t.Parse(xmlTemplate)
+	t, err := t.Parse(xmlDeclaration + xmlTemplate)
 	if err != nil {
 		fmt.Printf("Error in parse %v\n", err)
 		return
@@ -407,6 +450,7 @@ func main() {
 	fail := flag.Bool("fail", false, "fail (non zero exit) if any test failed")
 	showVersion := flag.Bool("version", false, "print version and exit")
 	bamboo := flag.Bool("bamboo", false, "xml compatible with Atlassian's Bamboo")
+	xunitnet := flag.Bool("xunitnet", false, "xml compatible with xunit.net")
 	is_gocheck := flag.Bool("gocheck", false, "parse gocheck output")
 	flag.BoolVar(&failOnRace, "fail-on-race", false, "mark test as failing if it exposes a data race")
 	flag.Parse()
@@ -421,6 +465,10 @@ func main() {
 
 	if flag.NArg() > 0 {
 		log.Fatalf("error: %s does not take parameters (did you mean -input?)", os.Args[0])
+	}
+
+	if *bamboo && *xunitnet {
+		log.Fatalf("error: -bamboo and -xunitnet are mutually exclusive")
 	}
 
 	input, output, err := getIO(*inputFile, *outputFile)
@@ -445,7 +493,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	writeXML(suites, output, *bamboo)
+	xmlTemplate := xunitTemplate
+	if *xunitnet {
+		xmlTemplate = xunitNetTemplate
+	} else if *bamboo || (len(suites) > 1) {
+		xmlTemplate = multiTemplate
+	}
+
+	writeXML(suites, output, xmlTemplate)
 	if *fail && hasFailures(suites) {
 		os.Exit(1)
 	}
