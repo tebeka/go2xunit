@@ -42,9 +42,14 @@ const (
 
 	// START: mmath_test.go:16: MySuite.TestAdd
 	gc_startRE = "START: [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)"
+
 	// PASS: mmath_test.go:16: MySuite.TestAdd	0.000s
 	// FAIL: mmath_test.go:35: MySuite.TestDiv
-	gc_endRE = "(PASS|FAIL): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)([[:space:]]+([0-9]+.[0-9]+))?"
+	gc_endRE = "(PASS|FAIL|SKIP|PANIC): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)[[:space:]]?([0-9]+.[0-9]+)?"
+
+	// FAIL	go2xunit/demo-gocheck	0.008s
+	// ok  	go2xunit/demo-gocheck	0.008s
+	gc_suiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
 )
 
 var (
@@ -254,71 +259,81 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	return suites, nil
 }
 
-func map2arr(m map[string]*Suite) []*Suite {
-	arr := make([]*Suite, 0, len(m))
-	for _, suite := range m {
-		/* FIXME:
-		suite.Status =
-		suite.Time =
-		*/
-		arr = append(arr, suite)
-	}
-
-	return arr
-}
-
 // gc_Parse parses output of "go test -gocheck.vv", returns a list of tests
 // See data/gocheck.out for an example
 func gc_Parse(rd io.Reader) ([]*Suite, error) {
 	find_start := regexp.MustCompile(gc_startRE).FindStringSubmatch
 	find_end := regexp.MustCompile(gc_endRE).FindStringSubmatch
+	find_suite := regexp.MustCompile(gc_suiteRE).FindStringSubmatch
 
 	scanner := bufio.NewScanner(rd)
-	var test *Test
-	var suites = make(map[string]*Suite)
+	var suites = make([]*Suite, 0)
 	var suiteName string
+	var suite *Suite
+
+	var testName string
 	var out []string
 
 	for lnum := 1; scanner.Scan(); lnum++ {
 		line := scanner.Text()
+
 		tokens := find_start(line)
 		if len(tokens) > 0 {
-			if test != nil {
+			if testName != "" {
 				return nil, fmt.Errorf("%d: start in middle\n", lnum)
 			}
 			suiteName = tokens[1]
-			test = &Test{Name: tokens[2]}
+			testName = tokens[2]
 			out = []string{}
 			continue
 		}
 
 		tokens = find_end(line)
 		if len(tokens) > 0 {
-			if test == nil {
+			if testName == "" {
 				return nil, fmt.Errorf("%d: orphan end", lnum)
 			}
-			if (tokens[2] != suiteName) || (tokens[3] != test.Name) {
+			if (tokens[2] != suiteName) || (tokens[3] != testName) {
 				return nil, fmt.Errorf("%d: suite/name mismatch", lnum)
 			}
+			test := &Test{Name: testName}
 			test.Message = strings.Join(out, "\n")
 			test.Time = tokens[4]
-			test.Failed = (tokens[1] == "FAIL")
+			test.Failed = (tokens[1] == "FAIL") || (tokens[1] == "PANIC")
+			test.Skipped = (tokens[1] == "SKIP")
 
-			suite, ok := suites[suiteName]
-			if !ok {
+			if suite == nil || suite.Name != suiteName {
 				suite = &Suite{Name: suiteName}
+				suites = append(suites, suite)
 			}
 			suite.Tests = append(suite.Tests, test)
-			suites[suiteName] = suite
 
-			test = nil
+			testName = ""
 			suiteName = ""
 			out = []string{}
 
 			continue
 		}
 
-		if test != nil {
+		// last "suite" is test summary
+		tokens = find_suite(line)
+		if tokens != nil {
+			if suite == nil {
+				suite = &Suite{Name: tokens[2], Status: tokens[1], Time: tokens[3]}
+				suites = append(suites, suite)
+			} else {
+				suite.Status = tokens[1]
+				suite.Time = tokens[3]
+			}
+
+			testName = ""
+			suiteName = ""
+			out = []string{}
+
+			continue
+		}
+
+		if testName != "" {
 			out = append(out, line)
 		}
 	}
@@ -327,7 +342,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 		return nil, err
 	}
 
-	return map2arr(suites), nil
+	return suites, nil
 }
 
 func hasFailures(suites []*Suite) bool {

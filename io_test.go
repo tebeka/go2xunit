@@ -35,7 +35,6 @@ var goTestFiles []string = []string{
 }
 
 func Test_XMLOuptutGoCheckXUnit(t *testing.T) {
-	t.Skip("not implemented")
 	for _, filename := range goCheckFiles {
 		suites, err := gc_Parse(getInputData(filename))
 		checkError(err)
