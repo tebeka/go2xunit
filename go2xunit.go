@@ -18,7 +18,7 @@ import (
 var runTime time.Time
 
 const (
-	version = "1.1.1"
+	version = "1.2.0"
 
 	// gotest regular expressions
 
