@@ -1,7 +1,7 @@
 # go2xunit
 
-Converts `go test -v` (or `gocheck -vv`) output to xunit compatible XML output
-(used in [Jenkins][jenkins]/[Hudson][hudson]).
+Converts `go test -v` (or `gocheck -vv`) output to xunit or [xunit.net][xnet]
+compatible XML output (used in [Jenkins][jenkins]/[Hudson][hudson]).
 
 
 # Install
@@ -44,3 +44,4 @@ Bug reports go [here][bugs].
 [gocheck]: http://labix.org/gocheck
 [testify]: http://godoc.org/github.com/stretchr/testify
 [bugs]: https://bitbucket.org/tebeka/go2xunit/issues
+[xnet]: https://xunit.codeplex.com/wikipage?title=XmlFormat
