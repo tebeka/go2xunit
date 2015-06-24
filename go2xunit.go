@@ -46,7 +46,7 @@ const (
 
 	// PASS: mmath_test.go:16: MySuite.TestAdd	0.000s
 	// FAIL: mmath_test.go:35: MySuite.TestDiv
-	gc_endRE = "(PASS|FAIL|SKIP|PANIC): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)[[:space:]]?([0-9]+.[0-9]+)?"
+	gc_endRE = "(PASS|FAIL|SKIP|PANIC|MISS): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)[[:space:]]?([0-9]+.[0-9]+)?"
 
 	// FAIL	go2xunit/demo-gocheck	0.008s
 	// ok  	go2xunit/demo-gocheck	0.008s
@@ -317,6 +317,9 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 
 		tokens := find_start(line)
 		if len(tokens) > 0 {
+			if tokens[2] == "SetUpTest" || tokens[2] == "TearDownTest" {
+				continue
+			}
 			if testName != "" {
 				return nil, fmt.Errorf("%d: start in middle\n", lnum)
 			}
@@ -328,6 +331,9 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 
 		tokens = find_end(line)
 		if len(tokens) > 0 {
+			if tokens[3] == "SetUpTest" || tokens[3] == "TearDownTest" {
+				continue
+			}
 			if testName == "" {
 				return nil, fmt.Errorf("%d: orphan end", lnum)
 			}
@@ -339,7 +345,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 			test.Time = tokens[4]
 			test.Failed = (tokens[1] == "FAIL") || (tokens[1] == "PANIC")
 			test.Passed = (tokens[1] == "PASS")
-			test.Skipped = (tokens[1] == "SKIP")
+			test.Skipped = (tokens[1] == "SKIP" || tokens[1] == "MISS")
 
 			if suite == nil || suite.Name != suiteName {
 				suite = &Suite{Name: suiteName}

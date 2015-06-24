@@ -16,6 +16,7 @@ var goCheckFiles []string = []string{
 	"gocheck-panic.out",
 	"gocheck-nofiles.out",
 	"gocheck-empty.out",
+	"gocheck-setup-miss.out",
 }
 
 var goTestFiles []string = []string{

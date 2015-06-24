@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <testsuite name="FoobarSuite" tests="3" errors="0" failures="1" skip="2">
+    <testcase classname="FoobarSuite" name="SetUpSuite" time="">
+
+      <failure type="go.error" message="error">
+        <![CDATA[foobar_test.go:19:
+    c.Assert(err, gc.IsNil)
+... value *os.PathError = &os.PathError{Op:"stat", Path:"testdata/regexes.yaml", Err:0x2} ("stat testdata/regexes.yaml: no such file or directory")
+]]>
+      </failure>    </testcase>
+    <testcase classname="FoobarSuite" name="TestFrob" time="">
+      <skipped/> 
+    </testcase>
+    <testcase classname="FoobarSuite" name="TestThing" time="">
+      <skipped/> 
+    </testcase>
+  </testsuite>

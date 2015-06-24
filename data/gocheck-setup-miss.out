@@ -1,0 +1,18 @@
+=== RUN Test
+START: foobar_test.go:17: FoobarSuite.SetUpSuite
+foobar_test.go:19:
+    c.Assert(err, gc.IsNil)
+... value *os.PathError = &os.PathError{Op:"stat", Path:"testdata/regexes.yaml", Err:0x2} ("stat testdata/regexes.yaml: no such file or directory")
+
+FAIL: foobar_test.go:17: FoobarSuite.SetUpSuite
+
+START: foobar_test.go:79: FoobarSuite.TestFrob
+MISS: foobar_test.go:79: FoobarSuite.TestFrob
+
+START: foobar_test.go:102: FoobarSuite.TestThing
+MISS: foobar_test.go:102: FoobarSuite.TestThing
+
+OOPS: 82 passed, 1 FAILED, 2 MISSED
+--- FAIL: Test (2.37s)
+FAIL
+FAIL    github.com/you/yourproject/foobar   2.383s

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly name="FoobarSuite"
+          run-date="2015-06-05" run-time="18:34:41"
+          configFile="none"
+          time="2.383"
+          total="3"
+          passed="0"
+          failed="1"
+          skipped="2"
+          environment="n/a"
+          test-framework="golang">
+
+    <class time="2.383" name="FoobarSuite"
+  	     total="3"
+  	     passed="0"
+  	     failed="1"
+  	     skipped="2">
+
+        <test name="SetUpSuite"
+          type="test"
+          method="SetUpSuite"
+          result="Fail"
+          time="">
+          <failure exception-type="go.error">
+             <message><![CDATA[foobar_test.go:19:
+    c.Assert(err, gc.IsNil)
+... value *os.PathError = &os.PathError{Op:"stat", Path:"testdata/regexes.yaml", Err:0x2} ("stat testdata/regexes.yaml: no such file or directory")
+]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestFrob"
+          type="test"
+          method="TestFrob"
+          result="Skip"
+          time="">
+        </test>
+
+        <test name="TestThing"
+          type="test"
+          method="TestThing"
+          result="Skip"
+          time="">
+        </test>
+
+    </class>
+
+</assembly>
