@@ -32,8 +32,12 @@ Here's an example script (`run-tests.sh`) that can be used with [Jenkins][jenkin
     go2xunit -fail -input $outfile -output tests.xml
 
 
-Contact
-=======
+# Related
+
+* [testing: add -json flag for json
+  results](https://github.com/golang/go/issues/2981) open bug
+
+# Contact
 Miki Tebeka <miki.tebeka@gmail.com>
 
 Bug reports go [here][bugs].
