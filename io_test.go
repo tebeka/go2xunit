@@ -33,6 +33,7 @@ var goTestFiles []string = []string{
 	"gotest-panic.out",
 	"gotest-pass.out",
 	"gotest-testify-suite.out",
+	"gotest-1.5.out",
 }
 
 func Test_XMLOuptutGoCheckXUnit(t *testing.T) {

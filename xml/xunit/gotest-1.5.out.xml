@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <testsuite name="_/home/miki/Projects/go/src/bitbucket.org/tebeka/go2xunit/demo" tests="4" errors="0" failures="1" skip="0">
+    <testcase classname="_/home/miki/Projects/go/src/bitbucket.org/tebeka/go2xunit/demo" name="TestAdd" time="0.00">
+
+    </testcase>
+    <testcase classname="_/home/miki/Projects/go/src/bitbucket.org/tebeka/go2xunit/demo" name="TestSub" time="0.00">
+
+    </testcase>
+    <testcase classname="_/home/miki/Projects/go/src/bitbucket.org/tebeka/go2xunit/demo" name="TestMul" time="0.00">
+
+    </testcase>
+    <testcase classname="_/home/miki/Projects/go/src/bitbucket.org/tebeka/go2xunit/demo" name="TestDiv" time="0.00">
+
+      <failure type="go.error" message="error">
+        <![CDATA[	mmath_test.go:35: 2/3 != 0.666667]]>
+      </failure>    </testcase>
+  </testsuite>
