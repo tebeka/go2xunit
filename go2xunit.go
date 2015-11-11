@@ -167,6 +167,26 @@ func hasDatarace(lines []string) bool {
 	return false
 }
 
+type LineScanner struct {
+	*bufio.Scanner
+	lnum int
+}
+
+func NewLineScanner(r io.Reader) *LineScanner {
+	scan := bufio.NewScanner(r)
+	return &LineScanner{scan, 0}
+}
+
+func (ls *LineScanner) Scan() bool {
+	val := ls.Scanner.Scan()
+	ls.lnum++
+	return val
+}
+
+func (ls *LineScanner) Line() int {
+	return ls.lnum
+}
+
 func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	find_start := regexp.MustCompile(gt_startRE).FindStringSubmatch
 	find_end := regexp.MustCompile(gt_endRE).FindStringSubmatch
@@ -203,8 +223,8 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 		return nil
 	}
 
-	scanner := bufio.NewScanner(rd)
-	for lnum := 1; scanner.Scan(); lnum++ {
+	scanner := NewLineScanner(rd)
+	for scanner.Scan() {
 		line := scanner.Text()
 
 		// TODO: Only outside a suite/test, report as empty suite?
@@ -213,7 +233,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 		}
 
 		if is_buildFailed(line) {
-			return nil, fmt.Errorf("%d: package build failed: %s", lnum, line)
+			return nil, fmt.Errorf("%d: package build failed: %s", scanner.Line(), line)
 		}
 
 		if curSuite == nil {
@@ -249,11 +269,11 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 					curSuite = prevSuite
 					continue
 				} else {
-					return nil, fmt.Errorf("%d: orphan end test", lnum)
+					return nil, fmt.Errorf("%d: orphan end test", scanner.Line())
 				}
 			}
 			if tokens[2] != curTest.Name {
-				err := fmt.Errorf("%d: name mismatch (try disabling parallel mode)", lnum)
+				err := fmt.Errorf("%d: name mismatch (try disabling parallel mode)", scanner.Line())
 				return nil, err
 			}
 			curTest.Failed = (tokens[1] == "FAIL") || (failOnRace && hasDatarace(out))
@@ -304,7 +324,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 	find_end := regexp.MustCompile(gc_endRE).FindStringSubmatch
 	find_suite := regexp.MustCompile(gc_suiteRE).FindStringSubmatch
 
-	scanner := bufio.NewScanner(rd)
+	scanner := NewLineScanner(rd)
 	var suites = make([]*Suite, 0)
 	var suiteName string
 	var suite *Suite
@@ -312,7 +332,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 	var testName string
 	var out []string
 
-	for lnum := 1; scanner.Scan(); lnum++ {
+	for scanner.Scan() {
 		line := scanner.Text()
 
 		tokens := find_start(line)
@@ -321,7 +341,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 				continue
 			}
 			if testName != "" {
-				return nil, fmt.Errorf("%d: start in middle\n", lnum)
+				return nil, fmt.Errorf("%d: start in middle\n", scanner.Line())
 			}
 			suiteName = tokens[1]
 			testName = tokens[2]
@@ -335,10 +355,10 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 				continue
 			}
 			if testName == "" {
-				return nil, fmt.Errorf("%d: orphan end", lnum)
+				return nil, fmt.Errorf("%d: orphan end", scanner.Line())
 			}
 			if (tokens[2] != suiteName) || (tokens[3] != testName) {
-				return nil, fmt.Errorf("%d: suite/name mismatch", lnum)
+				return nil, fmt.Errorf("%d: suite/name mismatch", scanner.Line())
 			}
 			test := &Test{Name: testName}
 			test.Message = strings.Join(out, "\n")
