@@ -1,3 +1,6 @@
+2015-12-29 version 1.2.3
+    * Split to files and some cleanup
+
 2015-07-18 version 1.2.2
     * Support go 1.5 test output (github issue #23)
 
