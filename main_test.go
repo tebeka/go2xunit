@@ -2,40 +2,35 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
-	"os"
+	"os/exec"
 	"testing"
 )
 
 func Test_MainXunitNet(t *testing.T) {
-	filename := "gocheck-pass.out"
-	args := []string{"-gocheck", "-input", "data/" + filename}
-	os.Args = append(os.Args, args...)
+	cmd := exec.Command("go", "build")
+	err := cmd.Run()
+	if err != nil {
+		t.Fatalf("can't build - %s", err)
+	}
 
-	expected, err := ioutil.ReadAll(getOutputData("xunit", filename))
+	base := "gocheck-pass.out"
+	infile := fmt.Sprintf("data/%s", base)
+	cmd = exec.Command("./go2xunit", "-gocheck", "-input", infile)
+	var out bytes.Buffer
+	cmd.Stdout = &out
+
+	err = cmd.Run()
+	if err != nil {
+		t.Fatalf("can't run - %s", err)
+	}
+	actual := out.Bytes()
+
+	expected, err := ioutil.ReadAll(getOutputData("xunit", base))
 	checkError(err)
 
-	// this can be done only once or test framework will panic
-	actual := []byte(captureOutput(main))
-
 	if !bytes.Equal(expected, actual) {
-		t.Errorf("xUnit.net XML output %s differs from expected", filename)
+		t.Errorf("xUnit.net XML output %s differs from expected", base)
 	}
-}
-
-// captures Stdout and returns output of function f()
-func captureOutput(f func()) string {
-	// redirect output
-	old := os.Stdout
-	r, w, _ := os.Pipe()
-	os.Stdout = w
-
-	f()
-
-	// reset output again
-	w.Close()
-	os.Stdout = old
-
-	captured, _ := ioutil.ReadAll(r)
-	return string(captured)
 }
