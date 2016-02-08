@@ -108,7 +108,7 @@ func Test_parseOutput(t *testing.T) {
 }
 
 func Test_parseOutputBad(t *testing.T) {
-	filename := "go2xunit.go"
+	filename := "parsers.go"
 	suites, err := loadGotest(filename, t)
 	if err != nil {
 		t.Fatalf("error loading %s - %s", filename, err)
