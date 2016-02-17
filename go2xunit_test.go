@@ -53,7 +53,14 @@ func Test_parseOutput16(t *testing.T) {
 }
 
 func Test_parseOutput(t *testing.T) {
-	filename := "data/gotest.out"
+	checkOutput(t, "data/gotest.out")
+}
+
+func Test_parseOutputPrint(t *testing.T) {
+	checkOutput(t, "data/gotest-print.out")
+}
+
+func checkOutput(t *testing.T, filename string) {
 	suites, err := loadGotest(filename, t)
 	if err != nil {
 		t.Fatalf("error loading %s - %s", filename, err)
