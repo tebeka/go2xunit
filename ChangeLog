@@ -1,3 +1,6 @@
+2016-02-17 version 1.2.4
+    * Support prints in output (@davars in PR #7)
+
 2015-12-29 version 1.2.3
     * Split to files and some cleanup
 
