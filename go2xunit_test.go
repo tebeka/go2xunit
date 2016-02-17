@@ -33,6 +33,25 @@ func loadGotest(filename string, t *testing.T) ([]*Suite, error) {
 	return gt_Parse(file)
 }
 
+func Test_parseOutput16(t *testing.T) {
+	filename := "data/gotest-1.6.out"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+	numSuites := 1
+	if len(suites) != numSuites {
+		t.Fatalf("got %d suites instead of %d", len(suites), numSuites)
+	}
+
+	suiteName := "bitbucket.org/tebeka/go2xunit/demo"
+
+	if suites[0].Name != suiteName {
+		t.Fatalf("bad Suite name %s, expected %s", suites[0].Name, suiteName)
+	}
+
+}
+
 func Test_parseOutput(t *testing.T) {
 	filename := "data/gotest.out"
 	suites, err := loadGotest(filename, t)
