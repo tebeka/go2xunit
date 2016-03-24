@@ -34,6 +34,13 @@ Here's an example script (`run-tests.sh`) that can be used with [Jenkins][jenkin
     go2xunit -fail -input $outfile -output tests.xml
 
 
+# Examples
+
+* [go test](demo/)
+* [gocheck](demo-gocheck/)
+* [testify](demo-testify/)
+
+
 # Related
 
 * [testing: add -json flag for json
