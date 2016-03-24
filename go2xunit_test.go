@@ -135,17 +135,18 @@ func checkOutput(t *testing.T, filename string) {
 
 func Test_parseOutputBad(t *testing.T) {
 	filename := "parsers.go"
-	suites, err := loadGotest(filename, t)
-	if err != nil {
-		t.Fatalf("error loading %s - %s", filename, err)
-	}
-	if len(suites) > 0 {
+	if _, err := loadGotest(filename, t); err == nil {
 		t.Fatalf("managed to find suites in junk")
 	}
 }
 
 func Test_parseDatarace(t *testing.T) {
-	failOnRace = true
+	origFail := args.failOnRace
+	args.failOnRace = true
+	defer func() {
+		args.failOnRace = origFail
+	}()
+
 	filename := "data/gotest-datarace.out"
 	suites, err := loadGotest(filename, t)
 	if err != nil {
@@ -173,7 +174,6 @@ func Test_parseDatarace(t *testing.T) {
 	if suite.NumFailed() != numFailed {
 		t.Fatalf("wrong number of failed %d, should be %d", suite.NumFailed(), numFailed)
 	}
-	failOnRace = false
 }
 
 func Test_ignoreDatarace(t *testing.T) {

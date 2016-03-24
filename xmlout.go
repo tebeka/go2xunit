@@ -1,3 +1,4 @@
+// XML output
 package main
 
 import (

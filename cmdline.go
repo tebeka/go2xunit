@@ -1,3 +1,4 @@
+// Command line parsing
 package main
 
 import (
@@ -32,6 +33,7 @@ func init() {
 	flag.Parse()
 }
 
+// validateArgs validates command line arguments
 func validateArgs() error {
 	if flag.NArg() > 0 {
 		return fmt.Errorf("%s does not take parameters (did you mean -input?)", os.Args[0])

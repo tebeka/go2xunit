@@ -10,44 +10,9 @@ import (
 
 const (
 	Version = "1.2.4"
-
-	// gotest regular expressions
-
-	// === RUN TestAdd
-	gt_startRE = "^=== RUN:?[[:space:]]+([a-zA-Z_][^[:space:]]*)"
-
-	// --- PASS: TestSub (0.00 seconds)
-	// --- FAIL: TestSubFail (0.00 seconds)
-	// --- SKIP: TestSubSkip (0.00 seconds)
-	gt_endRE = "--- (PASS|FAIL|SKIP):[[:space:]]+([a-zA-Z_][^[:space:]]*) \\((\\d+(.\\d+)?)"
-
-	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
-	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
-	gt_suiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
-
-	// ?       alipay  [no test files]
-	gt_noFiles = "^\\?.*\\[no test files\\]$"
-	// FAIL    node/config [build failed]
-	gt_buildFailed = `^FAIL.*\[(build|setup) failed\]$`
-
-	// gocheck regular expressions
-
-	// START: mmath_test.go:16: MySuite.TestAdd
-	gc_startRE = "START: [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)"
-
-	// PASS: mmath_test.go:16: MySuite.TestAdd	0.000s
-	// FAIL: mmath_test.go:35: MySuite.TestDiv
-	gc_endRE = "(PASS|FAIL|SKIP|PANIC|MISS): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)[[:space:]]?([0-9]+.[0-9]+)?"
-
-	// FAIL	go2xunit/demo-gocheck	0.008s
-	// ok  	go2xunit/demo-gocheck	0.008s
-	gc_suiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
 )
 
-var (
-	failOnRace = false
-)
-
+// Test data structure
 type Test struct {
 	Name, Time, Message string
 	Failed              bool
@@ -55,6 +20,7 @@ type Test struct {
 	Passed              bool
 }
 
+// Suite of tests (found in some unit testing frameworks)
 type Suite struct {
 	Name   string
 	Time   string
@@ -62,6 +28,7 @@ type Suite struct {
 	Tests  []*Test
 }
 
+// SuiteStack is a stack of test suites
 type SuiteStack struct {
 	nodes []*Suite
 	count int
@@ -82,6 +49,7 @@ func (s *SuiteStack) Pop() *Suite {
 	return s.nodes[s.count]
 }
 
+// NumFailed return number of failed tests in suite
 func (suite *Suite) NumFailed() int {
 	count := 0
 	for _, test := range suite.Tests {
@@ -93,6 +61,7 @@ func (suite *Suite) NumFailed() int {
 	return count
 }
 
+// NumSkipped return number of skipped tests in suite
 func (suite *Suite) NumSkipped() int {
 	count := 0
 	for _, test := range suite.Tests {
@@ -104,7 +73,7 @@ func (suite *Suite) NumSkipped() int {
 	return count
 }
 
-// Number of passed tests in the suite
+// NumPassed return number of passed tests in the suite
 func (suite *Suite) NumPassed() int {
 	count := 0
 	for _, test := range suite.Tests {
@@ -116,11 +85,12 @@ func (suite *Suite) NumPassed() int {
 	return count
 }
 
-// Number of tests in the suite
+// Count return the number of tests in the suite
 func (suite *Suite) Count() int {
 	return len(suite.Tests)
 }
 
+// hasFailures return true is there's at least one failing test in the suite
 func hasFailures(suites []*Suite) bool {
 	for _, suite := range suites {
 		if suite.NumFailed() > 0 {

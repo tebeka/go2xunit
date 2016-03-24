@@ -1,3 +1,4 @@
+// Output parsers
 package main
 
 import (
@@ -8,26 +9,64 @@ import (
 	"strings"
 )
 
+const (
+	// gotest regular expressions
+
+	// === RUN TestAdd
+	gt_startRE = "^=== RUN:?[[:space:]]+([a-zA-Z_][^[:space:]]*)"
+
+	// --- PASS: TestSub (0.00 seconds)
+	// --- FAIL: TestSubFail (0.00 seconds)
+	// --- SKIP: TestSubSkip (0.00 seconds)
+	gt_endRE = "--- (PASS|FAIL|SKIP):[[:space:]]+([a-zA-Z_][^[:space:]]*) \\((\\d+(.\\d+)?)"
+
+	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
+	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
+	gt_suiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
+
+	// ?       alipay  [no test files]
+	gt_noFiles = "^\\?.*\\[no test files\\]$"
+	// FAIL    node/config [build failed]
+	gt_buildFailed = `^FAIL.*\[(build|setup) failed\]$`
+
+	// gocheck regular expressions
+
+	// START: mmath_test.go:16: MySuite.TestAdd
+	gc_startRE = "START: [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)"
+
+	// PASS: mmath_test.go:16: MySuite.TestAdd	0.000s
+	// FAIL: mmath_test.go:35: MySuite.TestDiv
+	gc_endRE = "(PASS|FAIL|SKIP|PANIC|MISS): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)[[:space:]]?([0-9]+.[0-9]+)?"
+
+	// FAIL	go2xunit/demo-gocheck	0.008s
+	// ok  	go2xunit/demo-gocheck	0.008s
+	gc_suiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
+)
+
 var (
 	matchDatarace = regexp.MustCompile("^WARNING: DATA RACE$").MatchString
 )
 
+// LineScanner scans lines and keep track of line numbers
 type LineScanner struct {
 	*bufio.Scanner
 	lnum int
 }
 
+// NewLineScanner creates a new line scanner from r
 func NewLineScanner(r io.Reader) *LineScanner {
 	scan := bufio.NewScanner(r)
 	return &LineScanner{scan, 0}
 }
 
+// Scan advances to next line
 func (ls *LineScanner) Scan() bool {
 	val := ls.Scanner.Scan()
 	ls.lnum++
 	return val
 }
 
+// Line returns the current line number
 func (ls *LineScanner) Line() int {
 	return ls.lnum
 }
@@ -44,6 +83,7 @@ func hasDatarace(lines []string) bool {
 
 // gc_Parse parses output of "go test -gocheck.vv", returns a list of tests
 // See data/gocheck.out for an example
+// TODO: Refactor to shorter ones
 func gc_Parse(rd io.Reader) ([]*Suite, error) {
 	find_start := regexp.MustCompile(gc_startRE).FindStringSubmatch
 	find_end := regexp.MustCompile(gc_endRE).FindStringSubmatch
@@ -136,6 +176,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 }
 
 // gt_Parse parser output of gotest
+// TODO: Make it shorter
 func gt_Parse(rd io.Reader) ([]*Suite, error) {
 	find_start := regexp.MustCompile(gt_startRE).FindStringSubmatch
 	find_end := regexp.MustCompile(gt_endRE).FindStringSubmatch
@@ -225,7 +266,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 				err := fmt.Errorf("%d: name mismatch (try disabling parallel mode)", scanner.Line())
 				return nil, err
 			}
-			curTest.Failed = (tokens[1] == "FAIL") || (failOnRace && hasDatarace(out))
+			curTest.Failed = (tokens[1] == "FAIL") || (args.failOnRace && hasDatarace(out))
 			curTest.Skipped = (tokens[1] == "SKIP")
 			curTest.Passed = (tokens[1] == "PASS")
 			curTest.Time = tokens[3]
