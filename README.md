@@ -18,11 +18,11 @@ output. However you can use `-input` and `-output` flags to change this.
 The `-fail` switch will cause `go2xunit` to exit with non zero status if there
 are failed tests.
 
-    go test -v | go2xunit -output tests.xml
+    2>&1 go test -v | go2xunit -output tests.xml
 
 `go2xunit` also works with [gocheck][gocheck], and [testify][testify].
 
-    go test -gocheck.vv | go2xunit -gocheck -output tests.xml
+    2>&1 go test -gocheck.vv | go2xunit -gocheck -output tests.xml
 
 Here's an example script (`run-tests.sh`) that can be used with [Jenkins][jenkins]/[Hudson][hudson].
 
@@ -30,7 +30,7 @@ Here's an example script (`run-tests.sh`) that can be used with [Jenkins][jenkin
 
     outfile=gotest.out
 
-    go test -v | tee $outfile
+    2>&1 go test -v | tee $outfile
     go2xunit -fail -input $outfile -output tests.xml
 
 
