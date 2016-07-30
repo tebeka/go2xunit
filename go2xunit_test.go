@@ -435,11 +435,12 @@ func Test_0Time(t *testing.T) {
 }
 
 func Test_TestifySuite(t *testing.T) {
+	expected := 2
 	suites, err := loadGotest("data/gotest-testify-suite.out", t)
 	if err != nil {
 		t.Fatalf("Failed to parse")
 	}
-	if len(suites) != 2 {
-		t.Fatalf("Wrong number of suites", len(suites))
+	if len(suites) != expected {
+		t.Fatalf("Wrong number of suites - %d (expected %d)", len(suites), expected)
 	}
 }
