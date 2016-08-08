@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	// Version is the current version
 	Version = "1.2.4"
 )
 
@@ -165,9 +166,9 @@ func main() {
 	var parse func(rd io.Reader) ([]*Suite, error)
 
 	if args.isGocheck {
-		parse = gc_Parse
+		parse = gcParse
 	} else {
-		parse = gt_Parse
+		parse = gtParse
 	}
 
 	suites, err := parse(input)

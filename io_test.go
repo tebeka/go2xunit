@@ -14,7 +14,7 @@ import (
 
 var runTime = time.Date(2015, time.June, 5, 18, 34, 41, 0, time.UTC)
 
-var goCheckFiles []string = []string{
+var goCheckFiles = []string{
 	"gocheck-pass.out",
 	"gocheck-fail.out",
 	"gocheck-panic.out",
@@ -23,7 +23,7 @@ var goCheckFiles []string = []string{
 	"gocheck-setup-miss.out",
 }
 
-var goTestFiles []string = []string{
+var goTestFiles = []string{
 	"gotest.out",
 	"gotest-0.out",
 	"gotest-datarace.out",
@@ -42,7 +42,7 @@ var goTestFiles []string = []string{
 
 func Test_XMLOuptutGoCheckXUnit(t *testing.T) {
 	for _, filename := range goCheckFiles {
-		suites, err := gc_Parse(getInputData(filename))
+		suites, err := gcParse(getInputData(filename))
 		checkError(err)
 		generateAndTestXMLXUnit(t, suites, filename)
 	}
@@ -50,7 +50,7 @@ func Test_XMLOuptutGoCheckXUnit(t *testing.T) {
 
 func Test_XMLOuptutGoCheckXUnitNet(t *testing.T) {
 	for _, filename := range goCheckFiles {
-		suites, err := gc_Parse(getInputData(filename))
+		suites, err := gcParse(getInputData(filename))
 		checkError(err)
 		generateAndTestXMLXUnitNet(t, suites, filename)
 	}
@@ -58,7 +58,7 @@ func Test_XMLOuptutGoCheckXUnitNet(t *testing.T) {
 
 func Test_XMLOuptutGoTestXUnit(t *testing.T) {
 	for _, filename := range goTestFiles {
-		suites, err := gt_Parse(getInputData(filename))
+		suites, err := gtParse(getInputData(filename))
 		checkError(err)
 		generateAndTestXMLXUnit(t, suites, filename)
 	}
@@ -66,7 +66,7 @@ func Test_XMLOuptutGoTestXUnit(t *testing.T) {
 
 func Test_XMLOuptutGoTestXunitNet(t *testing.T) {
 	for _, filename := range goTestFiles {
-		suites, err := gt_Parse(getInputData(filename))
+		suites, err := gtParse(getInputData(filename))
 		checkError(err)
 		generateAndTestXMLXUnitNet(t, suites, filename)
 	}

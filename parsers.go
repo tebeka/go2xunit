@@ -13,34 +13,34 @@ const (
 	// gotest regular expressions
 
 	// === RUN TestAdd
-	gt_startRE = "^=== RUN:?[[:space:]]+([a-zA-Z_][^[:space:]]*)"
+	gtStartRE = "^=== RUN:?[[:space:]]+([a-zA-Z_][^[:space:]]*)"
 
 	// --- PASS: TestSub (0.00 seconds)
 	// --- FAIL: TestSubFail (0.00 seconds)
 	// --- SKIP: TestSubSkip (0.00 seconds)
-	gt_endRE = "--- (PASS|FAIL|SKIP):[[:space:]]+([a-zA-Z_][^[:space:]]*) \\((\\d+(.\\d+)?)"
+	gtEndRE = "--- (PASS|FAIL|SKIP):[[:space:]]+([a-zA-Z_][^[:space:]]*) \\((\\d+(.\\d+)?)"
 
 	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
 	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
-	gt_suiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
+	gtSuiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
 
 	// ?       alipay  [no test files]
-	gt_noFiles = "^\\?.*\\[no test files\\]$"
+	gtNoFilesRE = "^\\?.*\\[no test files\\]$"
 	// FAIL    node/config [build failed]
-	gt_buildFailed = `^FAIL.*\[(build|setup) failed\]$`
+	gtBuildFailedRE = `^FAIL.*\[(build|setup) failed\]$`
 
 	// gocheck regular expressions
 
 	// START: mmath_test.go:16: MySuite.TestAdd
-	gc_startRE = "START: [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)"
+	gcStartRE = "START: [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)"
 
 	// PASS: mmath_test.go:16: MySuite.TestAdd	0.000s
 	// FAIL: mmath_test.go:35: MySuite.TestDiv
-	gc_endRE = "(PASS|FAIL|SKIP|PANIC|MISS): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)[[:space:]]?([0-9]+.[0-9]+)?"
+	gcEndRE = "(PASS|FAIL|SKIP|PANIC|MISS): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)[[:space:]]?([0-9]+.[0-9]+)?"
 
 	// FAIL	go2xunit/demo-gocheck	0.008s
 	// ok  	go2xunit/demo-gocheck	0.008s
-	gc_suiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
+	gcSuiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
 )
 
 var (
@@ -84,10 +84,10 @@ func hasDatarace(lines []string) bool {
 // gc_Parse parses output of "go test -gocheck.vv", returns a list of tests
 // See data/gocheck.out for an example
 // TODO: Refactor to shorter ones
-func gc_Parse(rd io.Reader) ([]*Suite, error) {
-	find_start := regexp.MustCompile(gc_startRE).FindStringSubmatch
-	find_end := regexp.MustCompile(gc_endRE).FindStringSubmatch
-	find_suite := regexp.MustCompile(gc_suiteRE).FindStringSubmatch
+func gcParse(rd io.Reader) ([]*Suite, error) {
+	findStart := regexp.MustCompile(gcStartRE).FindStringSubmatch
+	findEnd := regexp.MustCompile(gcEndRE).FindStringSubmatch
+	findSuite := regexp.MustCompile(gcSuiteRE).FindStringSubmatch
 
 	scanner := NewLineScanner(rd)
 	var suites = make([]*Suite, 0)
@@ -100,7 +100,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		tokens := find_start(line)
+		tokens := findStart(line)
 		if len(tokens) > 0 {
 			if tokens[2] == "SetUpTest" || tokens[2] == "TearDownTest" {
 				continue
@@ -114,7 +114,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 			continue
 		}
 
-		tokens = find_end(line)
+		tokens = findEnd(line)
 		if len(tokens) > 0 {
 			if tokens[3] == "SetUpTest" || tokens[3] == "TearDownTest" {
 				continue
@@ -146,7 +146,7 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 		}
 
 		// last "suite" is test summary
-		tokens = find_suite(line)
+		tokens = findSuite(line)
 		if tokens != nil {
 			if suite == nil {
 				suite = &Suite{Name: tokens[2], Status: tokens[1], Time: tokens[3]}
@@ -177,13 +177,13 @@ func gc_Parse(rd io.Reader) ([]*Suite, error) {
 
 // gt_Parse parser output of gotest
 // TODO: Make it shorter
-func gt_Parse(rd io.Reader) ([]*Suite, error) {
-	find_start := regexp.MustCompile(gt_startRE).FindStringSubmatch
-	find_end := regexp.MustCompile(gt_endRE).FindStringSubmatch
-	find_suite := regexp.MustCompile(gt_suiteRE).FindStringSubmatch
-	is_nofiles := regexp.MustCompile(gt_noFiles).MatchString
-	is_buildFailed := regexp.MustCompile(gt_buildFailed).MatchString
-	is_exit := regexp.MustCompile("^exit status -?\\d+").MatchString
+func gtParse(rd io.Reader) ([]*Suite, error) {
+	findStart := regexp.MustCompile(gtStartRE).FindStringSubmatch
+	findEnd := regexp.MustCompile(gtEndRE).FindStringSubmatch
+	findSuite := regexp.MustCompile(gtSuiteRE).FindStringSubmatch
+	isNoFiles := regexp.MustCompile(gtNoFilesRE).MatchString
+	isBuildFailed := regexp.MustCompile(gtBuildFailedRE).MatchString
+	isExit := regexp.MustCompile("^exit status -?\\d+").MatchString
 
 	suites := []*Suite{}
 	var curTest *Test
@@ -218,11 +218,11 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 		line := scanner.Text()
 
 		// TODO: Only outside a suite/test, report as empty suite?
-		if is_nofiles(line) {
+		if isNoFiles(line) {
 			continue
 		}
 
-		if is_buildFailed(line) {
+		if isBuildFailed(line) {
 			return nil, fmt.Errorf("%d: package build failed: %s", scanner.Line(), line)
 		}
 
@@ -230,7 +230,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			curSuite = &Suite{}
 		}
 
-		tokens := find_start(line)
+		tokens := findStart(line)
 		if tokens != nil {
 			if curTest != nil {
 				// This occurs when the last test ended with a panic.
@@ -250,7 +250,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			continue
 		}
 
-		tokens = find_end(line)
+		tokens = findEnd(line)
 		if tokens != nil {
 			if curTest == nil {
 				if suiteStack.count > 0 {
@@ -277,7 +277,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			continue
 		}
 
-		tokens = find_suite(line)
+		tokens = findSuite(line)
 		if tokens != nil {
 			if curTest != nil {
 				// This occurs when the last test ended with a panic.
@@ -293,7 +293,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			continue
 		}
 
-		if is_exit(line) || (line == "FAIL") || (line == "PASS") {
+		if isExit(line) || (line == "FAIL") || (line == "PASS") {
 			continue
 		}
 
