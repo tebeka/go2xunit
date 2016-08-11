@@ -81,7 +81,7 @@ func hasDatarace(lines []string) bool {
 	return false
 }
 
-// gc_Parse parses output of "go test -gocheck.vv", returns a list of tests
+// gcParse parses output of "go test -gocheck.vv", returns a list of tests
 // See data/gocheck.out for an example
 // TODO: Refactor to shorter ones
 func gcParse(rd io.Reader) ([]*Suite, error) {
@@ -175,7 +175,7 @@ func gcParse(rd io.Reader) ([]*Suite, error) {
 	return suites, nil
 }
 
-// gt_Parse parser output of gotest
+// gtParse parser output of gotest
 // TODO: Make it shorter
 func gtParse(rd io.Reader) ([]*Suite, error) {
 	findStart := regexp.MustCompile(gtStartRE).FindStringSubmatch
