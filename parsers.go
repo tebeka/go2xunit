@@ -267,6 +267,7 @@ func gt_Parse(rd io.Reader) ([]*Suite, error) {
 			appendTest := true
 			if parentTest != nil && tokens[2] == parentTest.Name {
 				curTest = parentTest
+				parentTest = nil
 				appendTest = false
 			} else if subTest, ok := subTests[tokens[2]]; ok {
 				curTest = subTest
