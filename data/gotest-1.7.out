@@ -1,0 +1,18 @@
+=== RUN   TestAdd
+--- PASS: TestAdd (0.00s)
+=== RUN   TestSub
+--- PASS: TestSub (0.00s)
+=== RUN   TestMul
+--- PASS: TestMul (0.00s)
+=== RUN   TestDiv
+--- FAIL: TestDiv (0.00s)
+	mmath_test.go:35: 2/3 != 0.666667
+=== RUN   TestSquare
+=== RUN   TestSquare/x=1
+=== RUN   TestSquare/x=2
+--- PASS: TestSquare (0.00s)
+    --- PASS: TestSquare/x=1 (0.00s)
+    --- PASS: TestSquare/x=2 (0.00s)
+FAIL
+exit status 1
+FAIL	github.com/tebeka/go2xunit/demo	0.070s

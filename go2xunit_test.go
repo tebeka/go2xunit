@@ -52,6 +52,33 @@ func Test_parseOutput16(t *testing.T) {
 
 }
 
+func Test_parseOutput17(t *testing.T) {
+	filename := "data/gotest-1.7.out"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+	numSuites := 1
+	if len(suites) != numSuites {
+		t.Errorf("got %d suites instead of %d", len(suites), numSuites)
+	}
+
+	suiteName := "github.com/tebeka/go2xunit/demo"
+
+	if suites[0].Name != suiteName {
+		t.Errorf("bad Suite name %s, expected %s", suites[0].Name, suiteName)
+	}
+
+	expectedTests := 7
+	actualTests := len(suites[0].Tests)
+	if actualTests != expectedTests {
+		t.Errorf("got %d tests, expected %d", actualTests, expectedTests)
+		for _, st := range suites[0].Tests {
+			t.Log(st.Name)
+		}
+	}
+}
+
 func Test_parseOutput(t *testing.T) {
 	checkOutput(t, "data/gotest.out")
 }
