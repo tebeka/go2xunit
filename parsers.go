@@ -186,6 +186,8 @@ func gtParse(rd io.Reader) ([]*Suite, error) {
 	isExit := regexp.MustCompile("^exit status -?\\d+").MatchString
 
 	suites := []*Suite{}
+	subTests := map[string]*Test{}
+	var parentTest *Test
 	var curTest *Test
 	var curSuite *Suite
 	var out []string
@@ -200,7 +202,7 @@ func gtParse(rd io.Reader) ([]*Suite, error) {
 	}
 
 	// Appends output to the last test.
-	appendError := func() error {
+	appendError := func() {
 		if len(out) > 0 && curSuite != nil && len(curSuite.Tests) > 0 {
 			message := strings.Join(out, "\n")
 			if curSuite.Tests[len(curSuite.Tests)-1].Message == "" {
@@ -210,7 +212,6 @@ func gtParse(rd io.Reader) ([]*Suite, error) {
 			}
 		}
 		out = []string{}
-		return nil
 	}
 
 	scanner := NewLineScanner(rd)
@@ -232,46 +233,71 @@ func gtParse(rd io.Reader) ([]*Suite, error) {
 
 		tokens := findStart(line)
 		if tokens != nil {
+			subTest := false
 			if curTest != nil {
-				// This occurs when the last test ended with a panic.
-				if suiteStack.count == 0 {
+				// This occurs when the last test ended with a panic, or when subtests are found
+				if parentTest == nil && strings.HasPrefix(tokens[1], curTest.Name+"/") {
+					// First subtest after parent
+					parentTest = curTest
+					curSuite.Tests = append(curSuite.Tests, curTest)
+					subTests = map[string]*Test{}
+					subTest = true
+				} else if parentTest != nil && strings.HasPrefix(tokens[1], parentTest.Name+"/") {
+					subTest = true
+				} else if suiteStack.count == 0 {
 					suiteStack.Push(curSuite)
 					curSuite = &Suite{Name: curTest.Name}
 				} else {
 					handlePanic()
 				}
 			}
-			if e := appendError(); e != nil {
-				return nil, e
-			}
+			appendError()
 			curTest = &Test{
 				Name: tokens[1],
+			}
+			if subTest {
+				curSuite.Tests = append(curSuite.Tests, curTest)
+				subTests[curTest.Name] = curTest
 			}
 			continue
 		}
 
 		tokens = findEnd(line)
 		if tokens != nil {
-			if curTest == nil {
-				if suiteStack.count > 0 {
-					prevSuite := suiteStack.Pop()
-					suites = append(suites, curSuite)
-					curSuite = prevSuite
-					continue
-				} else {
-					return nil, fmt.Errorf("%d: orphan end test", scanner.Line())
+			appendTest := true
+			if parentTest != nil && tokens[2] == parentTest.Name {
+				curTest = parentTest
+				parentTest = nil
+				appendTest = false
+			} else if subTest, ok := subTests[tokens[2]]; ok {
+				curTest = subTest
+				appendTest = false
+			} else {
+				parentTest = nil
+				subTests = map[string]*Test{}
+				if curTest == nil {
+					if suiteStack.count > 0 {
+						prevSuite := suiteStack.Pop()
+						suites = append(suites, curSuite)
+						curSuite = prevSuite
+						continue
+					} else {
+						return nil, fmt.Errorf("%d: orphan end test", scanner.Line())
+					}
 				}
-			}
-			if tokens[2] != curTest.Name {
-				err := fmt.Errorf("%d: name mismatch (try disabling parallel mode)", scanner.Line())
-				return nil, err
+				if tokens[2] != curTest.Name {
+					err := fmt.Errorf("%d: name mismatch (try disabling parallel mode)", scanner.Line())
+					return nil, err
+				}
 			}
 			curTest.Failed = (tokens[1] == "FAIL") || (args.failOnRace && hasDatarace(out))
 			curTest.Skipped = (tokens[1] == "SKIP")
 			curTest.Passed = (tokens[1] == "PASS")
 			curTest.Time = tokens[3]
 			curTest.Message = strings.Join(out, "\n")
-			curSuite.Tests = append(curSuite.Tests, curTest)
+			if appendTest {
+				curSuite.Tests = append(curSuite.Tests, curTest)
+			}
 			curTest = nil
 			out = []string{}
 			continue
@@ -283,9 +309,7 @@ func gtParse(rd io.Reader) ([]*Suite, error) {
 				// This occurs when the last test ended with a panic.
 				handlePanic()
 			}
-			if e := appendError(); e != nil {
-				return nil, e
-			}
+			appendError()
 			curSuite.Name = tokens[2]
 			curSuite.Time = tokens[3]
 			suites = append(suites, curSuite)
