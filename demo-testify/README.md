@@ -1,6 +1,6 @@
 # Demo Project for Using go2xunit with testify
 
-Install `go2xunit` with `go get bitbucket.org/tebeka/go2xunit`
+Install `go2xunit` with `go get github.com/tebeka/go2xunit`
 
 Then configure Jenkins like the configuration screen below, note the 
 "Execute Shell" and "Publish JUnit test result report" sections.

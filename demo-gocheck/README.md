@@ -1,6 +1,6 @@
 # Demo Project for Using go2xunit
 
-Install `go2xunit` with `go get bitbucket.org/tebeka/go2xunit`
+Install `go2xunit` with `go get github.com/tebeka/go2xunit`
 
 Use run-jenkins.sh to run Jenkins (see Jenkins download instructions in the script).
 

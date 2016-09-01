@@ -8,7 +8,7 @@ compatible XML output (used in [Jenkins][jenkins]/[Hudson][hudson]).
 
 # Install
 
-    go get bitbucket.org/tebeka/go2xunit
+    go get github.com/tebeka/go2xunit
 
 
 # Usage
@@ -56,5 +56,5 @@ Bug reports go [here][bugs].
 [hudson]: http://hudson-ci.org/
 [gocheck]: http://labix.org/gocheck
 [testify]: http://godoc.org/github.com/stretchr/testify
-[bugs]: https://bitbucket.org/tebeka/go2xunit/issues
+[bugs]: https://github.com/tebeka/go2xunit/issues
 [xnet]: https://xunit.codeplex.com/wikipage?title=XmlFormat
