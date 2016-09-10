@@ -30,7 +30,7 @@ func loadGotest(filename string, t *testing.T) ([]*Suite, error) {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	return gtParse(file)
+	return gtParse(file, "")
 }
 
 func Test_parseOutput16(t *testing.T) {
@@ -305,7 +305,7 @@ func Test_parseGocheckPass(t *testing.T) {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	suites, err := gcParse(file)
+	suites, err := gcParse(file, "")
 
 	if err != nil {
 		t.Fatalf("can't parse %s - %s", filename, err)
@@ -339,7 +339,7 @@ func Test_parseGocheckFail(t *testing.T) {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	suites, err := gcParse(file)
+	suites, err := gcParse(file, "")
 
 	if err != nil {
 		t.Fatalf("can't parse %s - %s", filename, err)

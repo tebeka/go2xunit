@@ -42,7 +42,7 @@ var goTestFiles = []string{
 
 func Test_XMLOuptutGoCheckXUnit(t *testing.T) {
 	for _, filename := range goCheckFiles {
-		suites, err := gcParse(getInputData(filename))
+		suites, err := gcParse(getInputData(filename), "")
 		checkError(err)
 		generateAndTestXMLXUnit(t, suites, filename)
 	}
@@ -50,7 +50,7 @@ func Test_XMLOuptutGoCheckXUnit(t *testing.T) {
 
 func Test_XMLOuptutGoCheckXUnitNet(t *testing.T) {
 	for _, filename := range goCheckFiles {
-		suites, err := gcParse(getInputData(filename))
+		suites, err := gcParse(getInputData(filename), "")
 		checkError(err)
 		generateAndTestXMLXUnitNet(t, suites, filename)
 	}
@@ -58,7 +58,7 @@ func Test_XMLOuptutGoCheckXUnitNet(t *testing.T) {
 
 func Test_XMLOuptutGoTestXUnit(t *testing.T) {
 	for _, filename := range goTestFiles {
-		suites, err := gtParse(getInputData(filename))
+		suites, err := gtParse(getInputData(filename), "")
 		checkError(err)
 		generateAndTestXMLXUnit(t, suites, filename)
 	}
@@ -66,7 +66,7 @@ func Test_XMLOuptutGoTestXUnit(t *testing.T) {
 
 func Test_XMLOuptutGoTestXunitNet(t *testing.T) {
 	for _, filename := range goTestFiles {
-		suites, err := gtParse(getInputData(filename))
+		suites, err := gtParse(getInputData(filename), "")
 		checkError(err)
 		generateAndTestXMLXUnitNet(t, suites, filename)
 	}

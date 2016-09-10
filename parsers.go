@@ -84,7 +84,7 @@ func hasDatarace(lines []string) bool {
 // gcParse parses output of "go test -gocheck.vv", returns a list of tests
 // See data/gocheck.out for an example
 // TODO: Refactor to shorter ones
-func gcParse(rd io.Reader) ([]*Suite, error) {
+func gcParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 	findStart := regexp.MustCompile(gcStartRE).FindStringSubmatch
 	findEnd := regexp.MustCompile(gcEndRE).FindStringSubmatch
 	findSuite := regexp.MustCompile(gcSuiteRE).FindStringSubmatch
@@ -133,7 +133,7 @@ func gcParse(rd io.Reader) ([]*Suite, error) {
 			test.Skipped = (tokens[1] == "SKIP" || tokens[1] == "MISS")
 
 			if suite == nil || suite.Name != suiteName {
-				suite = &Suite{Name: suiteName}
+				suite = &Suite{Name: suitePrefix + suiteName}
 				suites = append(suites, suite)
 			}
 			suite.Tests = append(suite.Tests, test)
@@ -177,7 +177,7 @@ func gcParse(rd io.Reader) ([]*Suite, error) {
 
 // gtParse parser output of gotest
 // TODO: Make it shorter
-func gtParse(rd io.Reader) ([]*Suite, error) {
+func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 	findStart := regexp.MustCompile(gtStartRE).FindStringSubmatch
 	findEnd := regexp.MustCompile(gtEndRE).FindStringSubmatch
 	findSuite := regexp.MustCompile(gtSuiteRE).FindStringSubmatch
@@ -310,7 +310,7 @@ func gtParse(rd io.Reader) ([]*Suite, error) {
 				handlePanic()
 			}
 			appendError()
-			curSuite.Name = tokens[2]
+			curSuite.Name = suitePrefix + tokens[2]
 			curSuite.Time = tokens[3]
 			suites = append(suites, curSuite)
 			curSuite = nil
@@ -328,9 +328,12 @@ func gtParse(rd io.Reader) ([]*Suite, error) {
 		return nil, err
 	}
 
-	// If there were no suite names found, but everything else went OK, return
-	// a generic suite.
+	// If there were no suites found, but everything else went OK, return a
+	// generic suite.
 	if len(suites) == 0 && curSuite != nil {
+		if curSuite.Name == "" {
+			curSuite.Name = suitePrefix
+		}
 		suites = append(suites, curSuite)
 	}
 
