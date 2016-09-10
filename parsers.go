@@ -328,5 +328,11 @@ func gtParse(rd io.Reader) ([]*Suite, error) {
 		return nil, err
 	}
 
+	// If there were no suite names found, but everything else went OK, return
+	// a generic suite.
+	if len(suites) == 0 && curSuite != nil {
+		suites = append(suites, curSuite)
+	}
+
 	return suites, nil
 }
