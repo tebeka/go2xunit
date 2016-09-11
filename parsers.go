@@ -334,6 +334,8 @@ func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 		if curSuite.Name == "" {
 			curSuite.Name = suitePrefix
 		}
+		// Catch any post-failure messages from the last test
+		appendError()
 		suites = append(suites, curSuite)
 	}
 
