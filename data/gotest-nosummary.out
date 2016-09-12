@@ -1,0 +1,7 @@
+=== RUN   TestMeaning
+--- PASS: TestMeaning (0.00s)
+=== RUN   TestAddTwoNumbers
+2 + 3 = 5
+--- FAIL: TestAddTwoNumbers (0.00s)
+        lib_test.go:30: failing just because
+FAIL
