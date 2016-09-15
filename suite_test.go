@@ -6,8 +6,8 @@ func Test_NumFailed(t *testing.T) {
 	suite := &Suite{
 		Tests: []*Test{},
 	}
-	if suite.NumFailed() != 0 {
-		t.Fatal("Expected 0 failures, got:", suite.NumFailed())
+	if failures := suite.NumFailed(); failures != 0 {
+		t.Fatal("Expected 0 failures, got:", failures)
 	}
 
 	suite.Tests = []*Test{
