@@ -18,7 +18,7 @@ func Test_NumFailed_Mixed(t *testing.T) {
 		},
 	}
 
-	if suite.NumFailed() != 1 {
-		t.Fatal("can't count")
+	if failures := suite.NumFailed(); failures != 1 {
+		t.Fatal("Expected 1 failures, got:", failures)
 	}
 }
