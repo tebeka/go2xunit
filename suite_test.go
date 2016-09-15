@@ -22,3 +22,10 @@ func Test_NumFailed_Mixed(t *testing.T) {
 		t.Fatal("Expected 1 failures, got:", failures)
 	}
 }
+
+func Test_NumSkipped_Empty(t *testing.T) {
+	suite := Suite{}
+	if skipped := suite.NumSkipped(); skipped != 0 {
+		t.Fatal("Expected 0 skipped, got:", skipped)
+	}
+}
