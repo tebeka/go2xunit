@@ -10,7 +10,7 @@ import (
 
 const (
 	// Version is the current version
-	Version = "1.3.0"
+	Version = "1.3.1"
 )
 
 // Test data structure

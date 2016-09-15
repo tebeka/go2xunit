@@ -1,3 +1,6 @@
+2016-09-15 version 1.3.1
+    * Support runners that don't print a per-suite summary (@benley in PR #34)
+
 2016-08-21 version 1.3.0
     * Support go 1.7 subtests (@aprice in github PR #28)
 
