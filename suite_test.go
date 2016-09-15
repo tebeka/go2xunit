@@ -2,7 +2,7 @@ package main
 
 import "testing"
 
-func Test_NumFailed(t *testing.T) {
+func Test_NumFailed_Mixed(t *testing.T) {
 	suite := &Suite{
 		Tests: []*Test{
 			&Test{Failed: false},
