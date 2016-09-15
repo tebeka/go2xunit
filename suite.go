@@ -39,13 +39,9 @@ func (suite *Suite) stats() (failures, skipped, passed int) {
 		if test.Failed {
 			failures++
 		}
-	}
-	for _, test := range suite.Tests {
 		if test.Skipped {
 			skipped++
 		}
-	}
-	for _, test := range suite.Tests {
 		if test.Passed {
 			passed++
 		}
