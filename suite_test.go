@@ -10,14 +10,20 @@ func Test_EmptySuite(t *testing.T) {
 	if skipped := suite.NumSkipped(); skipped != 0 {
 		t.Fatal("Expected 0 skipped, got:", skipped)
 	}
+	if passed := suite.NumPassed(); passed != 0 {
+		t.Fatal("Expected 0 passed, got:", passed)
+	}
 }
 
 func Test_NumFailed_Mixed(t *testing.T) {
 	suite := &Suite{
 		Tests: []*Test{
+			&Test{Skipped: false},
+			&Test{Failed: false},
+			&Test{Passed: false},
 			&Test{Skipped: true},
 			&Test{Failed: true},
-			&Test{Failed: false},
+			&Test{Passed: true},
 		},
 	}
 
@@ -26,5 +32,8 @@ func Test_NumFailed_Mixed(t *testing.T) {
 	}
 	if skipped := suite.NumSkipped(); skipped != 1 {
 		t.Fatal("Expected 1 skipped, got:", skipped)
+	}
+	if passed := suite.NumPassed(); passed != 1 {
+		t.Fatal("Expected 1 passed, got:", passed)
 	}
 }
