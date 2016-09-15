@@ -29,27 +29,6 @@ type Suite struct {
 	Tests  []*Test
 }
 
-// SuiteStack is a stack of test suites
-type SuiteStack struct {
-	nodes []*Suite
-	count int
-}
-
-// Push adds a node to the stack.
-func (s *SuiteStack) Push(n *Suite) {
-	s.nodes = append(s.nodes[:s.count], n)
-	s.count++
-}
-
-// Pop removes and returns a node from the stack in last to first order.
-func (s *SuiteStack) Pop() *Suite {
-	if s.count == 0 {
-		return nil
-	}
-	s.count--
-	return s.nodes[s.count]
-}
-
 // NumFailed return number of failed tests in suite
 func (suite *Suite) NumFailed() int {
 	count := 0
@@ -99,6 +78,27 @@ func hasFailures(suites []*Suite) bool {
 		}
 	}
 	return false
+}
+
+// SuiteStack is a stack of test suites
+type SuiteStack struct {
+	nodes []*Suite
+	count int
+}
+
+// Push adds a node to the stack.
+func (s *SuiteStack) Push(n *Suite) {
+	s.nodes = append(s.nodes[:s.count], n)
+	s.count++
+}
+
+// Pop removes and returns a node from the stack in last to first order.
+func (s *SuiteStack) Pop() *Suite {
+	if s.count == 0 {
+		return nil
+	}
+	s.count--
+	return s.nodes[s.count]
 }
 
 // getInput return input io.File from file name, if file name is - it will
