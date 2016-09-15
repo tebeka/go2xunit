@@ -18,6 +18,10 @@ type Suite struct {
 
 // NumFailed return number of failed tests in suite
 func (suite *Suite) NumFailed() int {
+	return suite.stats()
+}
+
+func (suite *Suite) stats() int {
 	count := 0
 	for _, test := range suite.Tests {
 		if test.Failed {
