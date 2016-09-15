@@ -30,7 +30,7 @@ func loadGotest(filename string, t *testing.T) ([]*Suite, error) {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	return gtParse(file)
+	return gtParse(file, "")
 }
 
 func Test_parseOutput16(t *testing.T) {
@@ -305,7 +305,7 @@ func Test_parseGocheckPass(t *testing.T) {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	suites, err := gcParse(file)
+	suites, err := gcParse(file, "")
 
 	if err != nil {
 		t.Fatalf("can't parse %s - %s", filename, err)
@@ -339,7 +339,7 @@ func Test_parseGocheckFail(t *testing.T) {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	suites, err := gcParse(file)
+	suites, err := gcParse(file, "")
 
 	if err != nil {
 		t.Fatalf("can't parse %s - %s", filename, err)
@@ -469,5 +469,31 @@ func Test_TestifySuite(t *testing.T) {
 	}
 	if len(suites) != expected {
 		t.Fatalf("Wrong number of suites - %d (expected %d)", len(suites), expected)
+	}
+}
+
+func Test_parseOutputWithoutSummary(t *testing.T) {
+	filename := "data/gotest-nosummary.out"
+	suites, err := loadGotest(filename, t)
+	if err != nil {
+		t.Fatalf("error loading %s - %s", filename, err)
+	}
+	numSuites := 1
+	if len(suites) != numSuites {
+		t.Errorf("got %d suites instead of %d", len(suites), numSuites)
+	}
+
+	suiteName := ""
+	if suites[0].Name != suiteName {
+		t.Errorf("bad Suite name %s, expected %s", suites[0].Name, suiteName)
+	}
+
+	expectedTests := 2
+	actualTests := len(suites[0].Tests)
+	if actualTests != expectedTests {
+		t.Errorf("got %d tests, expected %d", actualTests, expectedTests)
+		for _, st := range suites[0].Tests {
+			t.Log(st.Name)
+		}
 	}
 }

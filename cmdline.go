@@ -16,6 +16,7 @@ var args struct {
 	xunitnetOut bool
 	isGocheck   bool
 	failOnRace  bool
+	suitePrefix string
 }
 
 func init() {
@@ -29,6 +30,8 @@ func init() {
 	flag.BoolVar(&args.isGocheck, "gocheck", false, "parse gocheck output")
 	flag.BoolVar(&args.failOnRace, "fail-on-race", false,
 		"mark test as failing if it exposes a data race")
+	flag.StringVar(&args.suitePrefix, "suite-name-prefix", "",
+		"prefix to include before all suite names")
 
 	flag.Parse()
 }

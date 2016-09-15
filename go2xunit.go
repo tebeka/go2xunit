@@ -163,7 +163,7 @@ func main() {
 		testTime = stat.ModTime()
 	}
 
-	var parse func(rd io.Reader) ([]*Suite, error)
+	var parse func(rd io.Reader, suiteName string) ([]*Suite, error)
 
 	if args.isGocheck {
 		parse = gcParse
@@ -171,7 +171,7 @@ func main() {
 		parse = gtParse
 	}
 
-	suites, err := parse(input)
+	suites, err := parse(input, args.suitePrefix)
 	if err != nil {
 		log.Fatalf("error: %s", err)
 	}
