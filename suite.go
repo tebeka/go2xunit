@@ -21,15 +21,13 @@ func (suite *Suite) NumFailed() int {
 	return suite.stats()
 }
 
-func (suite *Suite) stats() int {
-	count := 0
+func (suite *Suite) stats() (failures int) {
 	for _, test := range suite.Tests {
 		if test.Failed {
-			count++
+			failures++
 		}
 	}
-
-	return count
+	return
 }
 
 // NumSkipped return number of skipped tests in suite
