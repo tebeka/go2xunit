@@ -43,3 +43,14 @@ func Test_NumFailed_Mixed(t *testing.T) {
 		t.Fatal("Expected 1 passed, got:", passed)
 	}
 }
+
+func TestMultipleSuitsWithoutFailures(t *testing.T) {
+	suites := []*Suite{
+		&Suite{},
+		&Suite{Tests: []*Test{&Test{Passed: true}}},
+		&Suite{Tests: []*Test{&Test{Skipped: true}}},
+	}
+	if hasFailures(suites) {
+		t.Fatal("Expected false, got: true")
+	}
+}
