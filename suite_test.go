@@ -60,23 +60,20 @@ func TestMixedSuite(t *testing.T) {
 }
 
 func TestMultipleSuits(t *testing.T) {
+	empty := Suite{}
+	passed := Suite{Tests: []*Test{&Test{Passed: true}}}
+	skipped := Suite{Tests: []*Test{&Test{Skipped: true}}}
+	failed := Suite{Tests: []*Test{&Test{Failed: true}}}
+	golden := []*Suite{&empty, &passed, &skipped}
+
 	t.Run("WithoutFailures", func(t *testing.T) {
-		suites := []*Suite{
-			&Suite{},
-			&Suite{Tests: []*Test{&Test{Passed: true}}},
-			&Suite{Tests: []*Test{&Test{Skipped: true}}},
-		}
+		suites := golden
 		if hasFailures(suites) {
 			t.Fatal("Expected false, got: true")
 		}
 	})
 	t.Run("WithFailures", func(t *testing.T) {
-		suites := []*Suite{
-			&Suite{},
-			&Suite{Tests: []*Test{&Test{Passed: true}}},
-			&Suite{Tests: []*Test{&Test{Skipped: true}}},
-			&Suite{Tests: []*Test{&Test{Failed: true}}},
-		}
+		suites := append(golden, &failed)
 		if !hasFailures(suites) {
 			t.Fatal("Expected true, got: false")
 		}
