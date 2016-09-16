@@ -54,3 +54,15 @@ func TestMultipleSuitsWithoutFailures(t *testing.T) {
 		t.Fatal("Expected false, got: true")
 	}
 }
+
+func TestMultipleSuitsWithFailures(t *testing.T) {
+	suites := []*Suite{
+		&Suite{},
+		&Suite{Tests: []*Test{&Test{Passed: true}}},
+		&Suite{Tests: []*Test{&Test{Skipped: true}}},
+		&Suite{Tests: []*Test{&Test{Failed: true}}},
+	}
+	if !hasFailures(suites) {
+		t.Fatal("Expected true, got: false")
+	}
+}
