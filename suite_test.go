@@ -9,9 +9,9 @@ func TestEmptySuite(t *testing.T) {
 			t.Fatal("Expected 0 tests; got:", count)
 		}
 	})
-	t.Run("NumberOfFailed", func(t *testing.T) {
-		if failures := suite.NumFailed(); failures != 0 {
-			t.Fatal("Expected 0 failures, got:", failures)
+	t.Run("NumberOfPassed", func(t *testing.T) {
+		if passed := suite.NumPassed(); passed != 0 {
+			t.Fatal("Expected 0 passed, got:", passed)
 		}
 	})
 	t.Run("NumberOfSkipped", func(t *testing.T) {
@@ -19,9 +19,9 @@ func TestEmptySuite(t *testing.T) {
 			t.Fatal("Expected 0 skipped, got:", skipped)
 		}
 	})
-	t.Run("NumberOfPassed", func(t *testing.T) {
-		if passed := suite.NumPassed(); passed != 0 {
-			t.Fatal("Expected 0 passed, got:", passed)
+	t.Run("NumberOfFailed", func(t *testing.T) {
+		if failures := suite.NumFailed(); failures != 0 {
+			t.Fatal("Expected 0 failures, got:", failures)
 		}
 	})
 }
@@ -42,9 +42,9 @@ func TestMixedSuite(t *testing.T) {
 			t.Fatal("Expected 6 tests; got:", count)
 		}
 	})
-	t.Run("NumberOfFailed", func(t *testing.T) {
-		if failures := suite.NumFailed(); failures != 1 {
-			t.Fatal("Expected 1 failures, got:", failures)
+	t.Run("NumberOfPassed", func(t *testing.T) {
+		if passed := suite.NumPassed(); passed != 1 {
+			t.Fatal("Expected 1 passed, got:", passed)
 		}
 	})
 	t.Run("NumberOfSkipped", func(t *testing.T) {
@@ -52,9 +52,9 @@ func TestMixedSuite(t *testing.T) {
 			t.Fatal("Expected 1 skipped, got:", skipped)
 		}
 	})
-	t.Run("NumberOfPassed", func(t *testing.T) {
-		if passed := suite.NumPassed(); passed != 1 {
-			t.Fatal("Expected 1 passed, got:", passed)
+	t.Run("NumberOfFailed", func(t *testing.T) {
+		if failures := suite.NumFailed(); failures != 1 {
+			t.Fatal("Expected 1 failures, got:", failures)
 		}
 	})
 }

@@ -16,6 +16,11 @@ type Suite struct {
 	Tests  []*Test
 }
 
+// NumPassed return number of passed tests in the suite
+func (suite *Suite) NumPassed() int {
+	return suite.stats().passed
+}
+
 // NumSkipped return number of skipped tests in suite
 func (suite *Suite) NumSkipped() int {
 	return suite.stats().skipped
@@ -24,11 +29,6 @@ func (suite *Suite) NumSkipped() int {
 // NumFailed return number of failed tests in suite
 func (suite *Suite) NumFailed() int {
 	return suite.stats().failed
-}
-
-// NumPassed return number of passed tests in the suite
-func (suite *Suite) NumPassed() int {
-	return suite.stats().passed
 }
 
 // report hold counts of the number of passed, skipped or failed
@@ -42,14 +42,14 @@ type report struct {
 // stats reports the number of passed, skipped or failed tests in a suite.
 func (suite *Suite) stats() (r report) {
 	for _, test := range suite.Tests {
-		if test.Failed {
-			r.failed++
+		if test.Passed {
+			r.passed++
 		}
 		if test.Skipped {
 			r.skipped++
 		}
-		if test.Passed {
-			r.passed++
+		if test.Failed {
+			r.failed++
 		}
 	}
 	return
