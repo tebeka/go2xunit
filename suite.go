@@ -23,7 +23,7 @@ func (suite *Suite) NumSkipped() int {
 
 // NumFailed return number of failed tests in suite
 func (suite *Suite) NumFailed() int {
-	return suite.stats().failures
+	return suite.stats().failed
 }
 
 // NumPassed return number of passed tests in the suite
@@ -34,16 +34,16 @@ func (suite *Suite) NumPassed() int {
 // report hold counts of the number of passed, skipped or failed
 // tests.
 type report struct {
-	passed   int
-	skipped  int
-	failures int
+	passed  int
+	skipped int
+	failed  int
 }
 
 // stats reports the number of passed, skipped or failed tests in a suite.
 func (suite *Suite) stats() (r report) {
 	for _, test := range suite.Tests {
 		if test.Failed {
-			r.failures++
+			r.failed++
 		}
 		if test.Skipped {
 			r.skipped++
