@@ -4,6 +4,9 @@ import "testing"
 
 func Test_EmptySuite(t *testing.T) {
 	suite := Suite{}
+	if count := suite.Count(); count != 0 {
+		t.Fatal("Expected 0 tests; got:", count)
+	}
 	if failures := suite.NumFailed(); failures != 0 {
 		t.Fatal("Expected 0 failures, got:", failures)
 	}
@@ -27,6 +30,9 @@ func Test_NumFailed_Mixed(t *testing.T) {
 		},
 	}
 
+	if count := suite.Count(); count != 6 {
+		t.Fatal("Expected 6 tests; got:", count)
+	}
 	if failures := suite.NumFailed(); failures != 1 {
 		t.Fatal("Expected 1 failures, got:", failures)
 	}
