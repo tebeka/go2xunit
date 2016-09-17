@@ -44,7 +44,7 @@ const (
   	     passed="{{.NumPassed}}"
   	     failed="{{.NumFailed}}"
   	     skipped="{{.NumSkipped}}">
-{{range  $test := $suite.Tests}}
+{{range  $test := $suite.Tests	}}
         <test name="{{$test.Name}}"
           type="test"
           method="{{$test.Name}}"
