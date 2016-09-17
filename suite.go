@@ -36,7 +36,7 @@ func (suite *Suite) SetLastTestMessage(message string) {
 	if suite.LastTest().Message == "" {
 		suite.replaceLastTestMessage(message)
 	} else {
-		suite.AppendLastTestMessage("\n" + message)
+		suite.appendLastTestMessage("\n" + message)
 	}
 }
 
@@ -45,8 +45,8 @@ func (suite *Suite) replaceLastTestMessage(message string) {
 	suite.LastTest().Message = message
 }
 
-// AppendLastTestMessage concatenates the last test collected by the suite
-func (suite *Suite) AppendLastTestMessage(message string) {
+// appendLastTestMessage concatenates the last test collected by the suite
+func (suite *Suite) appendLastTestMessage(message string) {
 	suite.replaceLastTestMessage(suite.LastTest().Message + message)
 }
 
