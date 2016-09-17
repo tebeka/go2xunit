@@ -205,11 +205,7 @@ func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 	appendError := func() {
 		if len(out) > 0 && curSuite != nil && curSuite.Count() > 0 {
 			message := strings.Join(out, "\n")
-			if curSuite.LastTest().Message == "" {
-				curSuite.SetLastTestMessage(message)
-			} else {
-				curSuite.SetLastTestMessage(curSuite.LastTest().Message + "\n" + message)
-			}
+			curSuite.SetLastTestMessage(message)
 		}
 		out = []string{}
 	}
