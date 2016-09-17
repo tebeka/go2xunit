@@ -26,6 +26,16 @@ func (suite *Suite) Tests() []*Test {
 	return suite.tests
 }
 
+// LastTest returns the last test collected by the suite
+func (suite *Suite) LastTest() *Test {
+	return suite.tests[suite.Count()-1]
+}
+
+// SetLastTestMessage replaces the message of the last test collected by the suite
+func (suite *Suite) SetLastTestMessage(message string) {
+	suite.tests[suite.Count()-1].Message = message
+}
+
 // SetTests updates the suite with a new collection of tests
 func (suite *Suite) SetTests(tests []*Test) {
 	suite.tests = tests

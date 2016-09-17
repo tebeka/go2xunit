@@ -205,10 +205,10 @@ func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 	appendError := func() {
 		if len(out) > 0 && curSuite != nil && len(curSuite.Tests()) > 0 {
 			message := strings.Join(out, "\n")
-			if curSuite.Tests()[len(curSuite.Tests())-1].Message == "" {
-				curSuite.Tests()[len(curSuite.Tests())-1].Message = message
+			if curSuite.LastTest().Message == "" {
+				curSuite.SetLastTestMessage(message)
 			} else {
-				curSuite.Tests()[len(curSuite.Tests())-1].Message += "\n" + message
+				curSuite.SetLastTestMessage(curSuite.LastTest().Message + "\n" + message)
 			}
 		}
 		out = []string{}
