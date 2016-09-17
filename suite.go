@@ -16,6 +16,11 @@ type Suite struct {
 	tests  []*Test
 }
 
+// AddTest adds a test case to the suite
+func (suite *Suite) AddTest(test *Test) {
+	suite.tests = append(suite.tests, test)
+}
+
 // Tests returns a collection of tests
 func (suite *Suite) Tests() []*Test {
 	return suite.tests

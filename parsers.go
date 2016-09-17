@@ -136,7 +136,7 @@ func gcParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 				suite = &Suite{Name: suitePrefix + suiteName}
 				suites = append(suites, suite)
 			}
-			suite.SetTests(append(suite.Tests(), test))
+			suite.AddTest(test)
 
 			testName = ""
 			suiteName = ""
@@ -197,7 +197,7 @@ func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 		curTest.Failed = true
 		curTest.Skipped = false
 		curTest.Time = "N/A"
-		curSuite.SetTests(append(curSuite.Tests(), curTest))
+		curSuite.AddTest(curTest)
 		curTest = nil
 	}
 
@@ -239,7 +239,7 @@ func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 				if parentTest == nil && strings.HasPrefix(tokens[1], curTest.Name+"/") {
 					// First subtest after parent
 					parentTest = curTest
-					curSuite.SetTests(append(curSuite.Tests(), curTest))
+					curSuite.AddTest(curTest)
 					subTests = map[string]*Test{}
 					subTest = true
 				} else if parentTest != nil && strings.HasPrefix(tokens[1], parentTest.Name+"/") {
@@ -256,7 +256,7 @@ func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 				Name: tokens[1],
 			}
 			if subTest {
-				curSuite.SetTests(append(curSuite.Tests(), curTest))
+				curSuite.AddTest(curTest)
 				subTests[curTest.Name] = curTest
 			}
 			continue
@@ -296,7 +296,7 @@ func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 			curTest.Time = tokens[3]
 			curTest.Message = strings.Join(out, "\n")
 			if appendTest {
-				curSuite.SetTests(append(curSuite.Tests(), curTest))
+				curSuite.AddTest(curTest)
 			}
 			curTest = nil
 			out = []string{}
