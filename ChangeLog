@@ -1,3 +1,6 @@
+YYYY-MM-DD version 1.X.Y
+    * Code reorg (@amibiz in PR #36)
+
 2016-09-15 version 1.3.1
     * Support runners that don't print a per-suite summary (@benley in PR #34)
 
