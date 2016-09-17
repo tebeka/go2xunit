@@ -33,7 +33,7 @@ func (suite *Suite) LastTest() *Test {
 
 // SetLastTestMessage replaces the message of the last test collected by the suite
 func (suite *Suite) SetLastTestMessage(message string) {
-	suite.tests[suite.Count()-1].Message = message
+	suite.LastTest().Message = message
 }
 
 // SetTests updates the suite with a new collection of tests
