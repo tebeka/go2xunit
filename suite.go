@@ -13,7 +13,46 @@ type Suite struct {
 	Name   string
 	Time   string
 	Status string
-	Tests  []*Test
+	tests  []*Test
+}
+
+// AddTest adds a test case to the suite
+func (suite *Suite) AddTest(test *Test) {
+	suite.tests = append(suite.tests, test)
+}
+
+// Tests returns a collection of tests
+func (suite *Suite) Tests() []*Test {
+	return suite.tests
+}
+
+// lastTest returns the last test collected by the suite
+func (suite *Suite) lastTest() *Test {
+	return suite.tests[suite.Count()-1]
+}
+
+// SetLastTestMessage update the message of the last test collected by the suite
+func (suite *Suite) SetLastTestMessage(message string) {
+	if suite.lastTest().Message == "" {
+		suite.replaceLastTestMessage(message)
+	} else {
+		suite.appendLastTestMessage("\n" + message)
+	}
+}
+
+// replaceLastTestMessage sets the message of the last test collected by the suite
+func (suite *Suite) replaceLastTestMessage(message string) {
+	suite.lastTest().Message = message
+}
+
+// appendLastTestMessage concatenates the last test collected by the suite
+func (suite *Suite) appendLastTestMessage(message string) {
+	suite.replaceLastTestMessage(suite.lastTest().Message + message)
+}
+
+// SetTests updates the suite with a new collection of tests
+func (suite *Suite) SetTests(tests []*Test) {
+	suite.tests = tests
 }
 
 // NumPassed return number of passed tests in the suite
@@ -41,7 +80,7 @@ type report struct {
 
 // stats reports the number of passed, skipped or failed tests in a suite.
 func (suite *Suite) stats() (r report) {
-	for _, test := range suite.Tests {
+	for _, test := range suite.tests {
 		if test.Passed {
 			r.passed++
 		}
@@ -57,7 +96,7 @@ func (suite *Suite) stats() (r report) {
 
 // Count return the number of tests in the suite
 func (suite *Suite) Count() int {
-	return len(suite.Tests)
+	return len(suite.tests)
 }
 
 // hasFailures return true is there's at least one failing test in the suite

@@ -28,7 +28,7 @@ func TestEmptySuite(t *testing.T) {
 
 func TestMixedSuite(t *testing.T) {
 	suite := &Suite{
-		Tests: []*Test{
+		tests: []*Test{
 			&Test{Skipped: false},
 			&Test{Failed: false},
 			&Test{Passed: false},
@@ -61,9 +61,9 @@ func TestMixedSuite(t *testing.T) {
 
 func TestMultipleSuits(t *testing.T) {
 	empty := Suite{}
-	passed := Suite{Tests: []*Test{&Test{Passed: true}}}
-	skipped := Suite{Tests: []*Test{&Test{Skipped: true}}}
-	failed := Suite{Tests: []*Test{&Test{Failed: true}}}
+	passed := Suite{tests: []*Test{&Test{Passed: true}}}
+	skipped := Suite{tests: []*Test{&Test{Skipped: true}}}
+	failed := Suite{tests: []*Test{&Test{Failed: true}}}
 	golden := []*Suite{&empty, &passed, &skipped}
 
 	t.Run("WithoutFailures", func(t *testing.T) {

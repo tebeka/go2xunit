@@ -51,10 +51,10 @@ func Test_parseOutput17(t *testing.T) {
 	}
 
 	expectedTests := 7
-	actualTests := len(suites[0].Tests)
+	actualTests := len(suites[0].Tests())
 	if actualTests != expectedTests {
 		t.Errorf("got %d tests, expected %d", actualTests, expectedTests)
-		for _, st := range suites[0].Tests {
+		for _, st := range suites[0].Tests() {
 			t.Log(st.Name)
 		}
 	}
@@ -86,7 +86,7 @@ func checkOutput(t *testing.T, filename string) {
 	}
 
 	suite := suites[0]
-	tests := suite.Tests
+	tests := suite.Tests()
 	numTests := 5
 	if len(tests) != numTests {
 		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
@@ -116,7 +116,7 @@ func checkOutput(t *testing.T, filename string) {
 	}
 
 	suite = suites[1]
-	tests = suite.Tests
+	tests = suite.Tests()
 	numTests = 1
 	if len(tests) != numTests {
 		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
@@ -162,14 +162,14 @@ func Test_parseDatarace(t *testing.T) {
 	}
 
 	suite := suites[0]
-	tests := suite.Tests
+	tests := suite.Tests()
 	numTests := 1
 	if len(tests) != numTests {
 		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
 	}
 
 	expectedMessage := "WARNING: DATA RACE"
-	for i, test := range suite.Tests {
+	for i, test := range suite.Tests() {
 		if test.Message != expectedMessage {
 			t.Errorf(
 				"test %v message does not match expected result:\n\tGot: \"%v\"\n\tExpected: \"%v\"\n",
@@ -192,14 +192,14 @@ func Test_ignoreDatarace(t *testing.T) {
 	}
 
 	suite := suites[0]
-	tests := suite.Tests
+	tests := suite.Tests()
 	numTests := 1
 	if len(tests) != numTests {
 		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
 	}
 
 	expectedMessage := "WARNING: DATA RACE"
-	for i, test := range suite.Tests {
+	for i, test := range suite.Tests() {
 		if test.Message != expectedMessage {
 			t.Errorf(
 				"test %v message does not match expected result:\n\tGot: \"%v\"\n\tExpected: \"%v\"\n",
@@ -222,14 +222,14 @@ func Test_parseLogOutput(t *testing.T) {
 	}
 
 	suite := suites[0]
-	tests := suite.Tests
+	tests := suite.Tests()
 	numTests := 1
 	if len(tests) != numTests {
 		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
 	}
 
 	expectedMessage := "Log output."
-	for i, test := range suite.Tests {
+	for i, test := range suite.Tests() {
 		if test.Message != expectedMessage {
 			t.Errorf(
 				"test %v message does not match expected result:\n\tGot: \"%v\"\n\tExpected: \"%v\"\n",
@@ -248,7 +248,7 @@ func Test_parsePanicOutput(t *testing.T) {
 	}
 
 	suite := suites[0]
-	tests := suite.Tests
+	tests := suite.Tests()
 	numTests := 1
 	if len(tests) != numTests {
 		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
@@ -272,7 +272,7 @@ func Test_parseEmptySuite(t *testing.T) {
 	}
 
 	suite := suites[0]
-	tests := suite.Tests
+	tests := suite.Tests()
 	numTests := 0
 	if len(tests) != numTests {
 		t.Fatalf("got %d tests instead of %d", len(tests), numTests)
@@ -299,8 +299,8 @@ func Test_parseGocheckPass(t *testing.T) {
 
 	suite := suites[0]
 	ntests := 3
-	if len(suite.Tests) != ntests {
-		t.Fatalf("bad number of tests %d != %d", len(suite.Tests), ntests)
+	if len(suite.Tests()) != ntests {
+		t.Fatalf("bad number of tests %d != %d", len(suite.Tests()), ntests)
 	}
 
 	name := "MySuite"
@@ -333,8 +333,8 @@ func Test_parseGocheckFail(t *testing.T) {
 
 	suite := suites[1]
 	ntests := 3
-	if len(suite.Tests) != ntests {
-		t.Fatalf("bad number of tests %d != %d", len(suite.Tests), ntests)
+	if len(suite.Tests()) != ntests {
+		t.Fatalf("bad number of tests %d != %d", len(suite.Tests()), ntests)
 	}
 
 	name := "MySuite"
@@ -389,8 +389,8 @@ func Test_ThatMessageIsParsedCorrectly_WhenThereIsAnErrorWithinTheLastTestInSuit
 
 	suite := suites[0]
 
-	if len(suite.Tests) != 2 {
-		t.Fatalf("bad number of tests. expected %d got %d", 2, len(suite.Tests))
+	if len(suite.Tests()) != 2 {
+		t.Fatalf("bad number of tests. expected %d got %d", 2, len(suite.Tests()))
 	}
 
 	expectedMessages := []string{
@@ -398,7 +398,7 @@ func Test_ThatMessageIsParsedCorrectly_WhenThereIsAnErrorWithinTheLastTestInSuit
 		"\tmain_test.go:14: something new went wrong",
 	}
 
-	for i, test := range suite.Tests {
+	for i, test := range suite.Tests() {
 		if test.Message != expectedMessages[i] {
 			t.Errorf(
 				"test %v message does not match expected result:\n\tGot: \"%v\"\n\tExpected: \"%v\"\n",
@@ -435,7 +435,7 @@ func Test_0Time(t *testing.T) {
 
 	suite := suites[0]
 	if suite.Count() != 2 {
-		t.Fatalf("bad number of tests. expected %d got %d", 2, len(suite.Tests))
+		t.Fatalf("bad number of tests. expected %d got %d", 2, len(suite.Tests()))
 	}
 	if suite.NumFailed() != 0 {
 		t.Fatalf("unexpected failure")
@@ -470,10 +470,10 @@ func Test_parseOutputWithoutSummary(t *testing.T) {
 	}
 
 	expectedTests := 2
-	actualTests := len(suites[0].Tests)
+	actualTests := len(suites[0].Tests())
 	if actualTests != expectedTests {
 		t.Errorf("got %d tests, expected %d", actualTests, expectedTests)
-		for _, st := range suites[0].Tests {
+		for _, st := range suites[0].Tests() {
 			t.Log(st.Name)
 		}
 	}
