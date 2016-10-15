@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <testsuite name="" tests="2" errors="0" failures="1" skip="0">
+    <testcase classname="" name="TestMeaning" time="0.00">
+
+    </testcase>
+    <testcase classname="" name="TestAddTwoNumbers" time="0.00">
+
+      <failure type="go.error" message="error">
+        <![CDATA[2 + 3 = 5
+        lib_test.go:30: failing just because]]>
+      </failure>    </testcase>
+  </testsuite>

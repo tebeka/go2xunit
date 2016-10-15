@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly name="github.com/tebeka/go2xunit/demo"
+          run-date="2016-08-27" run-time="11:18:17"
+          configFile="none"
+          time="0.070"
+          total="7"
+          passed="6"
+          failed="1"
+          skipped="0"
+          environment="n/a"
+          test-framework="golang">
+
+    <class time="0.070" name="github.com/tebeka/go2xunit/demo"
+  	     total="7"
+  	     passed="6"
+  	     failed="1"
+  	     skipped="0">
+
+        <test name="TestAdd"
+          type="test"
+          method="TestAdd"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestSub"
+          type="test"
+          method="TestSub"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestMul"
+          type="test"
+          method="TestMul"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestDiv"
+          type="test"
+          method="TestDiv"
+          result="Fail"
+          time="0.00">
+          <failure exception-type="go.error">
+             <message><![CDATA[	mmath_test.go:35: 2/3 != 0.666667]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestSquare"
+          type="test"
+          method="TestSquare"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestSquare/x=1"
+          type="test"
+          method="TestSquare/x=1"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestSquare/x=2"
+          type="test"
+          method="TestSquare/x=2"
+          result="Pass"
+          time="0.00">
+        </test>
+
+    </class>
+
+</assembly>
