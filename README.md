@@ -36,9 +36,9 @@ Here's an example script (`run-tests.sh`) that can be used with [Jenkins][jenkin
 
 # Examples
 
-* [go test](demo/)
-* [gocheck](demo-gocheck/)
-* [testify](demo-testify/)
+* [go test](demos/gotest/)
+* [gocheck](demos/gocheck/)
+* [testify](demos/testify/)
 
 
 # Related
