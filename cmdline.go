@@ -5,6 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/tebeka/go2xunit/lib"
 )
 
 var args struct {
@@ -15,7 +17,6 @@ var args struct {
 	bambooOut   bool
 	xunitnetOut bool
 	isGocheck   bool
-	failOnRace  bool
 	suitePrefix string
 }
 
@@ -28,7 +29,7 @@ func init() {
 		"xml compatible with Atlassian's Bamboo")
 	flag.BoolVar(&args.xunitnetOut, "xunitnet", false, "xml compatible with xunit.net")
 	flag.BoolVar(&args.isGocheck, "gocheck", false, "parse gocheck output")
-	flag.BoolVar(&args.failOnRace, "fail-on-race", false,
+	flag.BoolVar(&lib.Options.FailOnRace, "fail-on-race", false,
 		"mark test as failing if it exposes a data race")
 	flag.StringVar(&args.suitePrefix, "suite-name-prefix", "",
 		"prefix to include before all suite names")

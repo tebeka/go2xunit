@@ -1,5 +1,5 @@
-// Output parsers
-package main
+// Package lib is exposing parsers and output generation
+package lib
 
 import (
 	"bufio"
@@ -81,10 +81,23 @@ func hasDatarace(lines []string) bool {
 	return false
 }
 
-// gcParse parses output of "go test -gocheck.vv", returns a list of tests
+// Token2Status return matching status for token
+func Token2Status(token string) Status {
+	switch token {
+	case "FAIL", "PANIC":
+		return Failed
+	case "PASS":
+		return Passed
+	case "SKIP", "MISS":
+		return Skipped
+	}
+	return UnknownStatus
+}
+
+// ParseGocheck parses output of "go test -gocheck.vv", returns a list of tests
 // See data/gocheck.out for an example
 // TODO: Refactor to shorter ones
-func gcParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
+func ParseGocheck(rd io.Reader, suitePrefix string) (Suites, error) {
 	findStart := regexp.MustCompile(gcStartRE).FindStringSubmatch
 	findEnd := regexp.MustCompile(gcEndRE).FindStringSubmatch
 	findSuite := regexp.MustCompile(gcSuiteRE).FindStringSubmatch
@@ -128,9 +141,10 @@ func gcParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 			test := &Test{Name: testName}
 			test.Message = strings.Join(out, "\n")
 			test.Time = tokens[4]
-			test.Failed = (tokens[1] == "FAIL") || (tokens[1] == "PANIC")
-			test.Passed = (tokens[1] == "PASS")
-			test.Skipped = (tokens[1] == "SKIP" || tokens[1] == "MISS")
+			test.Status = Token2Status(tokens[1])
+			if test.Status == UnknownStatus {
+				return nil, fmt.Errorf("%d: unknonw status %s", scanner.Line(), tokens[1])
+			}
 
 			if suite == nil || suite.Name != suiteName {
 				suite = &Suite{Name: suitePrefix + suiteName}
@@ -172,12 +186,12 @@ func gcParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 		return nil, err
 	}
 
-	return suites, nil
+	return Suites(suites), nil
 }
 
-// gtParse parser output of gotest
+// ParseGotest parser output of gotest
 // TODO: Make it shorter
-func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
+func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 	findStart := regexp.MustCompile(gtStartRE).FindStringSubmatch
 	findEnd := regexp.MustCompile(gtEndRE).FindStringSubmatch
 	findSuite := regexp.MustCompile(gtSuiteRE).FindStringSubmatch
@@ -194,8 +208,7 @@ func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 	suiteStack := SuiteStack{}
 	// Handles a test that ended with a panic.
 	handlePanic := func() {
-		curTest.Failed = true
-		curTest.Skipped = false
+		curTest.Status = Failed
 		curTest.Time = "N/A"
 		curSuite.Tests = append(curSuite.Tests, curTest)
 		curTest = nil
@@ -290,9 +303,13 @@ func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 					return nil, err
 				}
 			}
-			curTest.Failed = (tokens[1] == "FAIL") || (args.failOnRace && hasDatarace(out))
-			curTest.Skipped = (tokens[1] == "SKIP")
-			curTest.Passed = (tokens[1] == "PASS")
+			curTest.Status = Token2Status(tokens[1])
+			if curTest.Status == UnknownStatus {
+				return nil, fmt.Errorf("%d: unknwon status - %s", scanner.Line(), tokens[1])
+			}
+			if Options.FailOnRace && hasDatarace(out) {
+				curTest.Status = Failed
+			}
 			curTest.Time = tokens[3]
 			curTest.Message = strings.Join(out, "\n")
 			if appendTest {
@@ -339,5 +356,5 @@ func gtParse(rd io.Reader, suitePrefix string) ([]*Suite, error) {
 		suites = append(suites, curSuite)
 	}
 
-	return suites, nil
+	return Suites(suites), nil
 }
