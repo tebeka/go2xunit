@@ -13,11 +13,11 @@ const (
 	xmlDeclaration = `<?xml version="1.0" encoding="utf-8"?>`
 
 	// XUnitTemplate is XML template for xunit style reporting
-	XUnitTemplate string = `{{$top := .}}
+	XUnitTemplate string = `
 {{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Len}}" errors="0" failures="{{.NumFailed}}" skip="{{.NumSkipped}}">
 {{range  $test := $suite.Tests}}    <testcase classname="{{$suite.Name}}" name="{{$test.Name}}" time="{{$test.Time}}">
-{{if eq $test.Status $top.Skipped }}      <skipped/> {{end}}
-{{if eq $test.Status $top.Failed }}      <failure type="go.error" message="error">
+{{if eq $test.Status $.Skipped }}      <skipped/> {{end}}
+{{if eq $test.Status $.Failed }}      <failure type="go.error" message="error">
         <![CDATA[{{$test.Message}}]]>
       </failure>{{end}}    </testcase>
 {{end}}  </testsuite>
@@ -30,7 +30,7 @@ const (
 
 	// XUnitNetTemplate is XML template for xunit.net
 	// see https://xunit.codeplex.com/wikipage?title=XmlFormat
-	XUnitNetTemplate string = `{{$top := .}}
+	XUnitNetTemplate string = `
 <assembly name="{{.Assembly}}"
           run-date="{{.RunDate}}" run-time="{{.RunTime}}"
           configFile="none"
@@ -51,9 +51,9 @@ const (
         <test name="{{$test.Name}}"
           type="test"
           method="{{$test.Name}}"
-          result={{if eq $test.Status $top.Skipped }}"Skip"{{else if eq $test.Status $top.Failed }}"Fail"{{else if eq $test.Status $top.Passed }}"Pass"{{end}}
+          result={{if eq $test.Status $.Skipped }}"Skip"{{else if eq $test.Status $.Failed }}"Fail"{{else if eq $test.Status $.Passed }}"Pass"{{end}}
           time="{{$test.Time}}">
-        {{if eq $test.Status $top.Failed }}  <failure exception-type="go.error">
+        {{if eq $test.Status $.Failed }}  <failure exception-type="go.error">
              <message><![CDATA[{{$test.Message}}]]></message>
       	  </failure>
       	{{end}}</test>
