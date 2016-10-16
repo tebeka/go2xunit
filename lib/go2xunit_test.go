@@ -1,4 +1,4 @@
-package main
+package lib
 
 import (
 	"os"
@@ -11,7 +11,7 @@ func loadGotest(filename string, t *testing.T) ([]*Suite, error) {
 		t.Fatalf("can't open %s - %s", filename, err)
 	}
 
-	return gtParse(file, "")
+	return ParseGotest(file, "")
 }
 
 func Test_parseOutputBad(t *testing.T) {
@@ -22,7 +22,7 @@ func Test_parseOutputBad(t *testing.T) {
 }
 
 func Test_ignoreDatarace(t *testing.T) {
-	filename := "data/in/gotest-datarace.out"
+	filename := "../data/in/gotest-datarace.out"
 	suites, err := loadGotest(filename, t)
 	if err != nil {
 		t.Fatalf("error loading %s - %s", filename, err)

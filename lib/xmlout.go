@@ -1,6 +1,6 @@
-// XML output
-package main
+package lib
 
+// XML output
 import (
 	"fmt"
 	"io"
@@ -12,35 +12,38 @@ import (
 const (
 	xmlDeclaration = `<?xml version="1.0" encoding="utf-8"?>`
 
-	xunitTemplate string = `
-{{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Count}}" errors="0" failures="{{.NumFailed}}" skip="{{.NumSkipped}}">
+	// XUnitTemplate is XML template for xunit style reporting
+	XUnitTemplate string = `{{$top := .}}
+{{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Len}}" errors="0" failures="{{.NumFailed}}" skip="{{.NumSkipped}}">
 {{range  $test := $suite.Tests}}    <testcase classname="{{$suite.Name}}" name="{{$test.Name}}" time="{{$test.Time}}">
-{{if $test.Skipped }}      <skipped/> {{end}}
-{{if $test.Failed }}      <failure type="go.error" message="error">
+{{if eq $test.Status $top.Skipped }}      <skipped/> {{end}}
+{{if eq $test.Status $top.Failed }}      <failure type="go.error" message="error">
         <![CDATA[{{$test.Message}}]]>
       </failure>{{end}}    </testcase>
 {{end}}  </testsuite>
 {{end}}`
 
-	multiTemplate string = `
-<testsuites>` + xunitTemplate + `</testsuites>
+	// XMLMultiTemplate is template when we have multiple suites
+	XMLMultiTemplate string = `
+<testsuites>` + XUnitTemplate + `</testsuites>
 `
 
-	// https://xunit.codeplex.com/wikipage?title=XmlFormat
-	xunitNetTemplate string = `
+	// XUnitNetTemplate is XML template for xunit.net
+	// see https://xunit.codeplex.com/wikipage?title=XmlFormat
+	XUnitNetTemplate string = `{{$top := .}}
 <assembly name="{{.Assembly}}"
           run-date="{{.RunDate}}" run-time="{{.RunTime}}"
           configFile="none"
           time="{{.Time}}"
-          total="{{.Total}}"
-          passed="{{.Passed}}"
-          failed="{{.Failed}}"
-          skipped="{{.Skipped}}"
+          total="{{.Len}}"
+          passed="{{.NumPassed}}"
+          failed="{{.NumFailed}}"
+          skipped="{{.NumSkipped}}"
           environment="n/a"
           test-framework="golang">
 {{range $suite := .Suites}}
     <class time="{{.Time}}" name="{{.Name}}"
-  	     total="{{.Count}}"
+  	     total="{{.Len}}"
   	     passed="{{.NumPassed}}"
   	     failed="{{.NumFailed}}"
   	     skipped="{{.NumSkipped}}">
@@ -48,9 +51,9 @@ const (
         <test name="{{$test.Name}}"
           type="test"
           method="{{$test.Name}}"
-          result={{if $test.Skipped }}"Skip"{{else if $test.Failed }}"Fail"{{else if $test.Passed }}"Pass"{{end}}
+          result={{if eq $test.Status $top.Skipped }}"Skip"{{else if eq $test.Status $top.Failed }}"Fail"{{else if eq $test.Status $top.Passed }}"Pass"{{end}}
           time="{{$test.Time}}">
-        {{if $test.Failed }}  <failure exception-type="go.error">
+        {{if eq $test.Status $top.Failed }}  <failure exception-type="go.error">
              <message><![CDATA[{{$test.Message}}]]></message>
       	  </failure>
       	{{end}}</test>
@@ -63,39 +66,46 @@ const (
 
 // TestResults is passed to XML template
 type TestResults struct {
-	Suites   []*Suite
-	Assembly string
-	RunDate  string
-	RunTime  string
-	Time     string
-	Total    int
-	Passed   int
-	Failed   int
-	Skipped  int
+	Suites     []*Suite
+	Assembly   string
+	RunDate    string
+	RunTime    string
+	Time       string
+	Len        int
+	NumPassed  int
+	NumFailed  int
+	NumSkipped int
+
+	Skipped Status
+	Passed  Status
+	Failed  Status
 }
 
 // calcTotals calculates grand total for all suites
 func (r *TestResults) calcTotals() {
 	totalTime, _ := strconv.ParseFloat(r.Time, 64)
 	for _, suite := range r.Suites {
-		r.Passed += suite.NumPassed()
-		r.Failed += suite.NumFailed()
-		r.Skipped += suite.NumSkipped()
+		r.NumPassed += suite.NumPassed()
+		r.NumFailed += suite.NumFailed()
+		r.NumSkipped += suite.NumSkipped()
 
 		suiteTime, _ := strconv.ParseFloat(suite.Time, 64)
 		totalTime += suiteTime
 		r.Time = fmt.Sprintf("%.3f", totalTime)
 	}
-	r.Total = r.Passed + r.Skipped + r.Failed
+	r.Len = r.NumPassed + r.NumSkipped + r.NumFailed
 }
 
-// writeXML exits xunit XML of tests to out
-func writeXML(suites []*Suite, out io.Writer, xmlTemplate string, testTime time.Time) {
+// WriteXML exits xunit XML of tests to out
+func WriteXML(suites []*Suite, out io.Writer, xmlTemplate string, testTime time.Time) {
 	testsResult := TestResults{
 		Suites:   suites,
 		Assembly: suites[len(suites)-1].Name,
 		RunDate:  testTime.Format("2006-01-02"),
 		RunTime:  testTime.Format("15:04:05"),
+		Skipped:  Skipped,
+		Passed:   Passed,
+		Failed:   Failed,
 	}
 	testsResult.calcTotals()
 	t := template.New("test template")
