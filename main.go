@@ -12,7 +12,7 @@ import (
 
 const (
 	// Version is the current version
-	Version = "1.3.1"
+	Version = "1.4.0"
 )
 
 // getInput return input io.File from file name, if file name is - it will

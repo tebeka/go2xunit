@@ -1,5 +1,6 @@
-YYYY-MM-DD version 1.X.Y
+2016-10-16 version 1.4.0
     * Code reorg (@amibiz in PR #36)
+    * Expose library (issue #39)
 
 2016-09-15 version 1.3.1
     * Support runners that don't print a per-suite summary (@benley in PR #34)
