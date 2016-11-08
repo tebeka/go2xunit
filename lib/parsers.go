@@ -2,74 +2,15 @@
 package lib
 
 import (
-	"bufio"
 	"fmt"
 	"io"
 	"regexp"
 	"strings"
 )
 
-const (
-	// gotest regular expressions
-
-	// === RUN TestAdd
-	gtStartRE = "^=== RUN:?[[:space:]]+([a-zA-Z_][^[:space:]]*)"
-
-	// --- PASS: TestSub (0.00 seconds)
-	// --- FAIL: TestSubFail (0.00 seconds)
-	// --- SKIP: TestSubSkip (0.00 seconds)
-	gtEndRE = "--- (PASS|FAIL|SKIP):[[:space:]]+([a-zA-Z_][^[:space:]]*) \\((\\d+(.\\d+)?)"
-
-	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
-	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
-	gtSuiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
-
-	// ?       alipay  [no test files]
-	gtNoFilesRE = "^\\?.*\\[no test files\\]$"
-	// FAIL    node/config [build failed]
-	gtBuildFailedRE = `^FAIL.*\[(build|setup) failed\]$`
-
-	// gocheck regular expressions
-
-	// START: mmath_test.go:16: MySuite.TestAdd
-	gcStartRE = "START: [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)"
-
-	// PASS: mmath_test.go:16: MySuite.TestAdd	0.000s
-	// FAIL: mmath_test.go:35: MySuite.TestDiv
-	gcEndRE = "(PASS|FAIL|SKIP|PANIC|MISS): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)[[:space:]]?([0-9]+.[0-9]+)?"
-
-	// FAIL	go2xunit/demo-gocheck	0.008s
-	// ok  	go2xunit/demo-gocheck	0.008s
-	gcSuiteRE = "^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)"
-)
-
 var (
 	matchDatarace = regexp.MustCompile("^WARNING: DATA RACE$").MatchString
 )
-
-// LineScanner scans lines and keep track of line numbers
-type LineScanner struct {
-	*bufio.Scanner
-	lnum int
-}
-
-// NewLineScanner creates a new line scanner from r
-func NewLineScanner(r io.Reader) *LineScanner {
-	scan := bufio.NewScanner(r)
-	return &LineScanner{scan, 0}
-}
-
-// Scan advances to next line
-func (ls *LineScanner) Scan() bool {
-	val := ls.Scanner.Scan()
-	ls.lnum++
-	return val
-}
-
-// Line returns the current line number
-func (ls *LineScanner) Line() int {
-	return ls.lnum
-}
 
 // hasDatarace checks if there's a data race warning in the line
 func hasDatarace(lines []string) bool {
@@ -98,9 +39,9 @@ func Token2Status(token string) Status {
 // See data/gocheck.out for an example
 // TODO: Refactor to shorter ones
 func ParseGocheck(rd io.Reader, suitePrefix string) (Suites, error) {
-	findStart := regexp.MustCompile(gcStartRE).FindStringSubmatch
-	findEnd := regexp.MustCompile(gcEndRE).FindStringSubmatch
-	findSuite := regexp.MustCompile(gcSuiteRE).FindStringSubmatch
+	findStart := gcStartRE.FindStringSubmatch
+	findEnd := gcEndRE.FindStringSubmatch
+	findSuite := gcSuiteRE.FindStringSubmatch
 
 	scanner := NewLineScanner(rd)
 	var suites = make([]*Suite, 0)
@@ -192,12 +133,12 @@ func ParseGocheck(rd io.Reader, suitePrefix string) (Suites, error) {
 // ParseGotest parser output of gotest
 // TODO: Make it shorter
 func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
-	findStart := regexp.MustCompile(gtStartRE).FindStringSubmatch
-	findEnd := regexp.MustCompile(gtEndRE).FindStringSubmatch
-	findSuite := regexp.MustCompile(gtSuiteRE).FindStringSubmatch
-	isNoFiles := regexp.MustCompile(gtNoFilesRE).MatchString
-	isBuildFailed := regexp.MustCompile(gtBuildFailedRE).MatchString
-	isExit := regexp.MustCompile("^exit status -?\\d+").MatchString
+	findStart := gtStartRE.FindStringSubmatch
+	findEnd := gtEndRE.FindStringSubmatch
+	findSuite := gtSuiteRE.FindStringSubmatch
+	isNoFiles := gtNoFilesRE.MatchString
+	isBuildFailed := gtBuildFailedRE.MatchString
+	isExit := gtExitRE.MatchString
 
 	suites := []*Suite{}
 	subTests := map[string]*Test{}
