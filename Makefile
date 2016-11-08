@@ -4,7 +4,7 @@ test:
 	go test -v . ./lib
 
 lint:
-	golint .
-	golint lib
+	golint -set_exit_status .
+	golint -set_exit_status lib
 
 .PHONY: test lib
