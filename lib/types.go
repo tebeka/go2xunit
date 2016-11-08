@@ -3,14 +3,11 @@ package lib
 // Status is test status
 type Status int
 
+// Test statuses
 const (
-	// UnknownStatus means an error status
 	UnknownStatus Status = iota
-	// Failed means test failed
 	Failed
-	// Skipped means test was skipped
 	Skipped
-	// Passed means test passed
 	Passed
 )
 
