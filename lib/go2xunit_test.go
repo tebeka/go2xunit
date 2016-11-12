@@ -14,7 +14,7 @@ func loadGotest(filename string, t *testing.T) ([]*Suite, error) {
 	return ParseGotest(file, "")
 }
 
-func Test_parseOutputBad(t *testing.T) {
+func Test_parseBadOutput(t *testing.T) {
 	filename := "parsers.go"
 	if _, err := loadGotest(filename, t); err == nil {
 		t.Fatalf("managed to find suites in junk")

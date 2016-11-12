@@ -120,7 +120,7 @@ func (tok *Token) String() string {
 	return fmt.Sprintf("<%s Token line:%03d>", tok.Type, tok.Line)
 }
 
-// Lexer is generates tokens
+// Lexer generates tokens
 type Lexer interface {
 	Scan() bool
 	Token() *Token
@@ -186,6 +186,10 @@ func (lex *GotestLexer) Err() error {
 }
 
 // NewGotestLexer returns a new lexer for gotest files
-func NewGotestLexer(rdr io.Reader) Lexer {
-	return &GotestLexer{NewLineScanner(rdr), nil, nil}
+func NewGotestLexer(in io.Reader) Lexer {
+	return &GotestLexer{
+		scanner: NewLineScanner(in),
+		tok:     nil,
+		err:     nil,
+	}
 }
