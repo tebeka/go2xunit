@@ -1,0 +1,4 @@
+=== RUN TestAdd
+--- PASS: TestAdd (-0.01 seconds)
+PASS
+ok  	go2xunit/demo	-0.012s
