@@ -18,12 +18,13 @@ var (
 	// --- FAIL: TestSubFail (0.00 seconds)
 	// --- SKIP: TestSubSkip (0.00 seconds)
 	gtEndRE = regexp.MustCompile(
-		"--- (PASS|FAIL|SKIP):[[:space:]]+([a-zA-Z_][^[:space:]]*) \\((\\d+(.\\d+)?)")
+		"--- (PASS|FAIL|SKIP):[[:space:]]+([a-zA-Z_][^[:space:]]*) " +
+			"\\((-?\\d+(.\\d+)?)")
 
 	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
 	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
 	gtSuiteRE = regexp.MustCompile(
-		"^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)")
+		"^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(-?\\d+.\\d+)")
 
 	// ?       alipay  [no test files]
 	gtNoFilesRE = regexp.MustCompile("^\\?.*\\[no test files\\]$")
@@ -42,11 +43,13 @@ var (
 	// PASS: mmath_test.go:16: MySuite.TestAdd	0.000s
 	// FAIL: mmath_test.go:35: MySuite.TestDiv
 	gcEndRE = regexp.MustCompile(
-		"(PASS|FAIL|SKIP|PANIC|MISS): [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)[[:space:]]?([0-9]+.[0-9]+)?")
+		"(PASS|FAIL|SKIP|PANIC|MISS): [^:]+:[^:]+: " +
+			"([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)" +
+			"[[:space:]]?(-?[0-9]+.[0-9]+)?")
 
 	// FAIL	go2xunit/demo-gocheck	0.008s
 	// ok  	go2xunit/demo-gocheck	0.008s
-	gcSuiteRE = regexp.MustCompile("^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(\\d+.\\d+)")
+	gcSuiteRE = regexp.MustCompile("^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(-?\\d+.\\d+)")
 )
 
 // LineScanner scans lines and keep track of line numbers

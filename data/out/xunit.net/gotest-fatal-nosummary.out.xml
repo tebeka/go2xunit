@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly name=""
+          run-date="2016-11-22" run-time="15:27:22"
+          configFile="none"
+          time="0.000"
+          total="1"
+          passed="0"
+          failed="1"
+          skipped="0"
+          environment="n/a"
+          test-framework="golang">
+
+    <class time="" name=""
+  	     total="1"
+  	     passed="0"
+  	     failed="1"
+  	     skipped="0">
+
+        <test name="TestPanic"
+          type="test"
+          method="TestPanic"
+          result="Fail"
+          time="N/A">
+          <failure exception-type="go.error">
+             <message><![CDATA[fatal error: all goroutines are asleep - deadlock!
+...]]></message>
+      	  </failure>
+      	</test>
+
+    </class>
+
+</assembly>

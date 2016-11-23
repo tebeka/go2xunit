@@ -84,7 +84,7 @@ func ParseGocheck(rd io.Reader, suitePrefix string) (Suites, error) {
 			test.Time = tokens[4]
 			test.Status = Token2Status(tokens[1])
 			if test.Status == UnknownStatus {
-				return nil, fmt.Errorf("%d: unknonw status %s", scanner.Line(), tokens[1])
+				return nil, fmt.Errorf("%d: unknown status %s", scanner.Line(), tokens[1])
 			}
 
 			if suite == nil || suite.Name != suiteName {
@@ -246,7 +246,7 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 			}
 			curTest.Status = Token2Status(tokens[1])
 			if curTest.Status == UnknownStatus {
-				return nil, fmt.Errorf("%d: unknwon status - %s", scanner.Line(), tokens[1])
+				return nil, fmt.Errorf("%d: unknown status - %s", scanner.Line(), tokens[1])
 			}
 			if Options.FailOnRace && hasDatarace(out) {
 				curTest.Status = Failed
@@ -284,6 +284,11 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 
 	if err := scanner.Err(); err != nil {
 		return nil, err
+	}
+
+	if curTest != nil {
+		// This occurs when the last test fatal'd outside of the `go test` runner.
+		handlePanic()
 	}
 
 	// If there were no suites found, but everything else went OK, return a
