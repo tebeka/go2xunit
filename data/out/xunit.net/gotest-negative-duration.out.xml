@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly name="go2xunit/demo"
+          run-date="2016-11-22" run-time="14:22:47"
+          configFile="none"
+          time="-0.012"
+          total="1"
+          passed="1"
+          failed="0"
+          skipped="0"
+          environment="n/a"
+          test-framework="golang">
+
+    <class time="-0.012" name="go2xunit/demo"
+  	     total="1"
+  	     passed="1"
+  	     failed="0"
+  	     skipped="0">
+
+        <test name="TestAdd"
+          type="test"
+          method="TestAdd"
+          result="Pass"
+          time="-0.01">
+        </test>
+
+    </class>
+
+</assembly>
