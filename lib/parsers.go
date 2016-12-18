@@ -60,7 +60,7 @@ func ParseGocheck(rd io.Reader, suitePrefix string) (Suites, error) {
 				continue
 			}
 			if testName != "" {
-				return nil, fmt.Errorf("%d: start in middle\n", scanner.Line())
+				return nil, fmt.Errorf("%d: start in middle of test", scanner.Line())
 			}
 			suiteName = tokens[1]
 			testName = tokens[2]
