@@ -92,9 +92,10 @@ const (
 
 // Token is a lex token (line oriented)
 type Token struct {
-	Line int
-	Type TokenType
-	Data string
+	Line   int
+	Type   TokenType
+	Data   string
+	Fields []string
 	//	Error error
 }
 
@@ -120,7 +121,7 @@ func (typ TokenType) String() string {
 }
 
 func (tok *Token) String() string {
-	return fmt.Sprintf("<%s Token line:%03d>", tok.Type, tok.Line)
+	return fmt.Sprintf("<%s Token line:%d>", tok.Type, tok.Line)
 }
 
 // Lexer generates tokens
@@ -160,18 +161,15 @@ func (lex *GotestLexer) Scan() bool {
 
 	line := lex.scanner.Text()
 	lnum := lex.scanner.Line()
-	found := false
 	for _, typ := range gtTypes {
-		if typ.re.MatchString(line) {
-			found = true
-			lex.tok = &Token{lnum, typ.typ, line}
-			break
+		fields := typ.re.FindStringSubmatch(line)
+		if len(fields) > 0 {
+			lex.tok = &Token{lnum, typ.typ, line, fields}
+			return true
 		}
 	}
-	if !found {
-		lex.tok = &Token{lnum, DataToken, line}
-	}
 
+	lex.tok = &Token{lnum, DataToken, line, nil}
 	return true
 }
 
