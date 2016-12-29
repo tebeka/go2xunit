@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly name="github.com/tebeka/go2xunit"
+          run-date="2016-12-29" run-time="11:00:48"
+          configFile="none"
+          time="0.650"
+          total="53"
+          passed="50"
+          failed="3"
+          skipped="0"
+          environment="n/a"
+          test-framework="golang">
+
+    <class time="0.650" name="github.com/tebeka/go2xunit"
+  	     total="53"
+  	     passed="50"
+  	     failed="3"
+  	     skipped="0">
+
+        <test name="TestRegression"
+          type="test"
+          method="TestRegression"
+          result="Fail"
+          time="0.65">
+          <failure exception-type="go.error">
+             <message><![CDATA[]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestRegression/xunit-data/in/gotest-0.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-0.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-1.5.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-1.5.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-1.6.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-1.6.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-1.7.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-1.7.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-datarace.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-datarace.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-empty.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-empty.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-fail.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-fail.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-fatal-nosummary.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-fatal-nosummary.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-go2xunit.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-go2xunit.out"
+          result="Fail"
+          time="0.00">
+          <failure exception-type="go.error">
+             <message><![CDATA[]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestRegression/xunit-data/in/gotest-log.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-log.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-multi.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-multi.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-multierror.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-multierror.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-negative-duration.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-negative-duration.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-nofiles.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-nofiles.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-nosummary.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-nosummary.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-num.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-num.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-panic.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-panic.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-pass.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-pass.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-print.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-print.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest-testify-suite.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest-testify-suite.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gotest.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gotest.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gocheck-empty.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gocheck-empty.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gocheck-fail.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gocheck-fail.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gocheck-panic.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gocheck-panic.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gocheck-pass.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gocheck-pass.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit-data/in/gocheck-setup-miss.out"
+          type="test"
+          method="TestRegression/xunit-data/in/gocheck-setup-miss.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-0.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-0.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-1.5.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-1.5.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-1.6.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-1.6.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-1.7.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-1.7.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-datarace.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-datarace.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-empty.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-empty.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-fail.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-fail.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-fatal-nosummary.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-fatal-nosummary.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-go2xunit.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-go2xunit.out"
+          result="Fail"
+          time="0.00">
+          <failure exception-type="go.error">
+             <message><![CDATA[]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-log.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-log.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-multi.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-multi.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-multierror.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-multierror.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-negative-duration.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-negative-duration.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-nofiles.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-nofiles.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-nosummary.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-nosummary.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-num.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-num.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-panic.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-panic.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-pass.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-pass.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-print.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-print.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest-testify-suite.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest-testify-suite.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gotest.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gotest.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gocheck-empty.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gocheck-empty.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gocheck-fail.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gocheck-fail.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gocheck-panic.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gocheck-panic.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gocheck-pass.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gocheck-pass.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestRegression/xunit.net-data/in/gocheck-setup-miss.out"
+          type="test"
+          method="TestRegression/xunit.net-data/in/gocheck-setup-miss.out"
+          result="Pass"
+          time="0.00">
+        </test>
+
+    </class>
+
+</assembly>

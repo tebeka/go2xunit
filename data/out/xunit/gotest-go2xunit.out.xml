@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <testsuite name="github.com/tebeka/go2xunit" tests="53" errors="0" failures="3" skip="0">
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression" time="0.65">
+
+      <failure type="go.error" message="error">
+        <![CDATA[]]>
+      </failure>    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-0.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-1.5.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-1.6.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-1.7.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-datarace.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-empty.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-fail.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-fatal-nosummary.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-go2xunit.out" time="0.00">
+
+      <failure type="go.error" message="error">
+        <![CDATA[]]>
+      </failure>    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-log.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-multi.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-multierror.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-negative-duration.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-nofiles.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-nosummary.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-num.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-panic.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-pass.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-print.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest-testify-suite.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gotest.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gocheck-empty.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gocheck-fail.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gocheck-panic.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gocheck-pass.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit-data/in/gocheck-setup-miss.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-0.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-1.5.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-1.6.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-1.7.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-datarace.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-empty.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-fail.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-fatal-nosummary.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-go2xunit.out" time="0.00">
+
+      <failure type="go.error" message="error">
+        <![CDATA[]]>
+      </failure>    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-log.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-multi.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-multierror.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-negative-duration.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-nofiles.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-nosummary.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-num.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-panic.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-pass.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-print.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest-testify-suite.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gotest.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gocheck-empty.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gocheck-fail.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gocheck-panic.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gocheck-pass.out" time="0.00">
+
+    </testcase>
+    <testcase classname="github.com/tebeka/go2xunit" name="TestRegression/xunit.net-data/in/gocheck-setup-miss.out" time="0.00">
+
+    </testcase>
+  </testsuite>

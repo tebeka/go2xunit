@@ -1,0 +1,111 @@
+=== RUN   TestRegression
+=== RUN   TestRegression/xunit-data/in/gotest-0.out
+=== RUN   TestRegression/xunit-data/in/gotest-1.5.out
+=== RUN   TestRegression/xunit-data/in/gotest-1.6.out
+=== RUN   TestRegression/xunit-data/in/gotest-1.7.out
+=== RUN   TestRegression/xunit-data/in/gotest-datarace.out
+=== RUN   TestRegression/xunit-data/in/gotest-empty.out
+=== RUN   TestRegression/xunit-data/in/gotest-fail.out
+=== RUN   TestRegression/xunit-data/in/gotest-fatal-nosummary.out
+=== RUN   TestRegression/xunit-data/in/gotest-go2xunit.out
+=== RUN   TestRegression/xunit-data/in/gotest-log.out
+=== RUN   TestRegression/xunit-data/in/gotest-multi.out
+=== RUN   TestRegression/xunit-data/in/gotest-multierror.out
+=== RUN   TestRegression/xunit-data/in/gotest-negative-duration.out
+=== RUN   TestRegression/xunit-data/in/gotest-nofiles.out
+=== RUN   TestRegression/xunit-data/in/gotest-nosummary.out
+=== RUN   TestRegression/xunit-data/in/gotest-num.out
+=== RUN   TestRegression/xunit-data/in/gotest-panic.out
+=== RUN   TestRegression/xunit-data/in/gotest-pass.out
+=== RUN   TestRegression/xunit-data/in/gotest-print.out
+=== RUN   TestRegression/xunit-data/in/gotest-testify-suite.out
+=== RUN   TestRegression/xunit-data/in/gotest.out
+=== RUN   TestRegression/xunit-data/in/gocheck-empty.out
+=== RUN   TestRegression/xunit-data/in/gocheck-fail.out
+=== RUN   TestRegression/xunit-data/in/gocheck-panic.out
+=== RUN   TestRegression/xunit-data/in/gocheck-pass.out
+=== RUN   TestRegression/xunit-data/in/gocheck-setup-miss.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-0.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-1.5.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-1.6.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-1.7.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-datarace.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-empty.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-fail.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-fatal-nosummary.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-go2xunit.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-log.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-multi.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-multierror.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-negative-duration.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-nofiles.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-nosummary.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-num.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-panic.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-pass.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-print.out
+=== RUN   TestRegression/xunit.net-data/in/gotest-testify-suite.out
+=== RUN   TestRegression/xunit.net-data/in/gotest.out
+=== RUN   TestRegression/xunit.net-data/in/gocheck-empty.out
+=== RUN   TestRegression/xunit.net-data/in/gocheck-fail.out
+=== RUN   TestRegression/xunit.net-data/in/gocheck-panic.out
+=== RUN   TestRegression/xunit.net-data/in/gocheck-pass.out
+=== RUN   TestRegression/xunit.net-data/in/gocheck-setup-miss.out
+--- FAIL: TestRegression (0.65s)
+    --- PASS: TestRegression/xunit-data/in/gotest-0.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-1.5.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-1.6.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-1.7.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-datarace.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-empty.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-fail.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-fatal-nosummary.out (0.00s)
+    --- FAIL: TestRegression/xunit-data/in/gotest-go2xunit.out (0.00s)
+    	regression_test.go:47: can't read data/out/xunit/gotest-go2xunit.out.xml - open data/out/xunit/gotest-go2xunit.out.xml: no such file or directory
+    --- PASS: TestRegression/xunit-data/in/gotest-log.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-multi.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-multierror.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-negative-duration.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-nofiles.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-nosummary.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-num.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-panic.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-pass.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-print.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest-testify-suite.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gotest.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gocheck-empty.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gocheck-fail.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gocheck-panic.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gocheck-pass.out (0.00s)
+    --- PASS: TestRegression/xunit-data/in/gocheck-setup-miss.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-0.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-1.5.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-1.6.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-1.7.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-datarace.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-empty.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-fail.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-fatal-nosummary.out (0.00s)
+    --- FAIL: TestRegression/xunit.net-data/in/gotest-go2xunit.out (0.00s)
+    	regression_test.go:47: can't read data/out/xunit.net/gotest-go2xunit.out.xml - open data/out/xunit.net/gotest-go2xunit.out.xml: no such file or directory
+    --- PASS: TestRegression/xunit.net-data/in/gotest-log.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-multi.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-multierror.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-negative-duration.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-nofiles.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-nosummary.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-num.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-panic.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-pass.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-print.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest-testify-suite.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gotest.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gocheck-empty.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gocheck-fail.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gocheck-panic.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gocheck-pass.out (0.00s)
+    --- PASS: TestRegression/xunit.net-data/in/gocheck-setup-miss.out (0.00s)
+FAIL
+exit status 1
+FAIL	github.com/tebeka/go2xunit	0.650s
