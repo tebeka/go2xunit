@@ -1,7 +1,11 @@
 all: lint test
 
-test:
+test: build
 	go test -v . ./lib
+
+
+build:
+	go build ./...
 
 lint:
 	golint -set_exit_status .

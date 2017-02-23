@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -12,7 +13,7 @@ import (
 
 const (
 	// Version is the current version
-	Version = "1.4.3"
+	Version = "2.0.0"
 )
 
 // getInput return input io.File from file name, if file name is - it will
@@ -50,7 +51,16 @@ func getIO(inFile, outFile string) (*os.File, io.Writer, error) {
 	return input, output, nil
 }
 
+func getTestTime(in *os.File) time.Time {
+	stat, err := in.Stat()
+	if err != nil {
+		return time.Now()
+	}
+	return stat.ModTime()
+}
+
 func main() {
+	flag.Parse()
 	if args.showVersion {
 		fmt.Printf("go2xunit %s\n", Version)
 		os.Exit(0)
@@ -68,27 +78,22 @@ func main() {
 		log.Fatalf("error: %s", err)
 	}
 
-	// We'd like the test time to be the time of the generated file
-	var testTime time.Time
-	stat, err := input.Stat()
-	if err != nil {
-		testTime = time.Now()
-	} else {
-		testTime = stat.ModTime()
-	}
-
-	var parse func(rd io.Reader, suiteName string) (lib.Suites, error)
-
-	if args.isGocheck {
-		parse = lib.ParseGocheck
-	} else {
-		parse = lib.ParseGotest
-	}
-
-	suites, err := parse(input, args.suitePrefix)
+	parser, err := lib.GetParser(args.inType, input)
 	if err != nil {
 		log.Fatalf("error: %s", err)
 	}
+
+	// We'd like the test time to be the time of the generated file
+	testTime := getTestTime(input)
+
+	var suites lib.Suites
+	for parser.Scan() {
+		suites = append(suites, parser.Suite())
+	}
+	if err := parser.Err(); err != nil {
+		log.Fatal("error: %s", err)
+	}
+
 	if len(suites) == 0 {
 		log.Fatalf("error: no tests found")
 		os.Exit(1)

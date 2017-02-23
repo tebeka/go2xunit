@@ -16,7 +16,7 @@ func TestGtParser(t *testing.T) {
 	numTests := 7
 	sc := 0
 	for parser.Scan() {
-		sc += 1
+		sc++
 		suite := parser.Suite()
 		if len(suite.Tests) != numTests {
 			t.Fatalf("wrong number of tests %d != %d", len(suite.Tests), numTests)

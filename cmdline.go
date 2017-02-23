@@ -16,7 +16,8 @@ var args struct {
 	showVersion bool
 	bambooOut   bool
 	xunitnetOut bool
-	isGocheck   bool
+	//isGocheck   bool
+	inType      string
 	suitePrefix string
 }
 
@@ -28,13 +29,13 @@ func init() {
 	flag.BoolVar(&args.bambooOut, "bamboo", false,
 		"xml compatible with Atlassian's Bamboo")
 	flag.BoolVar(&args.xunitnetOut, "xunitnet", false, "xml compatible with xunit.net")
-	flag.BoolVar(&args.isGocheck, "gocheck", false, "parse gocheck output")
+	// flag.BoolVar(&args.isGocheck, "gocheck", false, "parse gocheck output")
+	flag.StringVar(&args.inType, "inType", "gotest", "input type")
 	flag.BoolVar(&lib.Options.FailOnRace, "fail-on-race", false,
 		"mark test as failing if it exposes a data race")
 	flag.StringVar(&args.suitePrefix, "suite-name-prefix", "",
 		"prefix to include before all suite names")
 
-	flag.Parse()
 }
 
 // validateArgs validates command line arguments

@@ -35,7 +35,7 @@ func (gtp *GtParser) Scan() bool {
 			byName[curTest.Name] = curTest
 			tests = append(tests, curTest)
 		case EndToken:
-			status, name, time := tok.Fields[1], tok.Fields[2], tok.Fields[2]
+			status, name, time := tok.Fields[1], tok.Fields[2], tok.Fields[3]
 			test, ok := byName[name]
 			if !ok {
 				gtp.err = fmt.Errorf("%d: unknown test %s", tok.Line, name)
@@ -81,4 +81,14 @@ func NewGtParser(in io.Reader) Parser {
 	return &GtParser{
 		lex: NewGotestLexer(in),
 	}
+}
+
+// GetParser return parse for inType
+func GetParser(inType string, in io.Reader) (Parser, error) {
+	switch inType {
+	case "gotest":
+		return NewGtParser(in), nil
+	}
+
+	return nil, fmt.Errorf("unknown parser type - %s", inType)
 }
