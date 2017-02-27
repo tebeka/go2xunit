@@ -7,35 +7,51 @@ import (
 
 // TODO: Regression (out file with list of tokens)
 
-func TestGotestLexer(t *testing.T) {
-	fname := "../data/in/gotest-1.7.out"
+var testCases = []struct {
+	fname    string
+	expected []string
+}{
+	{
+		"../data/in/gotest-1.7.out",
+		[]string{
+			StartToken,
+			EndToken,
+			StartToken,
+			EndToken,
+			StartToken,
+			EndToken,
+			StartToken,
+			EndToken,
+			DataToken,
+			StartToken,
+			StartToken,
+			StartToken,
+			EndToken,
+			EndToken,
+			EndToken,
+			SuiteDelimToken,
+			ExitToken,
+			SuiteToken,
+		},
+	},
+	{
+		"../data/in/gotest-panic.out",
+		[]string{
+			StartToken,
+			ErrorToken,
+			DataToken,
+			ExitToken,
+			SuiteToken,
+		},
+	},
+}
+
+func CheckLexer(t *testing.T, fname string, expected []string) {
 	file, err := os.Open(fname)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	expected := []TokenType{
-		StartToken,
-		EndToken,
-		StartToken,
-		EndToken,
-		StartToken,
-		EndToken,
-		StartToken,
-		EndToken,
-		DataToken,
-		StartToken,
-		StartToken,
-		StartToken,
-		EndToken,
-		EndToken,
-		EndToken,
-		DataToken,
-		ExitToken,
-		SuiteToken,
-	}
-
-	var out []TokenType
+	var out []string
 	lex := NewGotestLexer(file)
 	for lex.Scan() {
 		out = append(out, lex.Token().Type)
@@ -51,5 +67,12 @@ func TestGotestLexer(t *testing.T) {
 		if tt != out[i] {
 			t.Fatalf("wrong type at %d %s != %s)", i, out[i], tt)
 		}
+	}
+
+}
+
+func TestGotestLexer(t *testing.T) {
+	for _, tc := range testCases {
+		t.Run(tc.fname, func(t *testing.T) { CheckLexer(t, tc.fname, tc.expected) })
 	}
 }

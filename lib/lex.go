@@ -7,8 +7,8 @@ import (
 	"regexp"
 )
 
+// gotest regular expressions
 var (
-	// gotest regular expressions
 
 	// === RUN TestAdd
 	gtStartRE = regexp.MustCompile(
@@ -34,8 +34,19 @@ var (
 	// exit status - 0
 	gtExitRE = regexp.MustCompile("^exit status -?\\d+")
 
-	// gocheck regular expressions
+	// fatal error: all goroutines are asleep - deadlock!
+	gtErrorRE = regexp.MustCompile("^fatal error: ")
 
+	// PASS
+	// FAIL
+	gtSuiteDelimRE = regexp.MustCompile("^(PASS|FAIL)$")
+
+	// testing: warning: no tests to run
+	gtWarningRE = regexp.MustCompile("^testing: warning: .*")
+)
+
+// gocheck regular expressions
+var (
 	// START: mmath_test.go:16: MySuite.TestAdd
 	gcStartRE = regexp.MustCompile(
 		"START: [^:]+:[^:]+: ([A-Za-z_][[:word:]]*).([A-Za-z_][[:word:]]*)")
@@ -76,48 +87,27 @@ func (ls *LineScanner) Line() int {
 	return ls.lnum
 }
 
-// TokenType is the type of token
-type TokenType int
-
 // Token types
 const (
-	StartToken TokenType = iota
-	EndToken
-	SuiteToken
-	NoFilesToken
-	BuildFailedToken
-	ExitToken
-	DataToken
+	StartToken       = "StartToken"
+	EndToken         = "EndToken"
+	SuiteToken       = "SuiteToken"
+	NoFilesToken     = "NoFilesToken"
+	BuildFailedToken = "BuildFailedToken"
+	ExitToken        = "ExitToken"
+	ErrorToken       = "ErrorToken"
+	DataToken        = "DataToken"
+	SuiteDelimToken  = "SuiteDelimToken"
+	WarningToken     = "WarningToken"
 )
 
 // Token is a lex token (line oriented)
 type Token struct {
 	Line   int
-	Type   TokenType
+	Type   string
 	Data   string
 	Fields []string
 	//	Error error
-}
-
-func (typ TokenType) String() string {
-	switch typ {
-	case StartToken:
-		return "Start"
-	case EndToken:
-		return "End"
-	case SuiteToken:
-		return "Suite"
-	case NoFilesToken:
-		return "NoFiles"
-	case BuildFailedToken:
-		return "BuildFailed"
-	case DataToken:
-		return "Data"
-	case ExitToken:
-		return "Exit"
-	}
-
-	return "???"
 }
 
 func (tok *Token) String() string {
@@ -132,7 +122,7 @@ type Lexer interface {
 }
 
 var gtTypes = []struct {
-	typ TokenType
+	typ string
 	re  *regexp.Regexp
 }{
 	{StartToken, gtStartRE},
@@ -141,6 +131,9 @@ var gtTypes = []struct {
 	{NoFilesToken, gtNoFilesRE},
 	{BuildFailedToken, gtBuildFailedRE},
 	{ExitToken, gtExitRE},
+	{ErrorToken, gtErrorRE},
+	{SuiteDelimToken, gtSuiteDelimRE},
+	{WarningToken, gtWarningRE},
 }
 
 // GotestLexer is a lexer for gotest output

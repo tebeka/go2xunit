@@ -24,10 +24,8 @@ func (gtp *GtParser) Scan() bool {
 	var tests []*Test
 	byName := make(map[string]*Test)
 	var curTest *Test
-	hasTest := false
 
 	for gtp.lex.Scan() {
-		hasTest = true
 		tok := gtp.lex.Token()
 		switch tok.Type {
 		case StartToken:
@@ -44,7 +42,19 @@ func (gtp *GtParser) Scan() bool {
 			test.Status = Token2Status(status)
 			test.Time = time
 		case DataToken:
-			curTest.Message += tok.Data
+			if curTest == nil {
+				gtp.err = fmt.Errorf("%d: orphan data", tok.Line)
+				return false
+			}
+			if len(curTest.Message) == 0 {
+				curTest.Message = tok.Data
+			} else {
+				curTest.Message += ("\n" + tok.Data)
+			}
+		case ErrorToken:
+			curTest.Message += tok.Data + "\n"
+			curTest.Status = Failed
+			curTest.Time = "N/A"
 		case SuiteToken:
 			status, name, time := tok.Fields[1], tok.Fields[2], tok.Fields[3]
 			gtp.suite = &Suite{
@@ -53,14 +63,24 @@ func (gtp *GtParser) Scan() bool {
 				Status: status,
 				Tests:  tests,
 			}
-			return true
+			break
 		}
 	}
 	if gtp.lex.Err() != nil {
 		return false
 	}
 
-	return hasTest
+	// Missing summary
+	if gtp.suite == nil && len(tests) > 0 {
+		gtp.suite = &Suite{
+			Name:   tests[0].Name,
+			Time:   tests[0].Time,
+			Status: "Unkonwn",
+			Tests:  tests,
+		}
+	}
+
+	return len(tests) > 0
 }
 
 // Suite is the current suite

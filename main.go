@@ -91,12 +91,11 @@ func main() {
 		suites = append(suites, parser.Suite())
 	}
 	if err := parser.Err(); err != nil {
-		log.Fatal("error: %s", err)
+		log.Fatalf("error: %s", err)
 	}
 
 	if len(suites) == 0 {
 		log.Fatalf("error: no tests found")
-		os.Exit(1)
 	}
 
 	xmlTemplate := lib.XUnitTemplate
