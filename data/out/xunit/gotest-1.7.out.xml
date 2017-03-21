@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
   <testsuite name="github.com/tebeka/go2xunit/demo" tests="7" errors="0" failures="1" skip="0">
     <testcase classname="github.com/tebeka/go2xunit/demo" name="TestAdd" time="0.00">
 

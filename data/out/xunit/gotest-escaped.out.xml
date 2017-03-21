@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <testsuite name="_/go/src/github.com/tebeka/go2xunit/data" tests="4" errors="0" failures="0" skip="0">
+    <testcase classname="_/go/src/github.com/tebeka/go2xunit/data" name="TestEscapedChars" time="0.00">
+
+    </testcase>
+    <testcase classname="_/go/src/github.com/tebeka/go2xunit/data" name="TestEscapedChars/no_special_chars" time="0.00">
+
+    </testcase>
+    <testcase classname="_/go/src/github.com/tebeka/go2xunit/data" name="TestEscapedChars/&#34;needs_escape&#34;" time="0.00">
+
+    </testcase>
+    <testcase classname="_/go/src/github.com/tebeka/go2xunit/data" name="TestEscapedChars/reserved_&lt;chars&gt;" time="0.00">
+
+    </testcase>
+  </testsuite>

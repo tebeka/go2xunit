@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <testsuites>
   <testsuite name="_/home/miki/Projects/goroot/src/xunit" tests="5" errors="0" failures="1" skip="1">
     <testcase classname="_/home/miki/Projects/goroot/src/xunit" name="TestAdd" time="0.00">
