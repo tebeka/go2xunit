@@ -2,6 +2,8 @@ package lib
 
 // XML output
 import (
+	"bytes"
+	"encoding/xml"
 	"fmt"
 	"io"
 	"strconv"
@@ -10,12 +12,10 @@ import (
 )
 
 const (
-	xmlDeclaration = `<?xml version="1.0" encoding="utf-8"?>`
-
 	// XUnitTemplate is XML template for xunit style reporting
 	XUnitTemplate string = `
-{{range $suite := .Suites}}  <testsuite name="{{.Name}}" tests="{{.Len}}" errors="0" failures="{{.NumFailed}}" skip="{{.NumSkipped}}">
-{{range  $test := $suite.Tests}}    <testcase classname="{{$suite.Name}}" name="{{$test.Name}}" time="{{$test.Time}}">
+{{range $suite := .Suites}}  <testsuite name="{{.Name | escape}}" tests="{{.Len}}" errors="0" failures="{{.NumFailed}}" skip="{{.NumSkipped}}">
+{{range  $test := $suite.Tests}}    <testcase classname="{{$suite.Name | escape}}" name="{{$test.Name | escape}}" time="{{$test.Time}}">
 {{if eq $test.Status $.Skipped }}      <skipped/> {{end}}
 {{if eq $test.Status $.Failed }}      <failure type="go.error" message="error">
         <![CDATA[{{$test.Message}}]]>
@@ -31,7 +31,7 @@ const (
 	// XUnitNetTemplate is XML template for xunit.net
 	// see https://xunit.codeplex.com/wikipage?title=XmlFormat
 	XUnitNetTemplate string = `
-<assembly name="{{.Assembly}}"
+<assembly name="{{.Assembly | escape}}"
           run-date="{{.RunDate}}" run-time="{{.RunTime}}"
           configFile="none"
           time="{{.Time}}"
@@ -42,15 +42,15 @@ const (
           environment="n/a"
           test-framework="golang">
 {{range $suite := .Suites}}
-    <class time="{{.Time}}" name="{{.Name}}"
+    <class time="{{.Time}}" name="{{.Name | escape}}"
   	     total="{{.Len}}"
   	     passed="{{.NumPassed}}"
   	     failed="{{.NumFailed}}"
   	     skipped="{{.NumSkipped}}">
 {{range  $test := $suite.Tests}}
-        <test name="{{$test.Name}}"
+        <test name="{{$test.Name | escape}}"
           type="test"
-          method="{{$test.Name}}"
+          method="{{$test.Name | escape}}"
           result={{if eq $test.Status $.Skipped }}"Skip"{{else if eq $test.Status $.Failed }}"Fail"{{else if eq $test.Status $.Passed }}"Pass"{{end}}
           time="{{$test.Time}}">
         {{if eq $test.Status $.Failed }}  <failure exception-type="go.error">
@@ -96,6 +96,14 @@ func (r *TestResults) calcTotals() {
 	r.Len = r.NumPassed + r.NumSkipped + r.NumFailed
 }
 
+func escapeForXML(in string) (string, error) {
+	w := &bytes.Buffer{}
+	if err := xml.EscapeText(w, []byte(in)); err != nil {
+		return "", fmt.Errorf("error escaping text: %s", err)
+	}
+	return w.String(), nil
+}
+
 // WriteXML exits xunit XML of tests to out
 func WriteXML(suites []*Suite, out io.Writer, xmlTemplate string, testTime time.Time) {
 	testsResult := TestResults{
@@ -108,9 +116,11 @@ func WriteXML(suites []*Suite, out io.Writer, xmlTemplate string, testTime time.
 		Failed:   Failed,
 	}
 	testsResult.calcTotals()
-	t := template.New("test template")
+	t := template.New("test template").Funcs(template.FuncMap{
+		"escape": escapeForXML,
+	})
 
-	t, err := t.Parse(xmlDeclaration + xmlTemplate)
+	t, err := t.Parse(xml.Header + xmlTemplate)
 	if err != nil {
 		fmt.Printf("Error in parse %v\n", err)
 		return

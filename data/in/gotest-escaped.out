@@ -1,0 +1,10 @@
+=== RUN   TestEscapedChars
+=== RUN   TestEscapedChars/no_special_chars
+=== RUN   TestEscapedChars/"needs_escape"
+=== RUN   TestEscapedChars/reserved_<chars>
+--- PASS: TestEscapedChars (0.00s)
+    --- PASS: TestEscapedChars/no_special_chars (0.00s)
+    --- PASS: TestEscapedChars/"needs_escape" (0.00s)
+    --- PASS: TestEscapedChars/reserved_<chars> (0.00s)
+PASS
+ok  	_/go/src/github.com/tebeka/go2xunit/data	0.005s

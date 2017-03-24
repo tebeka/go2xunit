@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <testsuites>
   <testsuite name="TestSuite" tests="2" errors="0" failures="0" skip="0">
     <testcase classname="TestSuite" name="TestA" time="0.01">
