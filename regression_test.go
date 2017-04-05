@@ -14,8 +14,8 @@ import (
 var (
 	// FIXME
 	ignored = map[string]bool{
-		"data/in/gotest-buildfailed.out": true,
-		"data/in/gocheck-nofiles.out":    true,
+		"gotest-buildfailed.out": true,
+		"gocheck-nofiles.out":    true,
 	}
 
 	xTimeRe = regexp.MustCompile(`run-date="[^"]+" run-time="[^"]+"`)
@@ -66,19 +66,21 @@ func runDiff(out, expected []byte) string {
 	return string(diffOut)
 }
 
+const dataPath = "_data"
+
 func iterCheck(t *testing.T, inType, outType string, args []string, fixer fixFunc) {
-	pat := fmt.Sprintf("data/in/%s*.out", inType)
+	pat := fmt.Sprintf(dataPath+"/in/%s*.out", inType)
 	files, err := filepath.Glob(pat)
 	if err != nil {
 		t.Fatalf("no files matching %q", pat)
 	}
 
 	for _, inFile := range files {
-		if ignored[inFile] {
+		base := filepath.Base(inFile)
+		if ignored[base] {
 			continue
 		}
-		base := filepath.Base(inFile)
-		outFile := fmt.Sprintf("data/out/%s/%s.xml", outType, base)
+		outFile := fmt.Sprintf(dataPath+"/out/%s/%s.xml", outType, base)
 		name := fmt.Sprintf("%s-%s", outType, inFile)
 		t.Run(name, func(t *testing.T) {
 			checkRegression(t, inFile, outFile, args, fixer)
