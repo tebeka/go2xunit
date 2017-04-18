@@ -24,7 +24,7 @@ func Test_parseBadOutput(t *testing.T) {
 */
 
 func Test_ignoreDatarace(t *testing.T) {
-	filename := "../data/in/gotest-datarace.out"
+	filename := "../_data/in/gotest-datarace.out"
 	suites, err := loadGotest(filename, t)
 	if err != nil {
 		t.Fatalf("error loading %s - %s", filename, err)
