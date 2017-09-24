@@ -81,10 +81,12 @@ func (ls *LineScanner) Scan() bool {
 	return true
 }
 
+// Text returns the current line
 func (ls *LineScanner) Text() string {
 	return string(ls.text)
 }
 
+// Err returns the current error (nil if no error)
 func (ls *LineScanner) Err() error {
 	return ls.err
 }
