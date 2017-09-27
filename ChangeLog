@@ -1,5 +1,5 @@
 2017-09-24 version 1.4.5
-* Support long lines (@jaytaylor in PR #51)
+* Support long lines (@jaytaylor in PR #51 & #52)
 
 2017-03-21 version 1.4.4
 * Escape user-provided strings in XML output (@xperimental in PR #47)
