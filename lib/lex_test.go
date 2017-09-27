@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"os"
+	"bytes"
 	"testing"
 )
 
@@ -9,18 +9,9 @@ const testLog = `{"Packages":[{"Name":"github.standard.com/standard/maestro-aws-
 
 func TestLineScannerLongLine(t *testing.T) {
 	var (
-		r, e = os.Open("test.log")
-		// r  = bytes.NewBufferString(testLog)
+		r  = bytes.NewBufferString(testLog)
 		ls = NewLineScanner(r)
 	)
-	if e != nil {
-		t.Fatal(e)
-	}
-	defer func() {
-		if err := r.Close(); err != nil {
-			t.Errorf("Error closing reader: %s", err)
-		}
-	}()
 
 	for ls.Scan() {
 		token := ls.Text()
