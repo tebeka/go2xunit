@@ -150,7 +150,7 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 	// Handles a test that ended with a panic.
 	handlePanic := func() {
 		curTest.Status = Failed
-		curTest.Time = "N/A"
+		curTest.Time = "0"
 		curSuite.Tests = append(curSuite.Tests, curTest)
 		curTest = nil
 	}

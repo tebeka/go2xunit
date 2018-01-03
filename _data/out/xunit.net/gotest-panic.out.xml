@@ -21,7 +21,7 @@
           type="test"
           method="TestPanic"
           result="Fail"
-          time="N/A">
+          time="0">
           <failure exception-type="go.error">
              <message><![CDATA[fatal error: all goroutines are asleep - deadlock!
 ...]]></message>
