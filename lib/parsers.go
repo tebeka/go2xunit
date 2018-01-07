@@ -35,6 +35,23 @@ func Token2Status(token string) Status {
 	return UnknownStatus
 }
 
+// Returns previous test in a suite, for a given test. Returns error if previous
+// test doesn't exist.
+func getPreviousTest(suite *Suite, curTest *Test) (*Test, error) {
+	previousTestIndex := -1
+	for test_index, test := range suite.Tests {
+		if test.Name == curTest.Name {
+			previousTestIndex = test_index - 1
+			break
+		}
+	}
+
+	if previousTestIndex >= 0 {
+		return suite.Tests[previousTestIndex], nil
+	}
+	return nil, fmt.Errorf("Not found previous test of %s in suite %s", curTest.Name, suite.Name)
+}
+
 // ParseGocheck parses output of "go test -gocheck.vv", returns a list of tests
 // See data/gocheck.out for an example
 // TODO: Refactor to shorter ones
@@ -53,7 +70,7 @@ func ParseGocheck(rd io.Reader, suitePrefix string) (Suites, error) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-
+		
 		tokens := findStart(line)
 		if len(tokens) > 0 {
 			if tokens[2] == "SetUpTest" || tokens[2] == "TearDownTest" {
@@ -252,7 +269,21 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 				curTest.Status = Failed
 			}
 			curTest.Time = tokens[3]
-			curTest.Message = strings.Join(out, "\n")
+			if len(out) > 0 {
+				prevTest, err := getPreviousTest(curSuite, curTest)				
+				if err == nil {
+					var test *Test
+					if prevTest.Status == Failed {
+						test = prevTest
+					} else {
+						test = curTest
+					}
+					test.Message = strings.Join(out, "\n")
+				} else {
+					curTest.Message = strings.Join(out, "\n")
+				}
+			}
+			
 			if appendTest {
 				curSuite.Tests = append(curSuite.Tests, curTest)
 			}
