@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<assembly name="_/Users/Teodor/go2xunit_samples"
+          run-date="2018-01-31" run-time="10:07:07"
+          configFile="none"
+          time="0.028"
+          total="10"
+          passed="4"
+          failed="6"
+          skipped="0"
+          environment="n/a"
+          test-framework="golang">
+
+    <class time="0.028" name="_/Users/Teodor/go2xunit_samples"
+  	     total="10"
+  	     passed="4"
+  	     failed="6"
+  	     skipped="0">
+
+        <test name="TestSampleSuccessful"
+          type="test"
+          method="TestSampleSuccessful"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestSampleFail"
+          type="test"
+          method="TestSampleFail"
+          result="Fail"
+          time="0.00">
+          <failure exception-type="go.error">
+             <message><![CDATA[This test should fail
+        Error Trace:    samples_test.go:27
+	Error:      	Should be true
+	Messages:   	Should be true]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestSampleSuccessful2"
+          type="test"
+          method="TestSampleSuccessful2"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestSampleFail2"
+          type="test"
+          method="TestSampleFail2"
+          result="Fail"
+          time="0.00">
+          <failure exception-type="go.error">
+             <message><![CDATA[This test should fail again
+        Error Trace:    samples_test.go:37
+	Error:      	Should be true
+	Messages:   	Should be true again]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestSampleSuite1"
+          type="test"
+          method="TestSampleSuite1"
+          result="Fail"
+          time="0.00">
+          <failure exception-type="go.error">
+             <message><![CDATA[]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestSampleSuite1/TestSuiteSampleFail1"
+          type="test"
+          method="TestSampleSuite1/TestSuiteSampleFail1"
+          result="Fail"
+          time="0.00">
+          <failure exception-type="go.error">
+             <message><![CDATA[This test from suite should fail1        Error Trace:    samples_test.go:47
+    	Error:      	Should be true
+    	Messages:   	Should be true1]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestSampleSuite1/TestSuiteSampleSuccessful1"
+          type="test"
+          method="TestSampleSuite1/TestSuiteSampleSuccessful1"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestSampleSuite2"
+          type="test"
+          method="TestSampleSuite2"
+          result="Fail"
+          time="0.01">
+          <failure exception-type="go.error">
+             <message><![CDATA[]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestSampleSuite2/TestSuiteSampleFail2"
+          type="test"
+          method="TestSampleSuite2/TestSuiteSampleFail2"
+          result="Fail"
+          time="0.00">
+          <failure exception-type="go.error">
+             <message><![CDATA[This test from suite should fail2        Error Trace:    samples_test.go:61
+    	Error:      	Should be true
+    	Messages:   	Should be true2]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestSampleSuite2/TestSuiteSampleSuccessful2"
+          type="test"
+          method="TestSampleSuite2/TestSuiteSampleSuccessful2"
+          result="Pass"
+          time="0.00">
+        </test>
+
+    </class>
+
+</assembly>

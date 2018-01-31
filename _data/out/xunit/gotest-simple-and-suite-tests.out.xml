@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <testsuite name="_/Users/Teodor/go2xunit_samples" tests="10" errors="0" failures="6" skip="0">
+    <testcase classname="_/Users/Teodor/go2xunit_samples" name="TestSampleSuccessful" time="0.00">
+
+    </testcase>
+    <testcase classname="_/Users/Teodor/go2xunit_samples" name="TestSampleFail" time="0.00">
+
+      <failure type="go.error" message="error">
+        <![CDATA[This test should fail
+        Error Trace:    samples_test.go:27
+	Error:      	Should be true
+	Messages:   	Should be true]]>
+      </failure>    </testcase>
+    <testcase classname="_/Users/Teodor/go2xunit_samples" name="TestSampleSuccessful2" time="0.00">
+
+    </testcase>
+    <testcase classname="_/Users/Teodor/go2xunit_samples" name="TestSampleFail2" time="0.00">
+
+      <failure type="go.error" message="error">
+        <![CDATA[This test should fail again
+        Error Trace:    samples_test.go:37
+	Error:      	Should be true
+	Messages:   	Should be true again]]>
+      </failure>    </testcase>
+    <testcase classname="_/Users/Teodor/go2xunit_samples" name="TestSampleSuite1" time="0.00">
+
+      <failure type="go.error" message="error">
+        <![CDATA[]]>
+      </failure>    </testcase>
+    <testcase classname="_/Users/Teodor/go2xunit_samples" name="TestSampleSuite1/TestSuiteSampleFail1" time="0.00">
+
+      <failure type="go.error" message="error">
+        <![CDATA[This test from suite should fail1        Error Trace:    samples_test.go:47
+    	Error:      	Should be true
+    	Messages:   	Should be true1]]>
+      </failure>    </testcase>
+    <testcase classname="_/Users/Teodor/go2xunit_samples" name="TestSampleSuite1/TestSuiteSampleSuccessful1" time="0.00">
+
+    </testcase>
+    <testcase classname="_/Users/Teodor/go2xunit_samples" name="TestSampleSuite2" time="0.01">
+
+      <failure type="go.error" message="error">
+        <![CDATA[]]>
+      </failure>    </testcase>
+    <testcase classname="_/Users/Teodor/go2xunit_samples" name="TestSampleSuite2/TestSuiteSampleFail2" time="0.00">
+
+      <failure type="go.error" message="error">
+        <![CDATA[This test from suite should fail2        Error Trace:    samples_test.go:61
+    	Error:      	Should be true
+    	Messages:   	Should be true2]]>
+      </failure>    </testcase>
+    <testcase classname="_/Users/Teodor/go2xunit_samples" name="TestSampleSuite2/TestSuiteSampleSuccessful2" time="0.00">
+
+    </testcase>
+  </testsuite>
