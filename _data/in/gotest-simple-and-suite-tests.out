@@ -1,0 +1,43 @@
+=== RUN   TestSampleSuccessful
+This test should success
+--- PASS: TestSampleSuccessful (0.00s)
+=== RUN   TestSampleFail
+This test should fail
+--- FAIL: TestSampleFail (0.00s)
+        Error Trace:    samples_test.go:27
+	Error:      	Should be true
+	Messages:   	Should be true
+=== RUN   TestSampleSuccessful2
+This test should success again
+--- PASS: TestSampleSuccessful2 (0.00s)
+=== RUN   TestSampleFail2
+This test should fail again
+--- FAIL: TestSampleFail2 (0.00s)
+        Error Trace:    samples_test.go:37
+	Error:      	Should be true
+	Messages:   	Should be true again
+=== RUN   TestSampleSuite1
+=== RUN   TestSampleSuite1/TestSuiteSampleFail1
+This test from suite should fail1
+=== RUN   TestSampleSuite1/TestSuiteSampleSuccessful1
+This test from suite should success1
+--- FAIL: TestSampleSuite1 (0.00s)
+    --- FAIL: TestSampleSuite1/TestSuiteSampleFail1 (0.00s)
+        Error Trace:    samples_test.go:47
+    	Error:      	Should be true
+    	Messages:   	Should be true1
+    --- PASS: TestSampleSuite1/TestSuiteSampleSuccessful1 (0.00s)
+=== RUN   TestSampleSuite2
+=== RUN   TestSampleSuite2/TestSuiteSampleFail2
+This test from suite should fail2
+=== RUN   TestSampleSuite2/TestSuiteSampleSuccessful2
+This test from suite should success2
+--- FAIL: TestSampleSuite2 (0.01s)
+    --- FAIL: TestSampleSuite2/TestSuiteSampleFail2 (0.00s)
+        Error Trace:    samples_test.go:61
+    	Error:      	Should be true
+    	Messages:   	Should be true2
+    --- PASS: TestSampleSuite2/TestSuiteSampleSuccessful2 (0.00s)
+FAIL
+exit status 1
+FAIL	_/Users/Teodor/go2xunit_samples	0.028s

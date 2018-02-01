@@ -50,6 +50,12 @@ var (
 	// FAIL	go2xunit/demo-gocheck	0.008s
 	// ok  	go2xunit/demo-gocheck	0.008s
 	gcSuiteRE = regexp.MustCompile("^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(-?\\d+.\\d+)")
+
+	// Match error output from tests
+	// Error Trace:    samples_test.go:27
+	// Error:      	Should be true
+	// Messages:   	Should be true
+	gcTestErrorRE = regexp.MustCompile("(?s).*Error Trace:.*\\.go.*Error:.*Messages:.*")
 )
 
 // LineScanner scans lines and keep track of line numbers

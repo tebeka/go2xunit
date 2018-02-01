@@ -15,6 +15,8 @@ const (
 type Test struct {
 	Name, Time, Message string
 	Status              Status
+	AppendedErrorOutput	bool
+	isParentTest		bool
 }
 
 // Suite of tests (found in some unit testing frameworks)
