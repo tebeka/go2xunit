@@ -16,6 +16,7 @@ var args struct {
 	showVersion bool
 	bambooOut   bool
 	xunitnetOut bool
+	sonarGTDOut bool
 	isGocheck   bool
 	suitePrefix string
 }
@@ -28,6 +29,7 @@ func init() {
 	flag.BoolVar(&args.bambooOut, "bamboo", false,
 		"xml compatible with Atlassian's Bamboo")
 	flag.BoolVar(&args.xunitnetOut, "xunitnet", false, "xml compatible with xunit.net")
+	flag.BoolVar(&args.sonarGTDOut, "sonar", false, "xml compatible with Sonar Generic Test Data")
 	flag.BoolVar(&args.isGocheck, "gocheck", false, "parse gocheck output")
 	flag.BoolVar(&lib.Options.FailOnRace, "fail-on-race", false,
 		"mark test as failing if it exposes a data race")

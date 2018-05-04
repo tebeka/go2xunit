@@ -62,6 +62,20 @@ const (
 {{end}}
 </assembly>
 `
+
+	// SGTDTemplate is XML template for Sonar Generic Test Data style reporting
+	// https://docs.sonarqube.org/display/SONAR/Generic+Test+Data
+	SGTDTemplate string = `<testExecutions version="1">
+{{range $suite := .Suites}}  <file path="{{.Name | escape}}">
+{{range  $test := $suite.Tests}}    <testCase name="{{$test.Name | escape}}" duration="{{$test.Time}}">
+{{if eq $test.Status $.Skipped }}      <skipped message=""> 
+		<![CDATA[{{$test.Message}}]]>
+      </skipped>{{end}}
+{{if eq $test.Status $.Failed }}      <failure message="error">
+        <![CDATA[{{$test.Message}}]]>
+      </failure>{{end}}    </testCase>
+{{end}}  </file>
+{{end}}</testExecutions>`
 )
 
 // TestResults is passed to XML template
