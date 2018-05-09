@@ -65,18 +65,21 @@ const (
 
 	// SGTDTemplate is XML template for Sonar Generic Test Data style reporting
 	// https://docs.sonarqube.org/display/SONAR/Generic+Test+Data
-	SGTDTemplate string = `<testExecutions version="1">
-{{range $suite := .Suites}}
+	SGTDTemplate string = `<testExecutions version="1">{{range $suite := .Suites}}
 {{range  $test := $suite.Tests}}  <file path="{{testFilePath $suite $test ""}}">
-	<testCase name="{{$test.Name | escape}}" duration="{{$test.Time}}">
-{{if eq $test.Status $.Skipped }}      <skipped message=""> 
+    <testCase name="{{$test.Name | escape}}" duration="{{secondsToMilliseconds $test.Time}}"
+		{{- if and (ne $test.Status $.Skipped) (ne $test.Status $.Failed)}} />{{else}}>
+{{- if eq $test.Status $.Skipped }}
+      <skipped message=""> 
 		<![CDATA[{{$test.Message}}]]>
       </skipped>{{end}}
-{{if eq $test.Status $.Failed }}      <failure message="error">
+{{- if eq $test.Status $.Failed }}
+      <failure message="error">
         <![CDATA[{{$test.Message}}]]>
-      </failure>{{end}}    </testCase>
-</file>{{end}}  
-{{end}}</testExecutions>`
+      </failure>{{end}}
+    </testCase>{{end}}
+  </file>
+{{end}}{{end}}</testExecutions>`
 )
 
 // TestResults is passed to XML template
@@ -119,6 +122,14 @@ func escapeForXML(in string) (string, error) {
 	return w.String(), nil
 }
 
+func secondsToMilliseconds(seconds string) string {
+	t, err := time.ParseDuration(seconds + "s")
+	if err != nil {
+		return "0"
+	}
+	return strconv.Itoa(int(t.Nanoseconds() / int64(time.Millisecond)))
+}
+
 // WriteXML exits xunit XML of tests to out
 func WriteXML(suites []*Suite, out io.Writer, xmlTemplate string, testTime time.Time) {
 	testsResult := TestResults{
@@ -132,8 +143,9 @@ func WriteXML(suites []*Suite, out io.Writer, xmlTemplate string, testTime time.
 	}
 	testsResult.calcTotals()
 	t := template.New("test template").Funcs(template.FuncMap{
-		"escape": escapeForXML,
-		"testFilePath": tmplFuncFilePathForTest,
+		"escape":                escapeForXML,
+		"testFilePath":          tmplFuncFilePathForTest,
+		"secondsToMilliseconds": secondsToMilliseconds,
 	})
 
 	t, err := t.Parse(xml.Header + xmlTemplate)

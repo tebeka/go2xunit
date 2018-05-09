@@ -73,7 +73,7 @@ func ParseGocheck(rd io.Reader, suitePrefix string) (Suites, error) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		
+
 		tokens := findStart(line)
 		if len(tokens) > 0 {
 			if tokens[2] == "SetUpTest" || tokens[2] == "TearDownTest" {
@@ -168,7 +168,7 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 	var curSuite *Suite
 	var out []string
 	suiteStack := SuiteStack{}
-	
+
 	// Handles a test that ended with a panic.
 	handlePanic := func() {
 		curTest.Status = Failed
@@ -279,7 +279,7 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 				curTest.Status = Failed
 			}
 			curTest.Time = tokens[3]
-			
+
 			if len(out) > 0 {
 				message := strings.Join(out, "\n")
 				prevTest, err := getPreviousFailTest(curSuite, curTest)
@@ -287,11 +287,11 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 				if err == nil && prevTest.AppendedErrorOutput == false {
 					test = prevTest
 				} else {
-					test = curTest					
+					test = curTest
 				}
 				if test.isParentTest == false {
 					test.Message += message
-					test.AppendedErrorOutput = isErrorOutput(message)					
+					test.AppendedErrorOutput = isErrorOutput(message)
 				}
 			}
 

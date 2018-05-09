@@ -3,18 +3,18 @@ package lib
 import (
 	"go/build"
 	"io/ioutil"
-	"strings"
 	"path/filepath"
+	"strings"
 )
 
 func fileFileForTest(suite *Suite, test *Test, pkg *build.Package, strip string) string {
 	var (
 		testFileContents = make(map[string]string)
-		body []byte
-		testFilePath string
-		contents string
-		err error
-		ok bool
+		body             []byte
+		testFilePath     string
+		contents         string
+		err              error
+		ok               bool
 	)
 	if strip == "" {
 		strip = pkg.SrcRoot + "/"
