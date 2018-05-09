@@ -66,15 +66,16 @@ const (
 	// SGTDTemplate is XML template for Sonar Generic Test Data style reporting
 	// https://docs.sonarqube.org/display/SONAR/Generic+Test+Data
 	SGTDTemplate string = `<testExecutions version="1">
-{{range $suite := .Suites}}  <file path="{{.Name | escape}}">
-{{range  $test := $suite.Tests}}    <testCase name="{{$test.Name | escape}}" duration="{{$test.Time}}">
+{{range $suite := .Suites}}
+{{range  $test := $suite.Tests}}  <file path="{{testFilePath $suite $test ""}}">
+	<testCase name="{{$test.Name | escape}}" duration="{{$test.Time}}">
 {{if eq $test.Status $.Skipped }}      <skipped message=""> 
 		<![CDATA[{{$test.Message}}]]>
       </skipped>{{end}}
 {{if eq $test.Status $.Failed }}      <failure message="error">
         <![CDATA[{{$test.Message}}]]>
       </failure>{{end}}    </testCase>
-{{end}}  </file>
+</file>{{end}}  
 {{end}}</testExecutions>`
 )
 
@@ -132,6 +133,7 @@ func WriteXML(suites []*Suite, out io.Writer, xmlTemplate string, testTime time.
 	testsResult.calcTotals()
 	t := template.New("test template").Funcs(template.FuncMap{
 		"escape": escapeForXML,
+		"testFilePath": tmplFuncFilePathForTest,
 	})
 
 	t, err := t.Parse(xml.Header + xmlTemplate)
