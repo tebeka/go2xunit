@@ -5,6 +5,9 @@
 Converts `go test -v` (or `gocheck -vv`) output to xunit or [xunit.net][xnet]
 compatible XML output (used in [Jenkins][jenkins]/[Hudson][hudson]).
 
+Currently in Jenkins please pick `Publish JUnit test result report` (not
+`XUnit`). We're working to make the results compatible with XUnit.
+
 
 # Install
 
