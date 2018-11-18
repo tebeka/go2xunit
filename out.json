@@ -1,0 +1,21 @@
+{"Time":"2018-11-17T19:32:43.130666509Z","Action":"run","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestAdd"}
+{"Time":"2018-11-17T19:32:43.130800396Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestAdd","Output":"=== RUN   TestAdd\n"}
+{"Time":"2018-11-17T19:32:43.130816135Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestAdd","Output":"--- PASS: TestAdd (0.00s)\n"}
+{"Time":"2018-11-17T19:32:43.130821366Z","Action":"pass","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestAdd","Elapsed":0}
+{"Time":"2018-11-17T19:32:43.130826117Z","Action":"run","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestSub"}
+{"Time":"2018-11-17T19:32:43.130829494Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestSub","Output":"=== RUN   TestSub\n"}
+{"Time":"2018-11-17T19:32:43.130833736Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestSub","Output":"--- PASS: TestSub (0.00s)\n"}
+{"Time":"2018-11-17T19:32:43.130837346Z","Action":"pass","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestSub","Elapsed":0}
+{"Time":"2018-11-17T19:32:43.130840558Z","Action":"run","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestMul"}
+{"Time":"2018-11-17T19:32:43.130843884Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestMul","Output":"=== RUN   TestMul\n"}
+{"Time":"2018-11-17T19:32:43.130847689Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestMul","Output":"--- PASS: TestMul (0.00s)\n"}
+{"Time":"2018-11-17T19:32:43.130851179Z","Action":"pass","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestMul","Elapsed":0}
+{"Time":"2018-11-17T19:32:43.130854247Z","Action":"run","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestDiv"}
+{"Time":"2018-11-17T19:32:43.130857234Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestDiv","Output":"=== RUN   TestDiv\n"}
+{"Time":"2018-11-17T19:32:43.130860909Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestDiv","Output":"--- FAIL: TestDiv (0.00s)\n"}
+{"Time":"2018-11-17T19:32:43.130864385Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestDiv","Output":"    mmath_test.go:35: 2/3 != 0.666667\n"}
+{"Time":"2018-11-17T19:32:43.13086809Z","Action":"fail","Package":"github.com/tebeka/go2xunit/_demos/gotest","Test":"TestDiv","Elapsed":0}
+{"Time":"2018-11-17T19:32:43.130871397Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Output":"FAIL\n"}
+{"Time":"2018-11-17T19:32:43.131012361Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Output":"exit status 1\n"}
+{"Time":"2018-11-17T19:32:43.131028377Z","Action":"output","Package":"github.com/tebeka/go2xunit/_demos/gotest","Output":"FAIL\tgithub.com/tebeka/go2xunit/_demos/gotest\t0.001s\n"}
+{"Time":"2018-11-17T19:32:43.131033613Z","Action":"fail","Package":"github.com/tebeka/go2xunit/_demos/gotest","Elapsed":0.001}
