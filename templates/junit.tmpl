@@ -1,0 +1,22 @@
+<testsuite
+    name="{{.Name | escape}}"
+    tests="{{.Count}}"
+    errors="0"
+    failures="{{.Stats["fail"]}}"
+    skip="{{.Stats["fail"]}}">
+{{range  $test := .Children}}
+    <testcase
+	classname="{{$suite.Name | escape}}"
+	name="{{$test.Name | escape}}"
+	time="{{$test.Time}}">
+    {{if eq $test.Status "skip" }}
+	<skipped/>
+    {{end}}
+    {{if eq $test.Status "fail" }}
+	<failure type="go.error" message="error">
+        <![CDATA[{{$test.Message}}]]>
+        </failure>
+    {{end}
+    </testcase>
+{{end}}
+</testsuite>

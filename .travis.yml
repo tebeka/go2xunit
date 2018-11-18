@@ -1,6 +1,5 @@
 language: go
 go:
-    - 1.8
-    - tip
+    - 1.11
 script: go test -v
 sudo: false

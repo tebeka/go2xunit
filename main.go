@@ -1,5 +1,8 @@
 package main
 
+//go:generate go run ./scripts/gentmpl.go
+//go:generate go fmt templates.go
+
 import (
 	"flag"
 	"fmt"
@@ -49,43 +52,18 @@ func main() {
 		log.Fatalf("error: %s", err)
 	}
 
-	/*
-		output, err := outFile(args.output)
-		if err != nil {
-			log.Fatalf("error: %s", err)
-		}
-	*/
+	output, err := outFile(args.output)
+	if err != nil {
+		log.Fatalf("error: %s", err)
+	}
 
-	Parse(input)
+	root, err := Parse(input)
+	if err != nil {
+		panic(err)
+	}
 
-	/*
-		var parse func(rd io.Reader, suiteName string) (lib.Suites, error)
-
-		if args.isGocheck {
-			parse = lib.ParseGocheck
-		} else {
-			parse = lib.ParseGotest
-		}
-
-		suites, err := parse(input, args.suitePrefix)
-		if err != nil {
-			log.Fatalf("error: %s", err)
-		}
-		if len(suites) == 0 {
-			log.Fatalf("error: no tests found")
-			os.Exit(1)
-		}
-
-		xmlTemplate := lib.XUnitTemplate
-		if args.xunitnetOut {
-			xmlTemplate = lib.XUnitNetTemplate
-		} else if args.bambooOut || (len(suites) > 1) {
-			xmlTemplate = lib.XMLMultiTemplate
-		}
-
-		lib.WriteXML(suites, output, xmlTemplate, testTime)
-		if args.fail && suites.HasFailures() {
-			os.Exit(1)
-		}
-	*/
+	fmt.Fprintf(output, "\n\n%+v\n", root)
+	for _, t := range root.Children {
+		fmt.Fprintf(output, "\t%s [%s]\n", t.Name, t.Status)
+	}
 }

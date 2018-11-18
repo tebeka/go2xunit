@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+var (
+	zeroTime time.Time
+)
+
 // Test data structure
 type Test struct {
 	Name     string
@@ -18,6 +22,7 @@ type Test struct {
 	Children []*Test
 	Message  string
 	Elapsed  time.Duration
+	Stats    map[string]int
 
 	records []*Record
 }
@@ -29,7 +34,7 @@ type Record struct {
 	Action  string
 	Package string
 	Output  string
-	Elapsed int
+	Elapsed float64
 }
 
 // Sort tests by time
@@ -80,13 +85,33 @@ func firstScan(input io.Reader) (map[key]*Test, error) {
 }
 
 func assembleTests(tests map[key]*Test) (*Test, error) {
+	var root *Test
 	for _, t := range tests {
 		if err := t.assemble(); err != nil {
 			return nil, err
 		}
+
+		if t.Name == "" {
+			if root != nil {
+				return nil, fmt.Errorf("more than one root test")
+			}
+			root = t
+		}
 	}
 
-	return nil, nil
+	for _, t := range tests {
+		if t != root {
+			root.Children = append(root.Children, t)
+		}
+	}
+
+	for _, t := range root.Children {
+		if root.Time.Equal(zeroTime) || t.Time.Before(root.Time) {
+			root.Time = t.Time
+		}
+	}
+
+	return root, nil
 }
 
 // Count return number of sub tests (including this test)
@@ -100,17 +125,26 @@ func (t *Test) Count() int {
 }
 
 // Stats returns the number of tests and subtests that have status
-func (t *Test) Stats(stats map[string]int) map[string]int {
-	if stats == nil {
-		stats = make(map[string]int)
+func (t *Test) calcStats() {
+	if t.Stats != nil {
+		return
+	}
+
+	stats := map[string]int{
+		"fail": 0,
+		"pass": 0,
+		"skip": 0,
 	}
 
 	stats[t.Status]++
 	for _, c := range t.Children {
-		c.Stats(stats)
+		c.calcStats()
+		for key := range stats {
+			stats[key] += c.Stats[key]
+		}
 	}
 
-	return stats
+	t.Stats = stats
 }
 
 func (t *Test) assemble() error {
@@ -122,15 +156,17 @@ func (t *Test) assemble() error {
 			t.Name = r.Test
 			t.Package = r.Package
 			t.Time = r.Time
-		case "Output":
+		case "output":
 			buf.WriteString(r.Output)
-		case "pass", "fail":
+		case "pass", "fail", "skip":
 			t.Status = r.Action
 			t.Elapsed = time.Duration(r.Elapsed) * time.Millisecond
 		default:
 			return fmt.Errorf("unknown action - %q", r.Action)
 		}
 	}
+
+	fmt.Printf("%+v\n", t)
 
 	return nil
 }
