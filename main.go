@@ -4,16 +4,19 @@ package main
 //go:generate go fmt templates.go
 
 import (
+	"bytes"
+	"encoding/xml"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 	"path"
+	"text/template"
 )
 
 const (
 	// Version is the current version
-	Version = "1.4.8"
+	Version = "2.0.0"
 )
 
 func inFile() (*os.File, error) {
@@ -30,6 +33,14 @@ func outFile(path string) (*os.File, error) {
 	}
 
 	return os.Create(flag.Arg(1))
+}
+
+func xmlEscape(in string) (string, error) {
+	w := &bytes.Buffer{}
+	if err := xml.EscapeText(w, []byte(in)); err != nil {
+		return "", fmt.Errorf("error escaping text: %s", err)
+	}
+	return w.String(), nil
 }
 
 // getInput return input io.File from file name, if file name is - it will
@@ -52,18 +63,30 @@ func main() {
 		log.Fatalf("error: %s", err)
 	}
 
-	output, err := outFile(args.output)
+	out, err := outFile(args.output)
 	if err != nil {
-		log.Fatalf("error: %s", err)
+		log.Fatalf("error:  %s", err)
 	}
 
 	root, err := Parse(input)
 	if err != nil {
-		panic(err)
+		log.Fatalf("error: can't parse - %s", err)
 	}
 
-	fmt.Fprintf(output, "\n\n%+v\n", root)
-	for _, t := range root.Children {
-		fmt.Fprintf(output, "\t%s [%s]\n", t.Name, t.Status)
+	tmplData := Templates[args.format]
+	if tmplData == "" {
+		log.Fatalf("error: can't find tempalte for %q", args.format)
+	}
+
+	funcs := template.FuncMap{
+		"escape": xmlEscape,
+	}
+	tmpl, err := template.New(args.format).Funcs(funcs).Parse(tmplData)
+	if err != nil {
+		log.Fatalf("error: can't compile template %s - %s", args.format, err)
+	}
+
+	if err = tmpl.Execute(out, root); err != nil {
+		log.Fatalf("error: can't execute template - %s", err)
 	}
 }

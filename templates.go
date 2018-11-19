@@ -1,16 +1,16 @@
-// Genrated by /tmp/go-build722822768/b001/exe/gentmpl
+// Genrated by /tmp/go-build621141117/b001/exe/gentmpl
 
 package main
 
 var junit = `<testsuite
-    name="{{.Name | escape}}"
+    name="go2xunit"
     tests="{{.Count}}"
     errors="0"
-    failures="{{.Stats["fail"]}}"
-    skip="{{.Stats["fail"]}}">
+    failures="{{index .Stats "fail"}}"
+    skip="{{index .Stats "skip"}}">
 {{range  $test := .Children}}
     <testcase
-	classname="{{$suite.Name | escape}}"
+	classname="{{$test.Package | escape}}"
 	name="{{$test.Name | escape}}"
 	time="{{$test.Time}}">
     {{if eq $test.Status "skip" }}
@@ -20,7 +20,7 @@ var junit = `<testsuite
 	<failure type="go.error" message="error">
         <![CDATA[{{$test.Message}}]]>
         </failure>
-    {{end}
+    {{end}}
     </testcase>
 {{end}}
 </testsuite>

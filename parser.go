@@ -5,12 +5,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"regexp"
 	"sort"
 	"time"
 )
 
 var (
 	zeroTime time.Time
+	// FAIL	github.com/nuclio/nuclio/pkg/dashboard/test [build failed]
+	buildFailRe = regexp.MustCompile("FAIL[\\t ]+([^ ]+)[\\t ]+\\[build failed\\]")
 )
 
 // Test data structure
@@ -66,8 +69,16 @@ func firstScan(input io.Reader) (map[key]*Test, error) {
 	for scan.Scan() {
 		r := &Record{}
 		if err := json.Unmarshal(scan.Bytes(), r); err != nil {
-			return nil, fmt.Errorf("%d: error: %s", scan.LineNum(), err)
+			fields := buildFailRe.FindSubmatch(scan.Bytes())
+			if len(fields) == 2 {
+				r.Action = "fail"
+				r.Package = string(fields[1])
+				r.Output = "build failed"
+			} else {
+				return nil, fmt.Errorf("%d: error: %s", scan.LineNum(), err)
+			}
 		}
+
 		k := key{r.Package, r.Test}
 		t, ok := tests[k]
 		if !ok {
@@ -90,19 +101,11 @@ func assembleTests(tests map[key]*Test) (*Test, error) {
 		if err := t.assemble(); err != nil {
 			return nil, err
 		}
-
-		if t.Name == "" {
-			if root != nil {
-				return nil, fmt.Errorf("more than one root test")
-			}
-			root = t
-		}
 	}
 
+	root = &Test{}
 	for _, t := range tests {
-		if t != root {
-			root.Children = append(root.Children, t)
-		}
+		root.Children = append(root.Children, t)
 	}
 
 	for _, t := range root.Children {
@@ -111,6 +114,7 @@ func assembleTests(tests map[key]*Test) (*Test, error) {
 		}
 	}
 
+	root.calcStats()
 	return root, nil
 }
 
@@ -151,10 +155,15 @@ func (t *Test) assemble() error {
 	sort.Sort(byTime(t.records))
 	var buf bytes.Buffer
 	for _, r := range t.records {
+		if t.Name == "" {
+			t.Name = r.Test
+		}
+		if t.Package == "" {
+			t.Package = r.Package
+		}
+
 		switch r.Action {
 		case "run":
-			t.Name = r.Test
-			t.Package = r.Package
 			t.Time = r.Time
 		case "output":
 			buf.WriteString(r.Output)
@@ -166,7 +175,6 @@ func (t *Test) assemble() error {
 		}
 	}
 
-	fmt.Printf("%+v\n", t)
-
+	t.Message = buf.String()
 	return nil
 }

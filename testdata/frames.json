@@ -1,0 +1,236 @@
+{"Time":"2018-11-19T19:28:38.027287599+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestFrameNew"}
+{"Time":"2018-11-19T19:28:38.027403303+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestFrameNew","Output":"=== RUN   TestFrameNew\n"}
+{"Time":"2018-11-19T19:28:38.027420328+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestFrameNew","Output":"--- PASS: TestFrameNew (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027429523+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestFrameNew","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.02743866+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestFrameSlice"}
+{"Time":"2018-11-19T19:28:38.027445001+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestFrameSlice","Output":"=== RUN   TestFrameSlice\n"}
+{"Time":"2018-11-19T19:28:38.0274528+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestFrameSlice","Output":"--- PASS: TestFrameSlice (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027459994+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestFrameSlice","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027466358+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestFrameIndex"}
+{"Time":"2018-11-19T19:28:38.027472252+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestFrameIndex","Output":"=== RUN   TestFrameIndex\n"}
+{"Time":"2018-11-19T19:28:38.027479906+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestFrameIndex","Output":"--- PASS: TestFrameIndex (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027487013+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestFrameIndex","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027493198+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestNewFrameFromRows"}
+{"Time":"2018-11-19T19:28:38.02749902+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestNewFrameFromRows","Output":"=== RUN   TestNewFrameFromRows\n"}
+{"Time":"2018-11-19T19:28:38.027507159+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestNewFrameFromRows","Output":"--- PASS: TestNewFrameFromRows (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.0275154+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestNewFrameFromRows","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027521759+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestNewFrameFromRowsMissing"}
+{"Time":"2018-11-19T19:28:38.027527748+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestNewFrameFromRowsMissing","Output":"=== RUN   TestNewFrameFromRowsMissing\n"}
+{"Time":"2018-11-19T19:28:38.027535707+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestNewFrameFromRowsMissing","Output":"--- PASS: TestNewFrameFromRowsMissing (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027544599+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestNewFrameFromRowsMissing","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027551346+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestLabelColMatchInterface"}
+{"Time":"2018-11-19T19:28:38.027557495+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestLabelColMatchInterface","Output":"=== RUN   TestLabelColMatchInterface\n"}
+{"Time":"2018-11-19T19:28:38.027577358+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestLabelColMatchInterface","Output":"--- PASS: TestLabelColMatchInterface (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027583884+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestLabelColMatchInterface","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027589837+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestLabelColAPI"}
+{"Time":"2018-11-19T19:28:38.027595968+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestLabelColAPI","Output":"=== RUN   TestLabelColAPI\n"}
+{"Time":"2018-11-19T19:28:38.027603148+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestLabelColAPI","Output":"--- PASS: TestLabelColAPI (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027614751+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestLabelColAPI","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027621317+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestLabelColBadType"}
+{"Time":"2018-11-19T19:28:38.027627192+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestLabelColBadType","Output":"=== RUN   TestLabelColBadType\n"}
+{"Time":"2018-11-19T19:28:38.02763464+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestLabelColBadType","Output":"--- PASS: TestLabelColBadType (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027641471+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestLabelColBadType","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027647471+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestLabelColQuick"}
+{"Time":"2018-11-19T19:28:38.027653363+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestLabelColQuick","Output":"=== RUN   TestLabelColQuick\n"}
+{"Time":"2018-11-19T19:28:38.027660304+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestLabelColQuick","Output":"--- PASS: TestLabelColQuick (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.02766697+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestLabelColQuick","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027672998+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestNewLogger"}
+{"Time":"2018-11-19T19:28:38.027678684+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestNewLogger","Output":"=== RUN   TestNewLogger\n"}
+{"Time":"2018-11-19T19:28:38.027685533+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestNewLogger","Output":"--- PASS: TestNewLogger (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027692158+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestNewLogger","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027698156+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestMarshal"}
+{"Time":"2018-11-19T19:28:38.027704712+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestMarshal","Output":"=== RUN   TestMarshal\n"}
+{"Time":"2018-11-19T19:28:38.027712296+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestMarshal","Output":"--- PASS: TestMarshal (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027718834+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestMarshal","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027725359+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestRoundTrip"}
+{"Time":"2018-11-19T19:28:38.027731054+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRoundTrip","Output":"=== RUN   TestRoundTrip\n"}
+{"Time":"2018-11-19T19:28:38.027738153+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRoundTrip","Output":"--- PASS: TestRoundTrip (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027745468+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestRoundTrip","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.02775139+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestRowIterator"}
+{"Time":"2018-11-19T19:28:38.027757264+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRowIterator","Output":"=== RUN   TestRowIterator\n"}
+{"Time":"2018-11-19T19:28:38.027764294+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRowIterator","Output":"--- PASS: TestRowIterator (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027771054+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestRowIterator","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027777148+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestRowIteratorIndex"}
+{"Time":"2018-11-19T19:28:38.027783152+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRowIteratorIndex","Output":"=== RUN   TestRowIteratorIndex\n"}
+{"Time":"2018-11-19T19:28:38.027790141+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRowIteratorIndex","Output":"--- SKIP: TestRowIteratorIndex (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027800643+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRowIteratorIndex","Output":"    rowiter_test.go:107: TODO\n"}
+{"Time":"2018-11-19T19:28:38.027808048+02:00","Action":"skip","Package":"github.com/v3io/frames","Test":"TestRowIteratorIndex","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027813947+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestRowIteratorIndices"}
+{"Time":"2018-11-19T19:28:38.027820177+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRowIteratorIndices","Output":"=== RUN   TestRowIteratorIndices\n"}
+{"Time":"2018-11-19T19:28:38.027827752+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRowIteratorIndices","Output":"--- SKIP: TestRowIteratorIndices (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.02783425+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRowIteratorIndices","Output":"    rowiter_test.go:111: TODO\n"}
+{"Time":"2018-11-19T19:28:38.027841395+02:00","Action":"skip","Package":"github.com/v3io/frames","Test":"TestRowIteratorIndices","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.02784781+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestRowAll"}
+{"Time":"2018-11-19T19:28:38.02785461+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRowAll","Output":"=== RUN   TestRowAll\n"}
+{"Time":"2018-11-19T19:28:38.02786282+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestRowAll","Output":"--- PASS: TestRowAll (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027870027+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestRowAll","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027876215+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestNoName"}
+{"Time":"2018-11-19T19:28:38.027881984+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestNoName","Output":"=== RUN   TestNoName\n"}
+{"Time":"2018-11-19T19:28:38.027889235+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestNoName","Output":"--- PASS: TestNoName (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027895955+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestNoName","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027901861+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestSliceColMatchInterface"}
+{"Time":"2018-11-19T19:28:38.027907832+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSliceColMatchInterface","Output":"=== RUN   TestSliceColMatchInterface\n"}
+{"Time":"2018-11-19T19:28:38.027915078+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSliceColMatchInterface","Output":"--- PASS: TestSliceColMatchInterface (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027921726+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestSliceColMatchInterface","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027927812+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestSliceColAPI"}
+{"Time":"2018-11-19T19:28:38.027933681+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSliceColAPI","Output":"=== RUN   TestSliceColAPI\n"}
+{"Time":"2018-11-19T19:28:38.027940569+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSliceColAPI","Output":"--- PASS: TestSliceColAPI (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027947333+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestSliceColAPI","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027953846+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestSliceColBadType"}
+{"Time":"2018-11-19T19:28:38.027959583+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSliceColBadType","Output":"=== RUN   TestSliceColBadType\n"}
+{"Time":"2018-11-19T19:28:38.027967186+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSliceColBadType","Output":"--- PASS: TestSliceColBadType (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.027973864+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestSliceColBadType","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.027983082+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestSliceColQuick"}
+{"Time":"2018-11-19T19:28:38.02798905+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSliceColQuick","Output":"=== RUN   TestSliceColQuick\n"}
+{"Time":"2018-11-19T19:28:38.027996514+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSliceColQuick","Output":"--- PASS: TestSliceColQuick (0.05s)\n"}
+{"Time":"2018-11-19T19:28:38.028003326+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestSliceColQuick","Elapsed":0.05}
+{"Time":"2018-11-19T19:28:38.028010255+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestSimple"}
+{"Time":"2018-11-19T19:28:38.028015993+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSimple","Output":"=== RUN   TestSimple\n"}
+{"Time":"2018-11-19T19:28:38.02802304+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSimple","Output":"--- PASS: TestSimple (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.028029611+02:00","Action":"pass","Package":"github.com/v3io/frames","Test":"TestSimple","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.028035644+02:00","Action":"run","Package":"github.com/v3io/frames","Test":"TestSchemaFieldProperty"}
+{"Time":"2018-11-19T19:28:38.028041562+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSchemaFieldProperty","Output":"=== RUN   TestSchemaFieldProperty\n"}
+{"Time":"2018-11-19T19:28:38.028048931+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSchemaFieldProperty","Output":"--- SKIP: TestSchemaFieldProperty (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.028055722+02:00","Action":"output","Package":"github.com/v3io/frames","Test":"TestSchemaFieldProperty","Output":"    types_test.go:28: FIXME - PB\n"}
+{"Time":"2018-11-19T19:28:38.028061589+02:00","Action":"skip","Package":"github.com/v3io/frames","Test":"TestSchemaFieldProperty","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.028067707+02:00","Action":"output","Package":"github.com/v3io/frames","Output":"PASS\n"}
+{"Time":"2018-11-19T19:28:38.02807391+02:00","Action":"output","Package":"github.com/v3io/frames","Output":"ok  \tgithub.com/v3io/frames\t(cached)\n"}
+{"Time":"2018-11-19T19:28:38.028082571+02:00","Action":"pass","Package":"github.com/v3io/frames","Elapsed":0.001}
+{"Time":"2018-11-19T19:28:38.241035575+02:00","Action":"output","Package":"github.com/v3io/frames/api","Output":"?   \tgithub.com/v3io/frames/api\t[no test files]\n"}
+{"Time":"2018-11-19T19:28:38.241062365+02:00","Action":"skip","Package":"github.com/v3io/frames/api","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.316802101+02:00","Action":"run","Package":"github.com/v3io/frames/backends","Test":"TestBackends"}
+{"Time":"2018-11-19T19:28:38.316827582+02:00","Action":"output","Package":"github.com/v3io/frames/backends","Test":"TestBackends","Output":"=== RUN   TestBackends\n"}
+{"Time":"2018-11-19T19:28:38.316844593+02:00","Action":"output","Package":"github.com/v3io/frames/backends","Test":"TestBackends","Output":"--- PASS: TestBackends (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.316852085+02:00","Action":"pass","Package":"github.com/v3io/frames/backends","Test":"TestBackends","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.316860299+02:00","Action":"output","Package":"github.com/v3io/frames/backends","Output":"PASS\n"}
+{"Time":"2018-11-19T19:28:38.316866971+02:00","Action":"output","Package":"github.com/v3io/frames/backends","Output":"ok  \tgithub.com/v3io/frames/backends\t(cached)\n"}
+{"Time":"2018-11-19T19:28:38.3168747+02:00","Action":"pass","Package":"github.com/v3io/frames/backends","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.424612898+02:00","Action":"run","Package":"github.com/v3io/frames/backends/kv","Test":"TestReader"}
+{"Time":"2018-11-19T19:28:38.424635985+02:00","Action":"output","Package":"github.com/v3io/frames/backends/kv","Test":"TestReader","Output":"=== RUN   TestReader\n"}
+{"Time":"2018-11-19T19:28:38.424652544+02:00","Action":"output","Package":"github.com/v3io/frames/backends/kv","Test":"TestReader","Output":"--- SKIP: TestReader (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.424659957+02:00","Action":"output","Package":"github.com/v3io/frames/backends/kv","Test":"TestReader","Output":"    reader_test.go:28: TODO\n"}
+{"Time":"2018-11-19T19:28:38.424667017+02:00","Action":"skip","Package":"github.com/v3io/frames/backends/kv","Test":"TestReader","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.424675348+02:00","Action":"run","Package":"github.com/v3io/frames/backends/kv","Test":"TestWriter"}
+{"Time":"2018-11-19T19:28:38.424681536+02:00","Action":"output","Package":"github.com/v3io/frames/backends/kv","Test":"TestWriter","Output":"=== RUN   TestWriter\n"}
+{"Time":"2018-11-19T19:28:38.42468911+02:00","Action":"output","Package":"github.com/v3io/frames/backends/kv","Test":"TestWriter","Output":"--- SKIP: TestWriter (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.424695644+02:00","Action":"output","Package":"github.com/v3io/frames/backends/kv","Test":"TestWriter","Output":"    writer_test.go:28: TODO\n"}
+{"Time":"2018-11-19T19:28:38.424701701+02:00","Action":"skip","Package":"github.com/v3io/frames/backends/kv","Test":"TestWriter","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.424708209+02:00","Action":"output","Package":"github.com/v3io/frames/backends/kv","Output":"PASS\n"}
+{"Time":"2018-11-19T19:28:38.424715111+02:00","Action":"output","Package":"github.com/v3io/frames/backends/kv","Output":"ok  \tgithub.com/v3io/frames/backends/kv\t(cached)\n"}
+{"Time":"2018-11-19T19:28:38.424724233+02:00","Action":"pass","Package":"github.com/v3io/frames/backends/kv","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.476684799+02:00","Action":"run","Package":"github.com/v3io/frames/backends/utils","Test":"TestAppendValue"}
+{"Time":"2018-11-19T19:28:38.476707451+02:00","Action":"output","Package":"github.com/v3io/frames/backends/utils","Test":"TestAppendValue","Output":"=== RUN   TestAppendValue\n"}
+{"Time":"2018-11-19T19:28:38.476720542+02:00","Action":"output","Package":"github.com/v3io/frames/backends/utils","Test":"TestAppendValue","Output":"--- PASS: TestAppendValue (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.476728542+02:00","Action":"pass","Package":"github.com/v3io/frames/backends/utils","Test":"TestAppendValue","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.476737874+02:00","Action":"run","Package":"github.com/v3io/frames/backends/utils","Test":"TestNewColumn"}
+{"Time":"2018-11-19T19:28:38.476744211+02:00","Action":"output","Package":"github.com/v3io/frames/backends/utils","Test":"TestNewColumn","Output":"=== RUN   TestNewColumn\n"}
+{"Time":"2018-11-19T19:28:38.476752396+02:00","Action":"output","Package":"github.com/v3io/frames/backends/utils","Test":"TestNewColumn","Output":"--- PASS: TestNewColumn (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.476759542+02:00","Action":"pass","Package":"github.com/v3io/frames/backends/utils","Test":"TestNewColumn","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.476765813+02:00","Action":"run","Package":"github.com/v3io/frames/backends/utils","Test":"TestAppendNil"}
+{"Time":"2018-11-19T19:28:38.476771653+02:00","Action":"output","Package":"github.com/v3io/frames/backends/utils","Test":"TestAppendNil","Output":"=== RUN   TestAppendNil\n"}
+{"Time":"2018-11-19T19:28:38.476779233+02:00","Action":"output","Package":"github.com/v3io/frames/backends/utils","Test":"TestAppendNil","Output":"--- PASS: TestAppendNil (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.476786233+02:00","Action":"pass","Package":"github.com/v3io/frames/backends/utils","Test":"TestAppendNil","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.476792483+02:00","Action":"run","Package":"github.com/v3io/frames/backends/utils","Test":"TestRemoveColumn"}
+{"Time":"2018-11-19T19:28:38.476798792+02:00","Action":"output","Package":"github.com/v3io/frames/backends/utils","Test":"TestRemoveColumn","Output":"=== RUN   TestRemoveColumn\n"}
+{"Time":"2018-11-19T19:28:38.476806288+02:00","Action":"output","Package":"github.com/v3io/frames/backends/utils","Test":"TestRemoveColumn","Output":"--- PASS: TestRemoveColumn (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.476817749+02:00","Action":"pass","Package":"github.com/v3io/frames/backends/utils","Test":"TestRemoveColumn","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.476824697+02:00","Action":"output","Package":"github.com/v3io/frames/backends/utils","Output":"PASS\n"}
+{"Time":"2018-11-19T19:28:38.476831329+02:00","Action":"output","Package":"github.com/v3io/frames/backends/utils","Output":"ok  \tgithub.com/v3io/frames/backends/utils\t(cached)\n"}
+{"Time":"2018-11-19T19:28:38.476841321+02:00","Action":"pass","Package":"github.com/v3io/frames/backends/utils","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.877082571+02:00","Action":"run","Package":"github.com/v3io/frames/backends/csv","Test":"TestCSV"}
+{"Time":"2018-11-19T19:28:38.877117789+02:00","Action":"output","Package":"github.com/v3io/frames/backends/csv","Test":"TestCSV","Output":"=== RUN   TestCSV\n"}
+{"Time":"2018-11-19T19:28:38.884781539+02:00","Action":"output","Package":"github.com/v3io/frames/backends/csv","Test":"TestCSV","Output":"18.11.19 19:28:38.884 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[32m(D)\u001b[0m EOF {\"numRows\": 12}\n"}
+{"Time":"2018-11-19T19:28:38.884888905+02:00","Action":"output","Package":"github.com/v3io/frames/backends/csv","Test":"TestCSV","Output":"18.11.19 19:28:38.884 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[32m(D)\u001b[0m EOF {\"numRows\": 12}\n"}
+{"Time":"2018-11-19T19:28:38.884913487+02:00","Action":"output","Package":"github.com/v3io/frames/backends/csv","Test":"TestCSV","Output":"--- PASS: TestCSV (0.01s)\n"}
+{"Time":"2018-11-19T19:28:38.884928029+02:00","Action":"pass","Package":"github.com/v3io/frames/backends/csv","Test":"TestCSV","Elapsed":0.01}
+{"Time":"2018-11-19T19:28:38.884938875+02:00","Action":"run","Package":"github.com/v3io/frames/backends/csv","Test":"TestLimit"}
+{"Time":"2018-11-19T19:28:38.884946+02:00","Action":"output","Package":"github.com/v3io/frames/backends/csv","Test":"TestLimit","Output":"=== RUN   TestLimit\n"}
+{"Time":"2018-11-19T19:28:38.899393615+02:00","Action":"output","Package":"github.com/v3io/frames/backends/csv","Test":"TestLimit","Output":"--- PASS: TestLimit (0.01s)\n"}
+{"Time":"2018-11-19T19:28:38.89943894+02:00","Action":"pass","Package":"github.com/v3io/frames/backends/csv","Test":"TestLimit","Elapsed":0.01}
+{"Time":"2018-11-19T19:28:38.899450005+02:00","Action":"run","Package":"github.com/v3io/frames/backends/csv","Test":"TestMaxInMessage"}
+{"Time":"2018-11-19T19:28:38.899456096+02:00","Action":"output","Package":"github.com/v3io/frames/backends/csv","Test":"TestMaxInMessage","Output":"=== RUN   TestMaxInMessage\n"}
+{"Time":"2018-11-19T19:28:38.901611814+02:00","Action":"output","Package":"github.com/v3io/frames/backends/csv","Test":"TestMaxInMessage","Output":"18.11.19 19:28:38.901 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[32m(D)\u001b[0m EOF {\"numRows\": 12}\n"}
+{"Time":"2018-11-19T19:28:38.901647141+02:00","Action":"output","Package":"github.com/v3io/frames/backends/csv","Test":"TestMaxInMessage","Output":"--- PASS: TestMaxInMessage (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.901658943+02:00","Action":"pass","Package":"github.com/v3io/frames/backends/csv","Test":"TestMaxInMessage","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.901671433+02:00","Action":"output","Package":"github.com/v3io/frames/backends/csv","Output":"PASS\n"}
+{"Time":"2018-11-19T19:28:38.902431117+02:00","Action":"output","Package":"github.com/v3io/frames/backends/csv","Output":"ok  \tgithub.com/v3io/frames/backends/csv\t0.049s\n"}
+{"Time":"2018-11-19T19:28:38.902518502+02:00","Action":"pass","Package":"github.com/v3io/frames/backends/csv","Elapsed":0.049}
+{"Time":"2018-11-19T19:28:38.904465182+02:00","Action":"output","Package":"github.com/v3io/frames/backends/stream","Output":"?   \tgithub.com/v3io/frames/backends/stream\t[no test files]\n"}
+{"Time":"2018-11-19T19:28:38.904490191+02:00","Action":"skip","Package":"github.com/v3io/frames/backends/stream","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.904505521+02:00","Action":"output","Package":"github.com/v3io/frames/backends/tsdb","Output":"?   \tgithub.com/v3io/frames/backends/tsdb\t[no test files]\n"}
+{"Time":"2018-11-19T19:28:38.904520014+02:00","Action":"skip","Package":"github.com/v3io/frames/backends/tsdb","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.904531281+02:00","Action":"output","Package":"github.com/v3io/frames/cmd/framesd","Output":"?   \tgithub.com/v3io/frames/cmd/framesd\t[no test files]\n"}
+{"Time":"2018-11-19T19:28:38.904538481+02:00","Action":"skip","Package":"github.com/v3io/frames/cmd/framesd","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.968128164+02:00","Action":"run","Package":"github.com/v3io/frames/v3ioutils","Test":"TestNewSchema"}
+{"Time":"2018-11-19T19:28:38.96815324+02:00","Action":"output","Package":"github.com/v3io/frames/v3ioutils","Test":"TestNewSchema","Output":"=== RUN   TestNewSchema\n"}
+{"Time":"2018-11-19T19:28:38.968165281+02:00","Action":"output","Package":"github.com/v3io/frames/v3ioutils","Test":"TestNewSchema","Output":"--- PASS: TestNewSchema (0.00s)\n"}
+{"Time":"2018-11-19T19:28:38.968172316+02:00","Action":"pass","Package":"github.com/v3io/frames/v3ioutils","Test":"TestNewSchema","Elapsed":0}
+{"Time":"2018-11-19T19:28:38.968180689+02:00","Action":"output","Package":"github.com/v3io/frames/v3ioutils","Output":"PASS\n"}
+{"Time":"2018-11-19T19:28:38.968187368+02:00","Action":"output","Package":"github.com/v3io/frames/v3ioutils","Output":"ok  \tgithub.com/v3io/frames/v3ioutils\t(cached)\n"}
+{"Time":"2018-11-19T19:28:38.968195633+02:00","Action":"pass","Package":"github.com/v3io/frames/v3ioutils","Elapsed":0}
+{"Time":"2018-11-19T19:28:39.06131362+02:00","Action":"run","Package":"github.com/v3io/frames/http","Test":"TestNewClient"}
+{"Time":"2018-11-19T19:28:39.06134171+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestNewClient","Output":"=== RUN   TestNewClient\n"}
+{"Time":"2018-11-19T19:28:39.062242838+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestNewClient","Output":"--- PASS: TestNewClient (0.00s)\n"}
+{"Time":"2018-11-19T19:28:39.062263162+02:00","Action":"pass","Package":"github.com/v3io/frames/http","Test":"TestNewClient","Elapsed":0}
+{"Time":"2018-11-19T19:28:39.062272246+02:00","Action":"run","Package":"github.com/v3io/frames/http","Test":"TestClientRead"}
+{"Time":"2018-11-19T19:28:39.062278659+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestClientRead","Output":"=== RUN   TestClientRead\n"}
+{"Time":"2018-11-19T19:28:39.062289102+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestClientRead","Output":"--- SKIP: TestClientRead (0.00s)\n"}
+{"Time":"2018-11-19T19:28:39.062296833+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestClientRead","Output":"    client_test.go:59: TODO\n"}
+{"Time":"2018-11-19T19:28:39.062305697+02:00","Action":"skip","Package":"github.com/v3io/frames/http","Test":"TestClientRead","Elapsed":0}
+{"Time":"2018-11-19T19:28:39.062312395+02:00","Action":"run","Package":"github.com/v3io/frames/http","Test":"TestClientWrite"}
+{"Time":"2018-11-19T19:28:39.062318894+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestClientWrite","Output":"=== RUN   TestClientWrite\n"}
+{"Time":"2018-11-19T19:28:39.062330388+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestClientWrite","Output":"--- SKIP: TestClientWrite (0.00s)\n"}
+{"Time":"2018-11-19T19:28:39.062337812+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestClientWrite","Output":"    client_test.go:63: TODO\n"}
+{"Time":"2018-11-19T19:28:39.062346611+02:00","Action":"skip","Package":"github.com/v3io/frames/http","Test":"TestClientWrite","Elapsed":0}
+{"Time":"2018-11-19T19:28:39.062353168+02:00","Action":"run","Package":"github.com/v3io/frames/http","Test":"TestNew"}
+{"Time":"2018-11-19T19:28:39.062358876+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestNew","Output":"=== RUN   TestNew\n"}
+{"Time":"2018-11-19T19:28:39.06237032+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestNew","Output":"--- PASS: TestNew (0.00s)\n"}
+{"Time":"2018-11-19T19:28:39.062385583+02:00","Action":"pass","Package":"github.com/v3io/frames/http","Test":"TestNew","Elapsed":0}
+{"Time":"2018-11-19T19:28:39.062392046+02:00","Action":"run","Package":"github.com/v3io/frames/http","Test":"TestEnd2End"}
+{"Time":"2018-11-19T19:28:39.062397422+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"=== RUN   TestEnd2End\n"}
+{"Time":"2018-11-19T19:28:39.062628587+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.062 \u001b[37m              v3io-frames\u001b[0m \u001b[34m(I)\u001b[0m server started {\"address\": \":34109\"}\n"}
+{"Time":"2018-11-19T19:28:39.120195628+02:00","Action":"run","Package":"github.com/v3io/frames/grpc","Test":"TestLabelColTimeAt"}
+{"Time":"2018-11-19T19:28:39.120227444+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestLabelColTimeAt","Output":"=== RUN   TestLabelColTimeAt\n"}
+{"Time":"2018-11-19T19:28:39.120243289+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestLabelColTimeAt","Output":"--- PASS: TestLabelColTimeAt (0.00s)\n"}
+{"Time":"2018-11-19T19:28:39.120249928+02:00","Action":"pass","Package":"github.com/v3io/frames/grpc","Test":"TestLabelColTimeAt","Elapsed":0}
+{"Time":"2018-11-19T19:28:39.120255084+02:00","Action":"run","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End"}
+{"Time":"2018-11-19T19:28:39.120259055+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"=== RUN   TestEnd2End\n"}
+{"Time":"2018-11-19T19:28:39.222465884+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"18.11.19 19:28:39.222 \u001b[37m              v3io-frames\u001b[0m \u001b[34m(I)\u001b[0m write request {\"request\": {\"Session\":null,\"Backend\":\"e2e-backend\",\"Table\":\"e2e\",\"ImmidiateData\":null,\"Expression\":\"\",\"HaveMore\":false}}\n"}
+{"Time":"2018-11-19T19:28:39.22251602+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"18.11.19 19:28:39.222 \u001b[37m              v3io-frames\u001b[0m \u001b[32m(D)\u001b[0m frame to write {\"size\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.222529068+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"18.11.19 19:28:39.222 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[34m(I)\u001b[0m adding frame {\"size\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.226142457+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"18.11.19 19:28:39.226 \u001b[37m              v3io-frames\u001b[0m \u001b[32m(D)\u001b[0m write {\"numFrames\": 1, \"numRows\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.226169449+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"18.11.19 19:28:39.226 \u001b[37m              v3io-frames\u001b[0m \u001b[32m(D)\u001b[0m write done\n"}
+{"Time":"2018-11-19T19:28:39.232432143+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"18.11.19 19:28:39.232 \u001b[37m              v3io-frames\u001b[0m \u001b[34m(I)\u001b[0m read request {\"request\": \"backend:\\\"e2e-backend\\\" table:\\\"e2e\\\" message_limit:100 \"}\n"}
+{"Time":"2018-11-19T19:28:39.235926123+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"18.11.19 19:28:39.235 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[32m(D)\u001b[0m EOF {\"numRows\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.235959038+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"18.11.19 19:28:39.235 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[32m(D)\u001b[0m EOF {\"numRows\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.23597407+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.234 \u001b[37m              v3io-frames\u001b[0m \u001b[34m(I)\u001b[0m write request {\"request\": {\"Session\":null,\"Backend\":\"e2e-backend\",\"Table\":\"e2e\",\"ImmidiateData\":null,\"Expression\":\"\",\"HaveMore\":false}}\n"}
+{"Time":"2018-11-19T19:28:39.236052119+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"18.11.19 19:28:39.235 \u001b[37m              v3io-frames\u001b[0m \u001b[32m(D)\u001b[0m exec {\"request\": \"backend:\\\"e2e-backend\\\" table:\\\"e2e\\\" command:\\\"ping\\\" \"}\n"}
+{"Time":"2018-11-19T19:28:39.236086015+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"18.11.19 19:28:39.236 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[34m(I)\u001b[0m PONG\n"}
+{"Time":"2018-11-19T19:28:39.236103374+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.236 \u001b[37m              v3io-frames\u001b[0m \u001b[32m(D)\u001b[0m frame to write {\"size\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.236121206+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.236 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[34m(I)\u001b[0m adding frame {\"size\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.23614764+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Output":"--- PASS: TestEnd2End (0.12s)\n"}
+{"Time":"2018-11-19T19:28:39.236155342+02:00","Action":"pass","Package":"github.com/v3io/frames/grpc","Test":"TestEnd2End","Elapsed":0.12}
+{"Time":"2018-11-19T19:28:39.236162173+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Output":"PASS\n"}
+{"Time":"2018-11-19T19:28:39.237421514+02:00","Action":"output","Package":"github.com/v3io/frames/grpc","Output":"ok  \tgithub.com/v3io/frames/grpc\t0.120s\n"}
+{"Time":"2018-11-19T19:28:39.237528016+02:00","Action":"pass","Package":"github.com/v3io/frames/grpc","Elapsed":0.12}
+{"Time":"2018-11-19T19:28:39.240840562+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.240 \u001b[37m              v3io-frames\u001b[0m \u001b[32m(D)\u001b[0m write {\"numFrames\": 1, \"numRows\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.240852983+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.240 \u001b[37m              v3io-frames\u001b[0m \u001b[32m(D)\u001b[0m write done\n"}
+{"Time":"2018-11-19T19:28:39.243945756+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.243 \u001b[37m              v3io-frames\u001b[0m \u001b[34m(I)\u001b[0m read request {\"request\": \"backend:\\\"e2e-backend\\\" table:\\\"e2e\\\" message_limit:100 \"}\n"}
+{"Time":"2018-11-19T19:28:39.244012268+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.243 \u001b[37m              v3io-frames\u001b[0m \u001b[34m(I)\u001b[0m read request {\"request\": \"backend:\\\"e2e-backend\\\" table:\\\"e2e\\\" message_limit:100 \"}\n"}
+{"Time":"2018-11-19T19:28:39.247009781+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.246 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[32m(D)\u001b[0m EOF {\"numRows\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.24720648+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.247 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[32m(D)\u001b[0m EOF {\"numRows\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.247434579+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.247 \u001b[37m              v3io-frames\u001b[0m \u001b[34m(I)\u001b[0m grafana request {\"request\": \"backend:\\\"e2e-backend\\\" table:\\\"e2e\\\" \"}\n"}
+{"Time":"2018-11-19T19:28:39.247470065+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.247 \u001b[37m              v3io-frames\u001b[0m \u001b[34m(I)\u001b[0m read request {\"request\": \"backend:\\\"e2e-backend\\\" table:\\\"e2e\\\" \"}\n"}
+{"Time":"2018-11-19T19:28:39.247842473+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.247 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[32m(D)\u001b[0m EOF {\"numRows\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.249206762+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.249 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[32m(D)\u001b[0m EOF {\"numRows\": 1027}\n"}
+{"Time":"2018-11-19T19:28:39.251988773+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.251 \u001b[37m              v3io-frames\u001b[0m \u001b[32m(D)\u001b[0m exec {\"request\": \"backend:\\\"e2e-backend\\\" table:\\\"e2e\\\" command:\\\"ping\\\" \"}\n"}
+{"Time":"2018-11-19T19:28:39.252017844+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"18.11.19 19:28:39.251 \u001b[37m          v3io-frames.csv\u001b[0m \u001b[34m(I)\u001b[0m PONG\n"}
+{"Time":"2018-11-19T19:28:39.252048814+02:00","Action":"output","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Output":"--- PASS: TestEnd2End (0.19s)\n"}
+{"Time":"2018-11-19T19:28:39.252066017+02:00","Action":"pass","Package":"github.com/v3io/frames/http","Test":"TestEnd2End","Elapsed":0.19}
+{"Time":"2018-11-19T19:28:39.252077007+02:00","Action":"output","Package":"github.com/v3io/frames/http","Output":"PASS\n"}
+{"Time":"2018-11-19T19:28:39.253113229+02:00","Action":"output","Package":"github.com/v3io/frames/http","Output":"ok  \tgithub.com/v3io/frames/http\t0.194s\n"}
+{"Time":"2018-11-19T19:28:39.253221211+02:00","Action":"pass","Package":"github.com/v3io/frames/http","Elapsed":0.195}
+{"Time":"2018-11-19T19:28:39.255033469+02:00","Action":"output","Package":"github.com/v3io/frames/pb","Output":"?   \tgithub.com/v3io/frames/pb\t[no test files]\n"}
+{"Time":"2018-11-19T19:28:39.255042558+02:00","Action":"skip","Package":"github.com/v3io/frames/pb","Elapsed":0}
+{"Time":"2018-11-19T19:28:39.25505309+02:00","Action":"output","Package":"github.com/v3io/frames/scripts","Output":"?   \tgithub.com/v3io/frames/scripts\t[no test files]\n"}
+{"Time":"2018-11-19T19:28:39.255058176+02:00","Action":"skip","Package":"github.com/v3io/frames/scripts","Elapsed":0}
