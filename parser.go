@@ -74,6 +74,7 @@ func firstScan(input io.Reader) (map[key]*Test, error) {
 				r.Action = "fail"
 				r.Package = string(fields[1])
 				r.Output = "build failed"
+				// TODO: r.Time
 			} else {
 				return nil, fmt.Errorf("%d: error: %s", scan.LineNum(), err)
 			}
@@ -109,7 +110,7 @@ func assembleTests(tests map[key]*Test) (*Test, error) {
 	}
 
 	for _, t := range root.Children {
-		if root.Time.Equal(zeroTime) || t.Time.Before(root.Time) {
+		if isEmptyTime(root.Time) || t.Time.Before(root.Time) {
 			root.Time = t.Time
 		}
 	}
@@ -161,12 +162,14 @@ func (t *Test) assemble() error {
 		if t.Package == "" {
 			t.Package = r.Package
 		}
+		if r.Output != "" {
+			buf.WriteString(r.Output)
+		}
 
 		switch r.Action {
 		case "run":
 			t.Time = r.Time
 		case "output":
-			buf.WriteString(r.Output)
 		case "pass", "fail", "skip":
 			t.Status = r.Action
 			t.Elapsed = time.Duration(r.Elapsed) * time.Millisecond
@@ -176,5 +179,17 @@ func (t *Test) assemble() error {
 	}
 
 	t.Message = buf.String()
+	if isEmptyTime(t.Time) {
+		for _, r := range t.records {
+			if !isEmptyTime(r.Time) {
+				t.Time = r.Time
+				break
+			}
+		}
+	}
 	return nil
+}
+
+func isEmptyTime(t time.Time) bool {
+	return t.Equal(zeroTime)
 }
