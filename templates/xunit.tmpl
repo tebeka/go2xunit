@@ -1,32 +1,4 @@
-// Genrated by /tmp/go-build526346060/b001/exe/gentmpl
-
-package main
-
-var junit = `<testsuite
-    name="go2xunit"
-    tests="{{.Count}}"
-    errors="0"
-    failures="{{index .Stats "fail"}}"
-    skip="{{index .Stats "skip"}}">
-{{range  $test := .Children}}
-    <testcase
-	classname="{{$test.Package | escape}}"
-	name="{{$test.Name | escape}}"
-	time="{{$test.Time}}">
-    {{if eq $test.Status "skip" }}
-	<skipped/>
-    {{end}}
-    {{if eq $test.Status "fail" }}
-	<failure type="go.error" message="error">
-        <![CDATA[{{$test.Message}}]]>
-        </failure>
-    {{end}}
-    </testcase>
-{{end}}
-</testsuite>
-`
-
-var xunit = `<assembly name="{{.Name | escape}}"
+<assembly name="{{.Name | escape}}"
           run-date="{{.Time}}" run-time="{{.Time}}"
           configFile="none"
           time="{{.Time}}"
@@ -55,9 +27,3 @@ var xunit = `<assembly name="{{.Name | escape}}"
     {{end}}
     </class>
 </assembly>
-`
-
-var internalTemplates = map[string]string{
-	"junit": junit,
-	"xunit": xunit,
-}

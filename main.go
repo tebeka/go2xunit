@@ -73,7 +73,7 @@ func main() {
 		log.Fatalf("error: can't parse - %s", err)
 	}
 
-	tmplData := Templates[args.format]
+	tmplData := internalTemplates[args.format]
 	if tmplData == "" {
 		log.Fatalf("error: can't find tempalte for %q", args.format)
 	}

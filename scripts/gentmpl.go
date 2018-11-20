@@ -1,3 +1,4 @@
+// Generate templates.go from templates/*.tmpl
 package main
 
 import (
@@ -31,11 +32,11 @@ func main() {
 
 		name := path.Base(file)
 		name = name[:len(name)-len(path.Ext(file))]
-		fmt.Fprintf(out, "var %s = `%s`", name, string(data))
+		fmt.Fprintf(out, "var %s = `%s`\n\n", name, string(data))
 		names[i] = name
 	}
 
-	fmt.Fprintf(out, "\n\nvar Templates = map[string]string{\n")
+	fmt.Fprintf(out, "\nvar internalTemplates = map[string]string{\n")
 	for _, name := range names {
 		fmt.Fprintf(out, "\t\"%s\": %s,\n", name, name)
 	}
