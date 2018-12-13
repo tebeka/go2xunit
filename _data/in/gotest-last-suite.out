@@ -1,0 +1,37 @@
+?   	sisu.sh/go/code/catalog	[no test files]
+?   	sisu.sh/go/code/catalog/client	[no test files]
+?   	sisu.sh/go/code/catalog/cmd/catalog-service	[no test files]
+?   	sisu.sh/go/code/catalog/handler	[no test files]
+?   	sisu.sh/go/code/catalog/handler/validator	[no test files]
+?   	sisu.sh/go/code/catalog/info	[no test files]
+=== RUN   TestFail
+--- FAIL: TestFail (0.00s)
+    localizer_test.go:15: YO IM FAILING!
+=== RUN   TestCurrencyMap
+--- PASS: TestCurrencyMap (0.00s)
+=== RUN   TestCountryMap
+--- PASS: TestCountryMap (0.00s)
+=== RUN   TestLanguagesByCountry
+--- PASS: TestLanguagesByCountry (0.00s)
+=== RUN   TestCountryLanguageCombinations
+--- PASS: TestCountryLanguageCombinations (0.00s)
+FAIL
+FAIL	sisu.sh/go/code/catalog/localizer	0.004s
+=== RUN   TestNameIsGeneratedCorrectly
+--- PASS: TestNameIsGeneratedCorrectly (0.00s)
+PASS
+ok  	sisu.sh/go/code/catalog/name	(cached)
+?   	sisu.sh/go/code/catalog/store	[no test files]
+?   	sisu.sh/go/code/catalog/store/postgres	[no test files]
+=== RUN   TestExtractNumericIds
+--- PASS: TestExtractNumericIds (0.00s)
+=== RUN   TestExtractStringIds
+--- PASS: TestExtractStringIds (0.00s)
+=== RUN   TestIntSliceToStringSlice
+--- PASS: TestIntSliceToStringSlice (0.00s)
+=== RUN   TestGetKeys
+--- PASS: TestGetKeys (0.00s)
+=== RUN   TestProtoEnumToStringSlice
+--- PASS: TestProtoEnumToStringSlice (0.00s)
+PASS
+ok  	sisu.sh/go/code/catalog/transformer	(cached)

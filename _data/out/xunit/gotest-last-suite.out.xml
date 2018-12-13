@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<testsuites>
+  <testsuite name="sisu.sh/go/code/catalog/localizer" tests="5" errors="0" failures="1" skip="0">
+    <testcase classname="sisu.sh/go/code/catalog/localizer" name="TestFail" time="0.00">
+
+      <failure type="go.error" message="error">
+        <![CDATA[    localizer_test.go:15: YO IM FAILING!]]>
+      </failure>    </testcase>
+    <testcase classname="sisu.sh/go/code/catalog/localizer" name="TestCurrencyMap" time="0.00">
+
+    </testcase>
+    <testcase classname="sisu.sh/go/code/catalog/localizer" name="TestCountryMap" time="0.00">
+
+    </testcase>
+    <testcase classname="sisu.sh/go/code/catalog/localizer" name="TestLanguagesByCountry" time="0.00">
+
+    </testcase>
+    <testcase classname="sisu.sh/go/code/catalog/localizer" name="TestCountryLanguageCombinations" time="0.00">
+
+    </testcase>
+  </testsuite>
+  <testsuite name="" tests="6" errors="0" failures="0" skip="0">
+    <testcase classname="" name="TestNameIsGeneratedCorrectly" time="0.00">
+
+    </testcase>
+    <testcase classname="" name="TestExtractNumericIds" time="0.00">
+
+    </testcase>
+    <testcase classname="" name="TestExtractStringIds" time="0.00">
+
+    </testcase>
+    <testcase classname="" name="TestIntSliceToStringSlice" time="0.00">
+
+    </testcase>
+    <testcase classname="" name="TestGetKeys" time="0.00">
+
+    </testcase>
+    <testcase classname="" name="TestProtoEnumToStringSlice" time="0.00">
+
+    </testcase>
+  </testsuite>
+</testsuites>

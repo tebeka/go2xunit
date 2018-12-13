@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<assembly name=""
+          run-date="2018-12-13" run-time="08:09:10"
+          configFile="none"
+          time="0.004"
+          total="11"
+          passed="10"
+          failed="1"
+          skipped="0"
+          environment="n/a"
+          test-framework="golang">
+
+    <class time="0.004" name="sisu.sh/go/code/catalog/localizer"
+  	     total="5"
+  	     passed="4"
+  	     failed="1"
+  	     skipped="0">
+
+        <test name="TestFail"
+          type="test"
+          method="TestFail"
+          result="Fail"
+          time="0.00">
+          <failure exception-type="go.error">
+             <message><![CDATA[    localizer_test.go:15: YO IM FAILING!]]></message>
+      	  </failure>
+      	</test>
+
+        <test name="TestCurrencyMap"
+          type="test"
+          method="TestCurrencyMap"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestCountryMap"
+          type="test"
+          method="TestCountryMap"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestLanguagesByCountry"
+          type="test"
+          method="TestLanguagesByCountry"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestCountryLanguageCombinations"
+          type="test"
+          method="TestCountryLanguageCombinations"
+          result="Pass"
+          time="0.00">
+        </test>
+
+    </class>
+
+    <class time="" name=""
+  	     total="6"
+  	     passed="6"
+  	     failed="0"
+  	     skipped="0">
+
+        <test name="TestNameIsGeneratedCorrectly"
+          type="test"
+          method="TestNameIsGeneratedCorrectly"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestExtractNumericIds"
+          type="test"
+          method="TestExtractNumericIds"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestExtractStringIds"
+          type="test"
+          method="TestExtractStringIds"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestIntSliceToStringSlice"
+          type="test"
+          method="TestIntSliceToStringSlice"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestGetKeys"
+          type="test"
+          method="TestGetKeys"
+          result="Pass"
+          time="0.00">
+        </test>
+
+        <test name="TestProtoEnumToStringSlice"
+          type="test"
+          method="TestProtoEnumToStringSlice"
+          result="Pass"
+          time="0.00">
+        </test>
+
+    </class>
+
+</assembly>
