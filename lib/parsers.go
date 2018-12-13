@@ -321,13 +321,7 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 			continue
 		}
 
-		if curTest == nil {
-			if curSuite != nil && len(curSuite.Tests) > 0 {
-				curSuite.Tests[len(curSuite.Tests)-1].Message += "\n" + line
-			}
-		} else {
-			out = append(out, line)
-		}
+		out = append(out, line)
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -349,7 +343,7 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 		appendError()
 	}
 
-	if curSuite != nil {
+	if curSuite != nil && len(curSuite.Tests) > 0 {
 		suites = append(suites, curSuite)
 	}
 
