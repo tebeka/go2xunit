@@ -73,7 +73,7 @@ func ParseGocheck(rd io.Reader, suitePrefix string) (Suites, error) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		
+
 		tokens := findStart(line)
 		if len(tokens) > 0 {
 			if tokens[2] == "SetUpTest" || tokens[2] == "TearDownTest" {
@@ -168,7 +168,7 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 	var curSuite *Suite
 	var out []string
 	suiteStack := SuiteStack{}
-	
+
 	// Handles a test that ended with a panic.
 	handlePanic := func() {
 		curTest.Status = Failed
@@ -279,7 +279,7 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 				curTest.Status = Failed
 			}
 			curTest.Time = tokens[3]
-			
+
 			if len(out) > 0 {
 				message := strings.Join(out, "\n")
 				prevTest, err := getPreviousFailTest(curSuite, curTest)
@@ -287,11 +287,11 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 				if err == nil && prevTest.AppendedErrorOutput == false {
 					test = prevTest
 				} else {
-					test = curTest					
+					test = curTest
 				}
 				if test.isParentTest == false {
 					test.Message += message
-					test.AppendedErrorOutput = isErrorOutput(message)					
+					test.AppendedErrorOutput = isErrorOutput(message)
 				}
 			}
 
@@ -321,7 +321,13 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 			continue
 		}
 
-		out = append(out, line)
+		if curTest == nil {
+			if curSuite != nil && len(curSuite.Tests) > 0 {
+				curSuite.Tests[len(curSuite.Tests)-1].Message += "\n" + line
+			}
+		} else {
+			out = append(out, line)
+		}
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -341,6 +347,9 @@ func ParseGotest(rd io.Reader, suitePrefix string) (Suites, error) {
 		}
 		// Catch any post-failure messages from the last test
 		appendError()
+	}
+
+	if curSuite != nil {
 		suites = append(suites, curSuite)
 	}
 
