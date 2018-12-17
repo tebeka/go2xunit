@@ -4,16 +4,16 @@ go:
 - 1.11
 - tip
 script: make test
-skip_cleanup: true
 after_success: make binaries
 deploy:
   provider: releases
+  skip_cleanup: true
   api_key:
     secure: Ozy4WioriKnHz2ZC4isU/JqujtFlNkc9AOB92N7wLCuYll1mBW5o6bjYEZTvPq6FAVWlrhBHfKI8oTpVEZNZaL6LyvIeCFioTlDPE4OjihCGs9B8pwrxnY7sSt6WQQ/hCmm4fGoliDlQ7gv2bHrm54PUZOrMydXyHBOsYhS9/Lc=
   file: 
-  - ${GOPATH}/src/github.com/tebeka/go2xunit/go2xunit-linux-amd64
-  - ${GOPATH}/src/github.com/tebeka/go2xunit/go2xunit-darwin-amd64
-  - ${GOPATH}/src/github.com/tebeka/go2xunit/go2xunit-windows-amd64.exe
+  - go2xunit-linux-amd64
+  - go2xunit-darwin-amd64
+  - go2xunit-windows-amd64.exe
   on:
     repo: tebeka/go2xunit
     branch: master
