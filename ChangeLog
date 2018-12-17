@@ -1,3 +1,6 @@
+2018-12-17 version 1.4.10
+* Fix suite regular expression to support "(cached)"
+
 2018-12-13 version 1.4.9
 * Handle dangling suite (issue #63)
 

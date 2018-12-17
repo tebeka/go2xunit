@@ -20,23 +20,25 @@
 
     </testcase>
   </testsuite>
-  <testsuite name="" tests="6" errors="0" failures="0" skip="0">
-    <testcase classname="" name="TestNameIsGeneratedCorrectly" time="0.00">
+  <testsuite name="sisu.sh/go/code/catalog/name" tests="1" errors="0" failures="0" skip="0">
+    <testcase classname="sisu.sh/go/code/catalog/name" name="TestNameIsGeneratedCorrectly" time="0.00">
 
     </testcase>
-    <testcase classname="" name="TestExtractNumericIds" time="0.00">
+  </testsuite>
+  <testsuite name="sisu.sh/go/code/catalog/transformer" tests="5" errors="0" failures="0" skip="0">
+    <testcase classname="sisu.sh/go/code/catalog/transformer" name="TestExtractNumericIds" time="0.00">
 
     </testcase>
-    <testcase classname="" name="TestExtractStringIds" time="0.00">
+    <testcase classname="sisu.sh/go/code/catalog/transformer" name="TestExtractStringIds" time="0.00">
 
     </testcase>
-    <testcase classname="" name="TestIntSliceToStringSlice" time="0.00">
+    <testcase classname="sisu.sh/go/code/catalog/transformer" name="TestIntSliceToStringSlice" time="0.00">
 
     </testcase>
-    <testcase classname="" name="TestGetKeys" time="0.00">
+    <testcase classname="sisu.sh/go/code/catalog/transformer" name="TestGetKeys" time="0.00">
 
     </testcase>
-    <testcase classname="" name="TestProtoEnumToStringSlice" time="0.00">
+    <testcase classname="sisu.sh/go/code/catalog/transformer" name="TestProtoEnumToStringSlice" time="0.00">
 
     </testcase>
   </testsuite>

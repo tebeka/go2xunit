@@ -24,7 +24,7 @@ var (
 	// FAIL	_/home/miki/Projects/goroot/src/xunit	0.004s
 	// ok  	_/home/miki/Projects/goroot/src/anotherTest	0.000s
 	gtSuiteRE = regexp.MustCompile(
-		"^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(-?\\d+.\\d+)")
+		"^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+((-?\\d+.\\d+)|\\(cached\\))")
 
 	// ?       alipay  [no test files]
 	gtNoFilesRE = regexp.MustCompile("^\\?.*\\[no test files\\]$")
@@ -49,6 +49,7 @@ var (
 
 	// FAIL	go2xunit/demo-gocheck	0.008s
 	// ok  	go2xunit/demo-gocheck	0.008s
+	// ok  	sisu.sh/go/code/catalog/transformer	(cached)
 	gcSuiteRE = regexp.MustCompile("^(ok|FAIL)[ \t]+([^ \t]+)[ \t]+(-?\\d+.\\d+)")
 
 	// Match error output from tests

@@ -39,12 +39,12 @@ func Token2Status(token string) Status {
 // test doesn't exist.
 func getPreviousFailTest(suite *Suite, curTest *Test) (*Test, error) {
 	previousFailTestIndex := -1
-	for test_index, test := range suite.Tests {
+	for testIndex, test := range suite.Tests {
 		if test.Name == curTest.Name {
 			break
 		} else {
 			if test.Status == Failed {
-				previousFailTestIndex = test_index
+				previousFailTestIndex = testIndex
 			}
 		}
 	}
