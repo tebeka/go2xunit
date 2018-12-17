@@ -12,7 +12,6 @@ publish:
 	git push --tags
 
 binaries:
-	pwd
 	GOARCH=amd64 GOOS=linux go build -o go2xunit-linux-amd64
 	GOARCH=amd64 GOOS=darwin go build -o go2xunit-darwin-amd64
 	GOARCH=amd64 GOOS=windows go build -o go2xunit-windows-amd64.exe
