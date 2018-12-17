@@ -1,6 +1,18 @@
+sudo: false
 language: go
 go:
-    - 1.8
+    - 1.11
     - tip
-script: go test -v
-sudo: false
+script: make test
+after_success:
+    make binaries
+deploy:
+  - provider: releases
+    file:
+      - go2xunit-linux-amd64
+      - go2xunit-darwin-amd64
+      - go2xunit-windows-amd64.exe
+    on:
+      repo: tebeka/go2xunit
+      branch: master
+      tags: true
