@@ -40,9 +40,9 @@ Here's an example script (`run-tests.sh`) that can be used with [Jenkins][jenkin
 
 # Examples
 
-* [go test](demos/gotest/)
-* [gocheck](demos/gocheck/)
-* [testify](demos/testify/)
+* [go test](_demos/gotest/)
+* [gocheck](_demos/gocheck/)
+* [testify](_demos/testify/)
 
 
 # Related
