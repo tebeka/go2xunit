@@ -1,8 +1,9 @@
-// Genrated by /tmp/go-build526346060/b001/exe/gentmpl
+// Genrated by /tmp/go-build210324005/b001/exe/gentmpl
 
 package main
 
-var junit = `<testsuite
+var junit = `<!DOCTYPE xml>
+<testsuite
     name="go2xunit"
     tests="{{.Count}}"
     errors="0"
@@ -26,7 +27,8 @@ var junit = `<testsuite
 </testsuite>
 `
 
-var xunit = `<assembly name="{{.Name | escape}}"
+var xunit = `<!DOCTYPE xml>
+<assembly name="{{.Name | escape}}"
           run-date="{{.Time}}" run-time="{{.Time}}"
           configFile="none"
           time="{{.Time}}"
