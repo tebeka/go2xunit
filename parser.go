@@ -106,6 +106,10 @@ func assembleTests(tests map[key]*Test) (*Test, error) {
 
 	root = &Test{}
 	for _, t := range tests {
+		if t.Name == "" {
+			// TODO
+			continue
+		}
 		root.Children = append(root.Children, t)
 	}
 
