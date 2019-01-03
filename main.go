@@ -11,6 +11,8 @@ import (
 	"log"
 	"os"
 	"path"
+	"sort"
+	"strings"
 	"text/template"
 )
 
@@ -19,20 +21,57 @@ const (
 	Version = "2.0.0"
 )
 
-func inFile() (*os.File, error) {
-	if flag.NArg() == 0 || flag.Arg(0) == "-" {
+var args struct {
+	failRace    bool
+	format      string
+	input       string
+	noFail      bool
+	output      string
+	suitePrefix string
+	version     bool
+}
+
+func templateNames() string {
+	names := make([]string, 0, len(internalTemplates))
+	for name := range internalTemplates {
+		names = append(names, name)
+	}
+
+	sort.Strings(names)
+	return strings.Join(names, ", ")
+}
+
+func init() {
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "usage: %s [options]\nOptions:\n", path.Base(os.Args[0]))
+		flag.PrintDefaults()
+	}
+
+	formatHelp := fmt.Sprintf("output format: %s", templateNames())
+
+	flag.BoolVar(&args.failRace, "fail-race", false, "mark test as failing if it exposes a data race")
+	flag.BoolVar(&args.noFail, "no-fail", false, "don't fail if tests failed")
+	flag.BoolVar(&args.version, "version", false, "print version and exit")
+	flag.StringVar(&args.format, "format", "junit", formatHelp)
+	flag.StringVar(&args.input, "input", "", "input file")
+	flag.StringVar(&args.output, "output", "", "output file")
+	flag.StringVar(&args.suitePrefix, "suite-prefix", "", "prefix to include before all suite names")
+}
+
+func inFile(name string) (*os.File, error) {
+	if name == "" || name == "-" {
 		return os.Stdin, nil
 	}
 
-	return os.Open(flag.Arg(0))
+	return os.Open(name)
 }
 
-func outFile(path string) (*os.File, error) {
-	if path == "" || path == "-" {
+func outFile(name string) (*os.File, error) {
+	if name == "" || name == "-" {
 		return os.Stdout, nil
 	}
 
-	return os.Create(flag.Arg(1))
+	return os.Create(name)
 }
 
 func xmlEscape(in string) (string, error) {
@@ -54,28 +93,29 @@ func main() {
 	// No time ... prefix for error messages
 	log.SetFlags(0)
 
-	if err := parseArgs(); err != nil {
-		log.Fatalf("error: %s", err)
+	flag.Parse()
+	if flag.NArg() > 0 {
+		log.Fatalf("error: %s takes no arguments", os.Args[0])
 	}
 
-	input, err := inFile()
+	input, err := inFile(args.input)
 	if err != nil {
-		log.Fatalf("error: %s", err)
+		log.Fatalf("error: input: %s", err)
 	}
 
 	out, err := outFile(args.output)
 	if err != nil {
-		log.Fatalf("error:  %s", err)
+		log.Fatalf("error: output: %s", err)
+	}
+
+	tmplData := internalTemplates[args.format]
+	if tmplData == "" {
+		log.Fatalf("error: can't find %q template", args.format)
 	}
 
 	root, err := Parse(input)
 	if err != nil {
 		log.Fatalf("error: can't parse - %s", err)
-	}
-
-	tmplData := internalTemplates[args.format]
-	if tmplData == "" {
-		log.Fatalf("error: can't find tempalte for %q", args.format)
 	}
 
 	funcs := template.FuncMap{
