@@ -1,4 +1,4 @@
-// Genrated by /tmp/go-build210324005/b001/exe/gentmpl
+// Genrated by /tmp/go-build015503661/b001/exe/gentmpl
 
 package main
 
@@ -13,7 +13,7 @@ var junit = `<!DOCTYPE xml>
     <testcase
 	classname="{{$test.Package | escape}}"
 	name="{{$test.Name | escape}}"
-	time="{{$test.Time}}">
+	time="{{$test.Elapsed.Seconds}}">
     {{if eq $test.Status "skip" }}
 	<skipped/>
     {{end}}
