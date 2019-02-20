@@ -1,4 +1,4 @@
-// Genrated by /tmp/go-build015503661/b001/exe/gentmpl
+// Genrated by gentmpl.go
 
 package main
 

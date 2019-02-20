@@ -21,7 +21,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Fprintf(out, "// Genrated by %s\n\n", os.Args[0])
+	fmt.Fprint(out, "// Genrated by gentmpl.go\n\n")
 	fmt.Fprintf(out, "package main\n\n")
 	names := make([]string, len(files))
 	for i, file := range files {
