@@ -85,17 +85,17 @@ func xmlEscape(in string) (string, error) {
 // getInput return input io.File from file name, if file name is - it will
 // return os.Stdin
 func main() {
-	if args.version {
-		fmt.Printf("%s %s\n", Version, path.Base(os.Args[0]))
-		os.Exit(0)
-	}
-
 	// No time ... prefix for error messages
 	log.SetFlags(0)
 
 	flag.Parse()
 	if flag.NArg() > 0 {
 		log.Fatalf("error: %s takes no arguments", os.Args[0])
+	}
+
+	if args.version {
+		fmt.Printf("%s %s\n", Version, path.Base(os.Args[0]))
+		os.Exit(0)
 	}
 
 	input, err := inFile(args.input)
