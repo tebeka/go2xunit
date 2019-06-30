@@ -13,7 +13,7 @@ import (
 var (
 	zeroTime time.Time
 	// FAIL	github.com/nuclio/nuclio/pkg/dashboard/test [build failed]
-	buildFailRe = regexp.MustCompile("FAIL[\\t ]+([^ ]+)[\\t ]+\\[build failed\\]")
+	buildFailRe = regexp.MustCompile(`FAIL[\t ]+([^ ]+)[\t ]+\[build failed\]`)
 )
 
 // Test data structure
@@ -62,22 +62,39 @@ func Parse(input io.Reader) (*Test, error) {
 	return assembleTests(tests)
 }
 
+func parseBuildFail(line []byte) (*Record, error) {
+	fields := buildFailRe.FindSubmatch(line)
+	if len(fields) != 2 {
+		return nil, fmt.Errorf("can't parse")
+	}
+
+	r := &Record{
+		Action:  "fail",
+		Package: string(fields[1]),
+		Output:  "build failed",
+		// TODO: Time
+	}
+
+	return r, nil
+}
+
+func parseLine(line []byte) (*Record, error) {
+	var r Record
+	err := json.Unmarshal(line, &r)
+	if err == nil {
+		return &r, nil
+	}
+
+	return parseBuildFail(line)
+}
+
 func firstScan(input io.Reader) (map[key]*Test, error) {
 	tests := make(map[key]*Test)
 	scan := NewScanner(input)
-	//	tests := make(map[string]*Test)
 	for scan.Scan() {
-		r := &Record{}
-		if err := json.Unmarshal(scan.Bytes(), r); err != nil {
-			fields := buildFailRe.FindSubmatch(scan.Bytes())
-			if len(fields) == 2 {
-				r.Action = "fail"
-				r.Package = string(fields[1])
-				r.Output = "build failed"
-				// TODO: r.Time
-			} else {
-				return nil, fmt.Errorf("%d: error: %s", scan.LineNum(), err)
-			}
+		r, err := parseLine(scan.Bytes())
+		if err != nil {
+			return nil, fmt.Errorf("%d: error: %s", scan.LineNum(), err)
 		}
 
 		k := key{r.Package, r.Test}
