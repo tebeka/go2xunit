@@ -11,4 +11,7 @@ publish:
 	git push
 	git push --tags
 
+circleci:
+	docker build -f Dockerfile.test .
+
 .PHONY: test lib

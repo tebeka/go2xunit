@@ -1,0 +1,5 @@
+FROM golang:1.12-stretch
+
+WORKDIR /go2xunit
+COPY . .
+RUN go test -v
