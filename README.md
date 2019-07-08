@@ -1,6 +1,6 @@
 # go2xunit
 
-[![Travis](https://travis-ci.org/tebeka/go2xunit.svg?branch=master)](https://travis-ci.org/tebeka/go2xunit)
+[![CircleCI](https://circleci.com/gh/tebeka/go2xunit.svg?style=svg)](https://circleci.com/gh/tebeka/go2xunit)
 
 Converts `go test -v --json` output to [junit][junit] or [xunit.net][xnet]
 compatible XML output (used in [Jenkins][jenkins]/[Hudson][hudson]).
