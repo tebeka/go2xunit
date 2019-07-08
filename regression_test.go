@@ -8,17 +8,42 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
 
+var (
+	exeName = fmt.Sprintf("/tmp/go2xunit-test-%s", time.Now().Format(time.RFC3339))
+)
+
+func exeExists() bool {
+	info, err := os.Stat(exeName)
+	if err != nil {
+		return false
+	}
+
+	return info.Mode().IsRegular()
+}
+
+func buildExe() error {
+	if exeExists() {
+		return nil
+	}
+
+	cmd := exec.Command("go", "build", "-o", exeName, ".")
+	return cmd.Run()
+}
+
 func checkRegression(t *testing.T, inFile, outFile string, args []string) {
 	require := require.New(t)
+	require.NoError(buildExe(), "build")
+
 	stdin, err := os.Open(inFile)
 	require.NoErrorf(err, "open %s - %s", inFile, err)
 	defer stdin.Close()
 
-	cmd := exec.Command("./go2xunit", args...)
+	cmd := exec.Command(exeName, args...)
 	cmd.Stdin = stdin
 	data, err := cmd.Output()
 	require.NoErrorf(err, "running on %s - %s", inFile, err)
