@@ -3,6 +3,9 @@
 [![Travis](https://travis-ci.org/tebeka/go2xunit.svg?branch=master)](https://travis-ci.org/tebeka/go2xunit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+**DORMANT: This package is currently unmaintained. I (Miki) might invest some time on it in the future - but currently I don't plan to.**
+Have a look at [go-gunit-report](https://github.com/jstemmer/go-junit-report) for a possible replacement.
+
 Converts `go test -v` (or `gocheck -vv`) output to xunit or [xunit.net][xnet]
 compatible XML output (used in [Jenkins][jenkins]/[Hudson][hudson]).
 
