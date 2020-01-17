@@ -95,7 +95,9 @@ func main() {
 	}
 
 	xmlTemplate := lib.XUnitTemplate
-	if args.xunitnetOut {
+	if args.sonarGTDOut {
+		xmlTemplate = lib.SGTDTemplate
+	} else if args.xunitnetOut {
 		xmlTemplate = lib.XUnitNetTemplate
 	} else if args.bambooOut || (len(suites) > 1) {
 		xmlTemplate = lib.XMLMultiTemplate
